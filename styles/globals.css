@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ─── Base Resets ─────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: #FAFAF8;
+  color: #0C0C0C;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ──────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+/* ─── Selection ───────────────────────────────────────────── */
+::selection {
+  background-color: #D4A853;
+  color: #0C0C0C;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F0E8;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4B49A;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8C7355;
+}
+
+/* ─── Utilities ───────────────────────────────────────────── */
+@layer utilities {
+  .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-sans {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  .text-display-xl {
+    font-size: clamp(3rem, 7vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .text-display-lg {
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .text-display-md {
+    font-size: clamp(1.75rem, 3.5vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .text-display-sm {
+    font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .tracking-widest-sm {
+    letter-spacing: 0.15em;
+  }
+
+  .underline-grow {
+    position: relative;
+    text-decoration: none;
+  }
+
+  .underline-grow::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .underline-grow:hover::after {
+    width: 100%;
+  }
+}
+
+/* ─── Components ──────────────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3.5 bg-mriie-black text-mriie-white font-sans text-sm tracking-widest-sm uppercase transition-all duration-300 hover:bg-mriie-earth;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3.5 border border-mriie-black text-mriie-black font-sans text-sm tracking-widest-sm uppercase transition-all duration-300 hover:bg-mriie-black hover:text-mriie-white;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center px-8 py-3.5 text-mriie-black font-sans text-sm tracking-widest-sm uppercase transition-all duration-300 underline-grow;
+  }
+
+  .section-label {
+    @apply font-sans text-caption text-mriie-muted tracking-widest-sm uppercase;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  .nav-link {
+    @apply font-sans text-sm tracking-widest-sm uppercase underline-grow text-mriie-black transition-colors duration-200 hover:text-mriie-warm;
+  }
+
+  .input-field {
+    @apply w-full border-b border-mriie-stone bg-transparent py-3 px-0 font-sans text-sm text-mriie-black placeholder-mriie-muted focus:outline-none focus:border-mriie-black transition-colors duration-200;
+  }
+
+  .divider {
+    @apply w-full h-px bg-mriie-sand;
+  }
+
+  .tag {
+    @apply inline-block font-sans text-caption tracking-widest-sm uppercase text-mriie-muted border border-mriie-sand px-3 py-1;
+  }
+}
+
+/* ─── Animations ──────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
