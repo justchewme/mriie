@@ -12,7 +12,7 @@ export default function HomePage() {
       <section className="relative min-h-screen flex items-center overflow-hidden bg-surface-container-low">
         <div className="absolute inset-0 z-0 opacity-90">
           <Image
-            src="/images/img_24.jpg"
+            src="/images/home_hero_bali.jpg"
             alt="Vibrant tropical sunset over Bali coast with golden orange and deep hibiscus pink clouds"
             fill
             className="object-cover"
@@ -49,7 +49,7 @@ export default function HomePage() {
             <div className="absolute inset-0 rounded-lg overflow-hidden -rotate-2 transform scale-95 translate-x-12 translate-y-8 bg-[#a6eff3]/20"></div>
             <div className="absolute inset-0 rounded-lg overflow-hidden shadow-2xl z-10">
               <Image
-                src="/images/img_01.jpg"
+                src="/images/home_yoga_cliff.jpg"
                 alt="Athletic woman in hibiscus pink activewear performing yoga on a high cliff overlooking the Balinese ocean at dawn"
                 fill
                 className="object-cover rounded-lg"
@@ -66,7 +66,7 @@ export default function HomePage() {
             <div className="lg:col-span-5 relative">
               <div className="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl relative">
                 <Image
-                  src="/images/img_15.jpg"
+                  src="/images/home_artisan_stitch.jpg"
                   alt="Close-up of artisan hands in a Bali studio meticulously stitching a high-performance recycled fabric garment"
                   fill
                   className="object-cover"
@@ -149,7 +149,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-[800px] md:h-[600px]">
             <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-lg">
               <Image
-                src="/images/img_25.jpg"
+                src="/images/home_seminyak.jpg"
                 alt="Sophisticated flagship retail interior with minimalist timber displays and lush tropical ferns"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -162,7 +162,7 @@ export default function HomePage() {
             </div>
             <div className="relative group overflow-hidden rounded-lg">
               <Image
-                src="/images/img_11.jpg"
+                src="/images/home_london.jpg"
                 alt="Aerial view of London cityscape during sunset"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -175,7 +175,7 @@ export default function HomePage() {
             </div>
             <div className="relative group overflow-hidden rounded-lg">
               <Image
-                src="/images/img_04.jpg"
+                src="/images/home_california.jpg"
                 alt="California mountains during golden hour with soft hazy light"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -188,7 +188,7 @@ export default function HomePage() {
             </div>
             <div className="md:col-span-2 relative group overflow-hidden rounded-lg">
               <Image
-                src="/images/img_10.jpg"
+                src="/images/home_nyc_gym.jpg"
                 alt="Modern high-end gym and wellness studio interior with warm atmospheric lighting"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-110"

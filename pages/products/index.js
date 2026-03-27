@@ -9,7 +9,7 @@ const products = [
     name: 'Hibiscus Dawn Bikini',
     subtitle: 'Sustainable Swimwear',
     price: '$145.00',
-    image: '/images/img_14.jpg',
+    image: '/images/catalog_hibiscus_bikini.jpg',
     tag: 'Sustainable',
     featured: true,
   },
@@ -18,21 +18,21 @@ const products = [
     name: 'Artisan Yoga Mat',
     subtitle: 'Natural Cork & Rubber',
     price: '$120.00',
-    image: '/images/img_16.jpg',
+    image: '/images/catalog_yoga_mat_cork.jpg',
   },
   {
     slug: 'padel-signature-racket',
     name: 'Padel Signature Racket',
     subtitle: 'Pro Carbon Series',
     price: '$280.00',
-    image: '/images/img_08.jpg',
+    image: '/images/catalog_padel_racket.jpg',
   },
   {
     slug: 'oceanic-flow-set',
     name: 'Oceanic Flow Set',
     subtitle: 'Recycled Polyamide',
     price: '$195.00',
-    image: '/images/img_09.jpg',
+    image: '/images/catalog_oceanic_flow.jpg',
   },
 ]
 
@@ -200,7 +200,7 @@ export default function ProductCatalogPage() {
           </div>
           <div className="relative h-[500px] rounded-lg overflow-hidden shadow-xl">
             <Image
-              src="/images/img_13.jpg"
+              src="/images/catalog_bali_workshop.jpg"
               alt="Overhead shot of a rustic artisan workshop in Bali with woven fabrics and design sketches on a teak wood table"
               fill
               className="object-cover"

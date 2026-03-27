@@ -11,7 +11,7 @@ const productsData = {
     colors: ['Hibiscus', 'Ocean Teal', 'Midnight'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     description: 'Hand-crafted by local artisans in the heart of Bali. Each piece utilizes ocean-recovered nylon and natural rubber, merging high-performance with a commitment to the earth.',
-    images: ['/images/img_19.jpg', '/images/img_21.jpg', '/images/img_23.jpg'],
+    images: ['/images/catalog_hibiscus_bikini.jpg', '/images/detail_mat_texture.jpg', '/images/detail_bikini_ladder.jpg'],
   },
   'artisan-yoga-mat': {
     name: 'The Uluwatu Ritual Mat',
@@ -20,7 +20,16 @@ const productsData = {
     colors: ['Natural Cork', 'Shadow'],
     sizes: ['Standard', 'Wide'],
     description: 'Hand-crafted by local artisans in the heart of Bali. Each mat utilizes ocean-recovered nylon and natural rubber, merging high-performance grip with a commitment to the earth.',
-    images: ['/images/img_19.jpg', '/images/img_21.jpg', '/images/img_23.jpg'],
+    images: ['/images/detail_mat_hero.jpg', '/images/detail_mat_texture.jpg', '/images/detail_bikini_ladder.jpg'],
+  },
+  'uluwatu-ritual-mat': {
+    name: 'The Uluwatu Ritual Mat',
+    collection: 'Island Essentials — Sustainable Edition',
+    price: '$145.00',
+    colors: ['Natural Cork', 'Shadow', 'Teal'],
+    sizes: ['Standard', 'Wide'],
+    description: 'Hand-crafted by local artisans in the heart of Bali. Each mat utilizes ocean-recovered nylon and natural rubber, merging high-performance grip with a commitment to the earth.',
+    images: ['/images/detail_mat_hero.jpg', '/images/detail_mat_texture.jpg', '/images/detail_bikini_ladder.jpg'],
   },
   'padel-signature-racket': {
     name: 'Padel Signature Racket',
@@ -29,7 +38,7 @@ const productsData = {
     colors: ['Carbon Black', 'Hibiscus Red'],
     sizes: ['One Size'],
     description: 'Precision-engineered for elite performance. Carbon-fiber construction with Balinese artisan grip detailing.',
-    images: ['/images/img_19.jpg', '/images/img_21.jpg', '/images/img_23.jpg'],
+    images: ['/images/catalog_padel_racket.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
   'oceanic-flow-set': {
     name: 'Oceanic Flow Set',
@@ -38,7 +47,7 @@ const productsData = {
     colors: ['Reef', 'Dusk', 'Black Sand'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     description: 'A complete set crafted from 100% recycled ocean polyamide. Two-piece luxury activewear for the conscious athlete.',
-    images: ['/images/img_19.jpg', '/images/img_21.jpg', '/images/img_23.jpg'],
+    images: ['/images/catalog_oceanic_flow.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
   'aling-strap': {
     name: 'The Aling Strap',
@@ -47,7 +56,7 @@ const productsData = {
     colors: ['Natural', 'Teal', 'Hibiscus'],
     sizes: ['One Size'],
     description: 'A versatile organic cotton yoga strap hand-woven in the Aling cooperative near Ubud. Reinforced brass buckle, 2.5m adjustable length. Built to last a lifetime of practice.',
-    images: ['/images/img_02.jpg', '/images/img_19.jpg', '/images/img_21.jpg'],
+    images: ['/images/xsell_yoga_strap.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
   'cork-foundation-block': {
     name: 'Cork Foundation Block',
@@ -56,7 +65,7 @@ const productsData = {
     colors: ['Natural Cork'],
     sizes: ['Standard', 'Tall'],
     description: 'Harvested from FSC-certified cork oak forests in Portugal. Non-slip surface, antimicrobial, and fully biodegradable. The perfect foundation for any asana practice.',
-    images: ['/images/img_07.jpg', '/images/img_19.jpg', '/images/img_21.jpg'],
+    images: ['/images/xsell_cork_block.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
   'sembunyi-yoga-top': {
     name: 'Sembunyi Yoga Top',
@@ -65,7 +74,7 @@ const productsData = {
     colors: ['Hibiscus', 'Cloud', 'Jungle'],
     sizes: ['XS', 'S', 'M', 'L', 'XL'],
     description: '"Sembunyi" means hidden in Balinese — a nod to the secret coves where this top was tested. Econyl® recycled nylon with built-in shelf bra support and seamless back detail for unrestricted movement.',
-    images: ['/images/img_03.jpg', '/images/img_19.jpg', '/images/img_21.jpg'],
+    images: ['/images/xsell_yoga_top.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
   'tirta-earth-bottle': {
     name: 'Tirta Earth Bottle',
@@ -74,15 +83,15 @@ const productsData = {
     colors: ['Teal', 'Terracotta', 'Cream'],
     sizes: ['500ml', '750ml'],
     description: '"Tirta" is the sacred Balinese water of purification. This double-wall stainless steel bottle is finished with a hand-applied rattan wrap crafted by Ubud artisans. Zero-plastic lid, dishwasher safe body.',
-    images: ['/images/img_06.jpg', '/images/img_19.jpg', '/images/img_21.jpg'],
+    images: ['/images/xsell_teal_bottle.jpg', '/images/detail_mat_texture.jpg', '/images/catalog_bali_workshop.jpg'],
   },
 }
 
 const relatedProducts = [
-  { slug: 'aling-strap', name: 'The Aling Strap', price: '$35.00', image: '/images/img_02.jpg' },
-  { slug: 'cork-foundation-block', name: 'Cork Foundation Block', price: '$45.00', image: '/images/img_07.jpg' },
-  { slug: 'sembunyi-yoga-top', name: 'Sembunyi Yoga Top', price: '$85.00', image: '/images/img_03.jpg' },
-  { slug: 'tirta-earth-bottle', name: 'Tirta Earth Bottle', price: '$65.00', image: '/images/img_06.jpg' },
+  { slug: 'aling-strap', name: 'The Aling Strap', price: '$35.00', image: '/images/xsell_yoga_strap.jpg' },
+  { slug: 'cork-foundation-block', name: 'Cork Foundation Block', price: '$45.00', image: '/images/xsell_cork_block.jpg' },
+  { slug: 'sembunyi-yoga-top', name: 'Sembunyi Yoga Top', price: '$85.00', image: '/images/xsell_yoga_top.jpg' },
+  { slug: 'tirta-earth-bottle', name: 'Tirta Earth Bottle', price: '$65.00', image: '/images/xsell_teal_bottle.jpg' },
 ]
 
 export async function getStaticPaths() {
@@ -148,7 +157,7 @@ export default function ProductDetailPage({ product }) {
           <div className="lg:col-span-7 grid grid-cols-6 gap-4">
             <div className="col-span-6 rounded-lg overflow-hidden editorial-shadow bg-[#ede7e2] relative">
               <Image
-                src="/images/img_19.jpg"
+                src={product.images[0]}
                 alt={product.name}
                 width={1200}
                 height={716}
@@ -158,7 +167,7 @@ export default function ProductDetailPage({ product }) {
             </div>
             <div className="col-span-3 rounded-lg overflow-hidden editorial-shadow bg-[#ede7e2] -mt-20 ml-8 relative z-10 aspect-[4/5]">
               <Image
-                src="/images/img_21.jpg"
+                src={product.images[1]}
                 alt="Close up texture of sustainable material"
                 fill
                 className="object-cover"
@@ -166,7 +175,7 @@ export default function ProductDetailPage({ product }) {
             </div>
             <div className="col-span-3 rounded-lg overflow-hidden editorial-shadow bg-[#ede7e2] mt-4 aspect-square relative">
               <Image
-                src="/images/img_23.jpg"
+                src={product.images[2]}
                 alt="Lifestyle product shot"
                 fill
                 className="object-cover"
@@ -271,7 +280,7 @@ export default function ProductDetailPage({ product }) {
             <div className="relative">
               <div className="aspect-[3/4] rounded-lg overflow-hidden editorial-shadow rotate-3 scale-105 relative">
                 <Image
-                  src="/images/img_18.jpg"
+                  src="/images/detail_artisan_workshop.jpg"
                   alt="Artisan hands weaving sustainable fabric in a traditional Balinese outdoor workshop"
                   fill
                   className="object-cover"

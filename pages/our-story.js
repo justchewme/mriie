@@ -46,23 +46,23 @@ export default function OurStoryPage() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a
-                href="#sustainability"
+                href="#regenerative"
                 className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-bold text-sm tracking-widest uppercase shadow-lg shadow-[#b70049]/20 active:scale-95 transition-all"
               >
                 Read Our Journey
               </a>
-              <a
-                href="#wholesale"
+              <Link
+                href="/b2b"
                 className="px-8 py-4 rounded-full border-2 border-[#b70049] text-[#b70049] font-bold text-sm tracking-widest uppercase hover:bg-[#b70049]/5 transition-all"
               >
                 Wholesale Portal
-              </a>
+              </Link>
             </div>
           </div>
           <div className="lg:col-span-5 relative">
             <div className="aspect-[4/5] rounded-lg overflow-hidden transform rotate-2 relative" style={{boxShadow: '0 40px 60px -15px rgba(48,46,43,0.06)'}}>
               <Image
-                src="/images/img_12.jpg"
+                src="/images/story_artisan_weaving.jpg"
                 alt="Close up of skilled artisan hands weaving intricate sustainable fabric in a sun-drenched tropical workshop"
                 fill
                 className="object-cover"
@@ -74,7 +74,7 @@ export default function OurStoryPage() {
       </section>
 
       {/* Pillar Section: Regenerative Sourcing (Teal Block) */}
-      <section id="sustainability" className="bg-[#0e666a] text-[#c8fcff] py-32 px-8 overflow-hidden rounded-t-xl">
+      <section id="regenerative" className="bg-[#0e666a] text-[#c8fcff] py-32 px-8 overflow-hidden rounded-t-xl">
         <div className="max-w-screen-2xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="order-2 lg:order-1">
@@ -82,7 +82,7 @@ export default function OurStoryPage() {
                 <div className="space-y-4 pt-12">
                   <div className="relative w-full aspect-[3/4]">
                     <Image
-                      src="/images/img_05.jpg"
+                      src="/images/story_plantation.jpg"
                       alt="Lush regenerative cotton plantation in Bali at dawn with morning mist and soft green tones"
                       fill
                       className="object-cover rounded-lg"
@@ -101,7 +101,7 @@ export default function OurStoryPage() {
                   </div>
                   <div className="relative w-full aspect-square">
                     <Image
-                      src="/images/img_17.jpg"
+                      src="/images/story_fabric_texture.jpg"
                       alt="Abstract macro shot of sustainable fabric texture with soft emerald and deep teal organic patterns"
                       fill
                       className="object-cover rounded-lg"
@@ -162,7 +162,7 @@ export default function OurStoryPage() {
               <div className="space-y-6">
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src="/images/img_20.jpg"
+                    src="/images/story_artisan_community.jpg"
                     alt="Artisan community workspace in Bali with sunlight streaming through bamboo structures and vibrant pink fabrics"
                     fill
                     className="object-cover rounded-lg shadow-2xl"
@@ -172,7 +172,7 @@ export default function OurStoryPage() {
               <div className="space-y-6 pt-12">
                 <div className="relative aspect-[4/5]">
                   <Image
-                    src="/images/img_22.jpg"
+                    src="/images/story_craftswoman_portrait.jpg"
                     alt="A portrait of a smiling Balinese craftswoman working with natural textiles in a traditional setting"
                     fill
                     className="object-cover rounded-lg shadow-2xl"

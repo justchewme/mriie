@@ -111,12 +111,12 @@ export default function Layout({ children, title, description }) {
             </Link>
           </div>
           <div className="flex items-center space-x-6">
-            <button className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Search">
+            <Link href="/products" className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Search">
               search
-            </button>
-            <button className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Shopping bag">
+            </Link>
+            <Link href="/cart" className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Shopping bag">
               shopping_bag
-            </button>
+            </Link>
             <button
               className="md:hidden material-symbols-outlined text-[#302e2b]"
               onClick={() => setMenuOpen(!menuOpen)}
