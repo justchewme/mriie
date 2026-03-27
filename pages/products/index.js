@@ -1,182 +1,178 @@
-import { useState, useMemo } from 'react'
 import Layout from '@/components/Layout'
-import ProductCard from '@/components/ProductCard'
-import { products, categories } from '@/lib/products'
+import Image from 'next/image'
+import Link from 'next/link'
 
-export default function ProductCatalog({ allProducts }) {
-  const [activeCategory, setActiveCategory] = useState('All')
-  const [sortBy, setSortBy] = useState('featured')
-  const [filterOpen, setFilterOpen] = useState(false)
+const products = [
+  {
+    slug: 'hibiscus-dawn-bikini',
+    name: 'Hibiscus Dawn Bikini',
+    subtitle: 'Sustainable Swimwear',
+    price: '$145.00',
+    image: '/images/img_14.jpg',
+    tag: 'Sustainable',
+    featured: true,
+  },
+  {
+    slug: 'artisan-yoga-mat',
+    name: 'Artisan Yoga Mat',
+    subtitle: 'Natural Cork & Rubber',
+    price: '$120.00',
+    image: '/images/img_16.jpg',
+  },
+  {
+    slug: 'padel-signature-racket',
+    name: 'Padel Signature Racket',
+    subtitle: 'Pro Carbon Series',
+    price: '$280.00',
+    image: '/images/img_08.jpg',
+  },
+  {
+    slug: 'oceanic-flow-set',
+    name: 'Oceanic Flow Set',
+    subtitle: 'Recycled Polyamide',
+    price: '$195.00',
+    image: '/images/img_09.jpg',
+  },
+]
 
-  const filtered = useMemo(() => {
-    let list = activeCategory === 'All'
-      ? allProducts
-      : allProducts.filter(p => p.category === activeCategory)
-
-    switch (sortBy) {
-      case 'price-asc':
-        return [...list].sort((a, b) => a.price - b.price)
-      case 'price-desc':
-        return [...list].sort((a, b) => b.price - a.price)
-      case 'newest':
-        return [...list].filter(p => p.isNew).concat(list.filter(p => !p.isNew))
-      default:
-        return list
-    }
-  }, [allProducts, activeCategory, sortBy])
-
+export default function ProductCatalogPage() {
   return (
     <Layout
-      title="Collection"
-      description="Shop the full Mriie collection — ethically made, built to last."
+      title="Collections"
+      description="Summer 2024 Collection — Hand-crafted in Bali. Sustainable luxury sportswear designed for the movement of light and the spirit of the sun."
     >
-      {/* Page header */}
-      <section className="pt-28 lg:pt-36 pb-12 px-6 lg:px-12 max-w-site mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      {/* Hero Editorial Section */}
+      <section className="relative min-h-[716px] flex flex-col justify-center px-8 md:px-16 py-20 overflow-hidden bg-[#fbf5f0]">
+        <div className="absolute top-0 right-0 w-2/3 h-full opacity-20 pointer-events-none">
+          <div className="w-full h-full bg-gradient-to-l from-[#ff7290]/30 to-transparent"></div>
+        </div>
+        <div className="max-w-4xl relative z-10">
+          <h2 className="tracking-widest uppercase text-xs text-[#874e00] mb-4 font-label font-bold">Summer 2024 Collection</h2>
+          <h1 className="font-headline text-6xl md:text-8xl italic font-light leading-[0.9] text-[#302e2b] mb-8">
+            The Solar <span className="text-[#b70049]">Editorial.</span>
+          </h1>
+          <p className="text-xl md:text-2xl font-light text-[#5e5b57] max-w-2xl leading-relaxed mb-10">
+            Hand-crafted in Bali. Sustainable luxury sportswear designed for the movement of light and the spirit of the sun.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-medium tracking-wide active:scale-95 transition-transform">
+              Explore Collections
+            </button>
+            <Link
+              href="/our-story"
+              className="px-8 py-4 rounded-full border-2 border-[#0e666a] text-[#0e666a] font-medium tracking-wide hover:bg-[#0e666a] hover:text-[#c8fcff] transition-all"
+            >
+              B2B Inquiries
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Product Bento Grid */}
+      <section className="px-8 md:px-16 py-24 max-w-screen-2xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+          {/* Main Featured Card */}
+          <Link href={`/products/${products[0].slug}`} className="md:col-span-8 group cursor-pointer relative overflow-hidden rounded-lg bg-[#f6f0ea]">
+            <div className="relative w-full h-[600px]">
+              <Image
+                src={products[0].image}
+                alt={products[0].name}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="absolute bottom-8 left-8 text-white">
+              <span className="bg-[#ff9800] text-[#4a2800] px-3 py-1 rounded-full text-[10px] tracking-widest uppercase font-bold">
+                {products[0].tag}
+              </span>
+              <h3 className="font-headline text-4xl italic mt-4">{products[0].name}</h3>
+              <p className="tracking-widest uppercase text-xs opacity-90">{products[0].price}</p>
+            </div>
+          </Link>
+
+          {/* B2B Callout Card */}
+          <div className="md:col-span-4 flex flex-col justify-between p-10 bg-[#0e666a] rounded-lg text-[#c8fcff]">
+            <div>
+              <h3 className="font-headline text-3xl italic mb-6">Global Wholesale &amp; Distribution</h3>
+              <p className="text-[#c8fcff]/80 leading-relaxed mb-8">Partner with Mriie to bring Bali&apos;s finest sustainable sportswear to your boutique or resort.</p>
+              <ul className="space-y-4 font-label text-[10px] tracking-widest uppercase">
+                <li className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-sm">check_circle</span> Wholesale Pricing Available
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-sm">check_circle</span> Low MOQ for New Stockists
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="material-symbols-outlined text-sm">check_circle</span> Global Express Shipping
+                </li>
+              </ul>
+            </div>
+            <Link
+              href="/our-story"
+              className="mt-12 text-[#00474a] bg-[#a6eff3] py-4 px-6 rounded-full text-center font-bold tracking-widest uppercase text-xs hover:bg-white transition-colors"
+            >
+              Become a Stockist
+            </Link>
+          </div>
+
+          {/* Grid Items */}
+          {products.slice(1).map((product) => (
+            <Link key={product.slug} href={`/products/${product.slug}`} className="md:col-span-4 group">
+              <div className="rounded-lg overflow-hidden aspect-[4/5] bg-[#ede7e2] mb-4 relative">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="flex justify-between items-start px-2">
+                <div>
+                  <h4 className="font-headline text-2xl">{product.name}</h4>
+                  <p className="text-[#5e5b57] text-sm tracking-widest uppercase">{product.subtitle}</p>
+                </div>
+                <span className="text-sm text-[#b70049] font-bold">{product.price}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Newsletter / B2B Section */}
+      <section className="bg-[#f6f0ea] py-24 px-8 md:px-16 overflow-hidden">
+        <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
           <div>
-            <p className="section-label mb-3">Shop</p>
-            <h1 className="font-serif text-display-md font-light text-mriie-black">
-              The Collection
-            </h1>
-          </div>
-          <p className="font-sans text-sm text-mriie-muted">
-            {filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'}
-          </p>
-        </div>
-      </section>
-
-      {/* Filters */}
-      <section className="sticky top-16 lg:top-20 z-40 bg-mriie-white/95 backdrop-blur-sm border-y border-mriie-sand">
-        <div className="max-w-site mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between py-4 gap-6">
-            {/* Category tabs - desktop */}
-            <nav className="hidden lg:flex items-center gap-8 overflow-x-auto">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`font-sans text-xs tracking-widest-sm uppercase whitespace-nowrap transition-colors duration-200 pb-1 ${
-                    activeCategory === cat
-                      ? 'text-mriie-black border-b border-mriie-black'
-                      : 'text-mriie-muted hover:text-mriie-black'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </nav>
-
-            {/* Mobile filter toggle */}
-            <button
-              className="lg:hidden flex items-center gap-2 font-sans text-xs tracking-widest-sm uppercase text-mriie-black"
-              onClick={() => setFilterOpen(!filterOpen)}
-            >
-              <FilterIcon />
-              Filter ({activeCategory !== 'All' ? activeCategory : 'All'})
-            </button>
-
-            {/* Sort */}
-            <div className="flex items-center gap-3 ml-auto">
-              <label className="font-sans text-xs tracking-widest-sm uppercase text-mriie-muted hidden sm:block">
-                Sort
-              </label>
-              <select
-                value={sortBy}
-                onChange={e => setSortBy(e.target.value)}
-                className="font-sans text-xs text-mriie-black bg-transparent border border-mriie-sand px-3 py-2 focus:outline-none focus:border-mriie-black cursor-pointer"
-              >
-                <option value="featured">Featured</option>
-                <option value="newest">New Arrivals</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Mobile category filter */}
-          {filterOpen && (
-            <div className="lg:hidden pb-4 flex flex-wrap gap-3">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    setActiveCategory(cat)
-                    setFilterOpen(false)
-                  }}
-                  className={`font-sans text-xs tracking-widest-sm uppercase px-4 py-2 border transition-colors duration-200 ${
-                    activeCategory === cat
-                      ? 'bg-mriie-black text-mriie-white border-mriie-black'
-                      : 'text-mriie-muted border-mriie-sand hover:border-mriie-black hover:text-mriie-black'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Product grid */}
-      <section className="max-w-site mx-auto px-6 lg:px-12 py-12 lg:py-16">
-        {filtered.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="font-serif text-2xl font-light text-mriie-stone mb-4">
-              No pieces found
+            <h2 className="font-headline text-5xl italic leading-tight mb-8">
+              Join the Global <span className="text-[#0e666a]">Community.</span>
+            </h2>
+            <p className="text-[#5e5b57] mb-10 text-lg leading-relaxed">
+              Stay updated with our latest artisan collaborations and B2B opportunities. We value sustainability and heritage in every stitch.
             </p>
-            <p className="font-sans text-sm text-mriie-muted mb-8">
-              Try adjusting your filters
-            </p>
-            <button
-              onClick={() => setActiveCategory('All')}
-              className="btn-secondary"
-            >
-              Clear Filters
-            </button>
+            <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+              <div className="relative">
+                <input
+                  className="w-full bg-transparent border-b-2 border-[#b1aca8] py-4 px-0 focus:outline-none focus:border-[#b70049] transition-all placeholder-[#b1aca8] placeholder-text-[10px] placeholder-tracking-widest"
+                  placeholder="YOUR EMAIL"
+                  type="email"
+                />
+              </div>
+              <button className="bg-[#b70049] text-[#ffeff0] py-4 px-10 rounded-full w-fit font-bold tracking-widest uppercase text-xs active:scale-95 transition-transform">
+                Subscribe
+              </button>
+            </form>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-14">
-            {filtered.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
-            ))}
+          <div className="relative h-[500px] rounded-lg overflow-hidden shadow-xl">
+            <Image
+              src="/images/img_13.jpg"
+              alt="Overhead shot of a rustic artisan workshop in Bali with woven fabrics and design sketches on a teak wood table"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[#b70049]/10 mix-blend-multiply"></div>
           </div>
-        )}
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="bg-mriie-cream border-t border-mriie-sand py-16 lg:py-20">
-        <div className="max-w-narrow mx-auto px-6 text-center">
-          <p className="section-label mb-4">Not sure where to start?</p>
-          <h2 className="font-serif text-display-sm font-light text-mriie-black mb-6">
-            Build your essential wardrobe
-          </h2>
-          <p className="font-sans text-sm text-mriie-muted mb-8 max-w-xs mx-auto leading-relaxed">
-            We recommend starting with 5–7 versatile pieces that work together effortlessly.
-          </p>
-          <a href="mailto:hello@mriie.com" className="btn-ghost text-mriie-black">
-            Get a personal recommendation →
-          </a>
         </div>
       </section>
     </Layout>
   )
-}
-
-function FilterIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <line x1="4" y1="6" x2="16" y2="6" />
-      <line x1="8" y1="12" x2="20" y2="12" />
-      <line x1="4" y1="18" x2="16" y2="18" />
-      <circle cx="18" cy="6" r="2" fill="currentColor" stroke="none" />
-      <circle cx="6" cy="12" r="2" fill="currentColor" stroke="none" />
-      <circle cx="18" cy="18" r="2" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-export async function getStaticProps() {
-  return {
-    props: { allProducts: products },
-  }
 }

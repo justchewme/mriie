@@ -5,21 +5,16 @@ import { useRouter } from 'next/router'
 
 export default function Layout({ children, title, description }) {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     setMenuOpen(false)
   }, [router.pathname])
 
-  const pageTitle = title ? `${title} — Mriie` : 'Mriie — Timeless Essentials'
-  const pageDesc = description || 'Mriie creates thoughtfully designed clothing and accessories for those who value quality over quantity.'
+  const pageTitle = title ? `${title} — Mriie` : 'Mriie — Sustainable Luxury Sportswear'
+  const pageDesc = description || 'Precision-engineered performance wear infused with Balinese craftsmanship. Designed for the global athlete who values the planet as much as the podium.'
+
+  const isActive = (href) => router.pathname === href || router.pathname.startsWith(href + '/')
 
   return (
     <>
@@ -33,192 +28,154 @@ export default function Layout({ children, title, description }) {
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="Mriie" />
         <meta name="twitter:card" content="summary_large_image" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Plus+Jakarta+Sans:wght@200..800&display=swap"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
       {/* Navigation */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-mriie-white/95 backdrop-blur-sm border-b border-mriie-sand' : 'bg-transparent'
-      }`}>
-        <div className="max-w-site mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-16 lg:h-20">
-            {/* Left nav */}
-            <nav className="hidden lg:flex items-center gap-10">
-              <Link href="/products" className="nav-link">
-                Collection
-              </Link>
-              <Link href="/our-story" className="nav-link">
-                Our Story
-              </Link>
-            </nav>
-
-            {/* Logo */}
+      <nav className="bg-[#fbf5f0]/80 backdrop-blur-xl top-0 sticky z-50 shadow-sm shadow-[#302e2b]/5">
+        <div className="flex justify-between items-center w-full px-8 py-6 max-w-screen-2xl mx-auto">
+          <Link href="/" className="text-3xl font-headline italic tracking-tighter text-[#b70049]">
+            Mriie
+          </Link>
+          <div className="hidden md:flex items-center space-x-12">
             <Link
-              href="/"
-              className="font-serif text-2xl lg:text-3xl font-light tracking-[0.12em] text-mriie-black hover:text-mriie-warm transition-colors duration-200"
+              href="/products"
+              className={`tracking-widest uppercase text-[10px] font-bold transition-colors duration-300 ${
+                isActive('/products')
+                  ? 'text-[#b70049] border-b-2 border-[#b70049] pb-1'
+                  : 'text-[#302e2b] opacity-80 hover:text-[#b70049]'
+              }`}
             >
-              MRIIE
+              Collections
             </Link>
-
-            {/* Right nav */}
-            <div className="hidden lg:flex items-center gap-10">
-              <Link href="/products" className="nav-link">
-                Shop
-              </Link>
-              <button
-                aria-label="Shopping bag"
-                className="nav-link flex items-center gap-2"
-              >
-                <BagIcon />
-                <span>0</span>
-              </button>
-            </div>
-
-            {/* Mobile menu button */}
-            <button
-              className="lg:hidden p-2 text-mriie-black"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
+            <a href="#" className="tracking-widest uppercase text-[10px] font-bold text-[#302e2b] opacity-80 hover:text-[#b70049] transition-colors duration-300">
+              Artisans
+            </a>
+            <a href="#" className="tracking-widest uppercase text-[10px] font-bold text-[#302e2b] opacity-80 hover:text-[#b70049] transition-colors duration-300">
+              B2B Partners
+            </a>
+            <Link
+              href="/our-story"
+              className={`tracking-widest uppercase text-[10px] font-bold transition-colors duration-300 ${
+                isActive('/our-story')
+                  ? 'text-[#b70049] border-b-2 border-[#b70049] pb-1'
+                  : 'text-[#302e2b] opacity-80 hover:text-[#b70049]'
+              }`}
             >
-              {menuOpen ? <CloseIcon /> : <MenuIcon />}
+              Our Story
+            </Link>
+          </div>
+          <div className="flex items-center space-x-6">
+            <button className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Search">
+              search
+            </button>
+            <button className="material-symbols-outlined text-[#302e2b] hover:text-[#b70049] transition-colors" aria-label="Shopping bag">
+              shopping_bag
+            </button>
+            <button
+              className="md:hidden material-symbols-outlined text-[#302e2b]"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Menu"
+            >
+              {menuOpen ? 'close' : 'menu'}
             </button>
           </div>
         </div>
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="lg:hidden bg-mriie-white border-t border-mriie-sand">
-            <nav className="max-w-site mx-auto px-6 py-8 flex flex-col gap-6">
-              <Link href="/" className="font-serif text-2xl font-light text-mriie-black">
-                Home
-              </Link>
-              <Link href="/products" className="font-serif text-2xl font-light text-mriie-black">
-                Collection
-              </Link>
-              <Link href="/our-story" className="font-serif text-2xl font-light text-mriie-black">
-                Our Story
-              </Link>
-              <div className="divider" />
-              <p className="font-sans text-sm text-mriie-muted tracking-widest-sm uppercase">
-                Free shipping on orders over $200
-              </p>
-            </nav>
+          <div className="md:hidden bg-[#fbf5f0] border-t border-[#e2dcd6] px-8 py-6 flex flex-col gap-6">
+            <Link href="/products" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+              Collections
+            </Link>
+            <a href="#" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+              Artisans
+            </a>
+            <a href="#" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+              B2B Partners
+            </a>
+            <Link href="/our-story" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+              Our Story
+            </Link>
           </div>
         )}
-      </header>
+      </nav>
 
       {/* Main content */}
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
 
       {/* Footer */}
-      <footer className="bg-mriie-cream border-t border-mriie-sand mt-32">
-        <div className="max-w-site mx-auto px-6 lg:px-12 py-16 lg:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 lg:gap-16">
-            {/* Brand */}
-            <div className="lg:col-span-2">
-              <Link
-                href="/"
-                className="font-serif text-2xl font-light tracking-[0.12em] text-mriie-black"
-              >
-                MRIIE
-              </Link>
-              <p className="mt-4 font-sans text-sm text-mriie-muted leading-relaxed max-w-xs">
-                Thoughtfully designed clothing for those who value enduring quality over fleeting trends. Made to last, made to matter.
-              </p>
-              <div className="mt-8 flex gap-4">
-                <a href="#" className="font-sans text-xs tracking-widest-sm uppercase text-mriie-muted hover:text-mriie-black transition-colors">
-                  Instagram
-                </a>
-                <span className="text-mriie-sand">·</span>
-                <a href="#" className="font-sans text-xs tracking-widest-sm uppercase text-mriie-muted hover:text-mriie-black transition-colors">
-                  Pinterest
-                </a>
-              </div>
-            </div>
-
-            {/* Links */}
-            <div>
-              <p className="section-label mb-6">Shop</p>
-              <ul className="flex flex-col gap-3">
-                {['New Arrivals', 'Outerwear', 'Knitwear', 'Dresses', 'Accessories'].map(item => (
-                  <li key={item}>
-                    <Link
-                      href="/products"
-                      className="font-sans text-sm text-mriie-muted hover:text-mriie-black transition-colors"
-                    >
-                      {item}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <p className="section-label mb-6">Info</p>
-              <ul className="flex flex-col gap-3">
-                {[
-                  { label: 'Our Story', href: '/our-story' },
-                  { label: 'Sustainability', href: '/our-story' },
-                  { label: 'Size Guide', href: '#' },
-                  { label: 'Shipping & Returns', href: '#' },
-                  { label: 'Contact', href: '#' },
-                ].map(item => (
-                  <li key={item.label}>
-                    <Link
-                      href={item.href}
-                      className="font-sans text-sm text-mriie-muted hover:text-mriie-black transition-colors"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+      <footer className="bg-[#0e666a] text-[#fbf5f0] rounded-t-[2rem] mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 px-12 py-20 w-full max-w-screen-2xl mx-auto">
+          <div className="space-y-8">
+            <div className="text-4xl font-headline italic text-[#fbf5f0]">Mriie</div>
+            <p className="text-[#fbf5f0]/70 leading-relaxed max-w-xs font-light text-sm">
+              Elevating movement through the harmony of Indonesian heritage and modern performance.
+            </p>
+            <div className="flex gap-4">
+              <button className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors" aria-label="Website">
+                <span className="material-symbols-outlined text-sm">public</span>
+              </button>
+              <button className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors" aria-label="Share">
+                <span className="material-symbols-outlined text-sm">filter_vintage</span>
+              </button>
             </div>
           </div>
 
-          <div className="divider mt-12 lg:mt-16" />
+          <div className="space-y-6">
+            <h4 className="font-headline text-3xl italic">Explore</h4>
+            <ul className="space-y-4">
+              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Global Reach</a></li>
+              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Sustainability</a></li>
+              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">B2B Inquiries</a></li>
+              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Newsletter</a></li>
+            </ul>
+          </div>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <p className="font-sans text-xs text-mriie-muted">
-              © {new Date().getFullYear()} Mriie. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <a href="#" className="font-sans text-xs text-mriie-muted hover:text-mriie-black transition-colors">Privacy</a>
-              <a href="#" className="font-sans text-xs text-mriie-muted hover:text-mriie-black transition-colors">Terms</a>
+          <div className="space-y-6">
+            <h4 className="font-headline text-3xl italic">Collections</h4>
+            <ul className="space-y-4">
+              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Yoga &amp; Flow</Link></li>
+              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">High Performance</Link></li>
+              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Limited Drops</Link></li>
+              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Bali Editions</Link></li>
+            </ul>
+          </div>
+
+          <div className="space-y-8">
+            <h4 className="font-headline text-3xl italic">Stay Connected</h4>
+            <div className="space-y-4">
+              <p className="text-xs tracking-widest uppercase opacity-70">Join our newsletter for exclusive Bali stories.</p>
+              <div className="flex flex-col gap-4">
+                <input
+                  className="bg-transparent border-b-2 border-[#fbf5f0]/20 py-2 outline-none focus:border-[#b70049] transition-all placeholder-[#fbf5f0]/30 text-sm"
+                  placeholder="email@address.com"
+                  type="email"
+                />
+                <button className="text-left text-[#ff7290] underline underline-offset-4 font-bold tracking-widest uppercase text-[10px] hover:opacity-80 transition-opacity">
+                  Subscribe
+                </button>
+              </div>
             </div>
+          </div>
+        </div>
+
+        <div className="px-12 py-10 border-t border-[#fbf5f0]/5 w-full max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-widest uppercase font-bold text-[#fbf5f0]/50">
+          <span>© {new Date().getFullYear()} Mriie Bali. Sustainable Luxury Sportswear.</span>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Accessibility</a>
           </div>
         </div>
       </footer>
     </>
-  )
-}
-
-function MenuIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <line x1="4" y1="7" x2="20" y2="7" />
-      <line x1="4" y1="12" x2="20" y2="12" />
-      <line x1="4" y1="17" x2="20" y2="17" />
-    </svg>
-  )
-}
-
-function CloseIcon() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <line x1="5" y1="5" x2="19" y2="19" />
-      <line x1="19" y1="5" x2="5" y2="19" />
-    </svg>
-  )
-}
-
-function BagIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <path d="M16 10a4 4 0 01-8 0" />
-    </svg>
   )
 }

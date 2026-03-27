@@ -1,216 +1,257 @@
 import Layout from '@/components/Layout'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function OurStoryPage() {
   return (
     <Layout
       title="Our Story"
-      description="Learn about Mriie's philosophy, origins, and commitment to creating clothing that lasts a lifetime."
+      description="Mriie was born in the lush heart of Bali, not just as a label, but as a bridge. We connect ancestral weaving techniques with the rigorous demands of global performance wear."
     >
-      {/* Hero */}
-      <section className="relative h-[70vh] min-h-[500px] flex items-end overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1800&q=85"
-            alt="Mriie atelier"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-mriie-black/80 via-mriie-black/30 to-transparent" />
-        </div>
-
-        <div className="relative z-10 max-w-site mx-auto px-6 lg:px-12 w-full pb-16 lg:pb-24">
-          <p className="section-label text-mriie-white/60 mb-4">Est. 2019</p>
-          <h1 className="font-serif text-display-lg text-mriie-white font-light leading-none">
-            Our Story
-          </h1>
-        </div>
-      </section>
-
-      {/* Origin story */}
-      <section className="max-w-site mx-auto px-6 lg:px-12 py-20 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-          <div className="lg:col-span-5">
-            <p className="section-label mb-6">The Beginning</p>
-            <h2 className="font-serif text-display-sm font-light text-mriie-black leading-tight mb-8">
-              Born from a belief that fashion had lost its way
-            </h2>
-          </div>
-          <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-center gap-6">
-            <p className="font-sans text-body-md text-mriie-muted leading-relaxed">
-              Mriie was founded in 2019 by a small group of designers who grew tired of watching beautiful garments fall apart after a few seasons. They had all seen it: a beloved linen shirt reduced to rags, a cashmere sweater pilling beyond recognition, a leather bag that never truly aged into something better.
+      {/* Hero Section: The Narrative Hook */}
+      <section className="relative min-h-[870px] flex items-center px-8 py-20 overflow-hidden bg-[#fbf5f0]">
+        <div className="max-w-screen-2xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7 z-10">
+            <span className="inline-block px-4 py-1 rounded-full bg-[#a6eff3] text-[#005b5f] text-[10px] tracking-[0.2em] uppercase font-bold mb-6">
+              Our Narrative
+            </span>
+            <h1 className="font-headline text-6xl md:text-8xl italic leading-[1.1] mb-8 text-[#302e2b]">
+              Beyond Borders: <br />
+              <span className="text-[#b70049]">Supporting Local</span> <br />
+              Craft on a Global Scale.
+            </h1>
+            <p className="text-lg md:text-xl text-[#5e5b57] max-w-xl leading-relaxed mb-10">
+              Mriie was born in the lush heart of Bali, not just as a label, but as a bridge. We connect ancestral weaving techniques with the rigorous demands of global performance wear.
             </p>
-            <p className="font-sans text-body-md text-mriie-muted leading-relaxed">
-              The question they kept returning to was simple: why couldn't clothing be made to truly last? Not just through clever marketing or "investment piece" language — but through genuinely superior materials and construction, sourced ethically and made by people who took pride in their craft.
-            </p>
-            <p className="font-sans text-body-md text-mriie-muted leading-relaxed">
-              That question became Mriie. The name itself — pronounced "Marie" — is a nod to the French concept of <em>durabilité</em>: durability in all its senses, physical and emotional alike.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Large image */}
-      <section className="max-w-site mx-auto px-6 lg:px-12">
-        <div className="aspect-[16/7] overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1800&q=85"
-            alt="Mriie manufacturing"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="max-w-site mx-auto px-6 lg:px-12 py-20 lg:py-28">
-        <p className="section-label mb-12">What We Stand For</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
-          {[
-            {
-              number: '01',
-              title: 'Materials First',
-              body: 'Every piece begins with the material. We work directly with heritage mills in Italy, Scotland, Portugal, and Belgium — places where weaving traditions stretch back centuries. We never compromise on fibre quality.',
-            },
-            {
-              number: '02',
-              title: 'Made Slowly',
-              body: 'Our garments are made in small batches in family-owned workshops. We visit every factory we work with. We know the people who make our clothes by name, and they know us.',
-            },
-            {
-              number: '03',
-              title: 'Designed to Last',
-              body: 'We design for the long term. Classic silhouettes that will feel relevant in ten years. Construction details that improve with wear. Colours that age beautifully rather than fade.',
-            },
-            {
-              number: '04',
-              title: 'Transparent Pricing',
-              body: 'We publish a full breakdown of the cost of every garment — materials, labour, transport, our margin. No mystery, no inflation. You pay for quality, not branding.',
-            },
-            {
-              number: '05',
-              title: 'Repair, Not Replace',
-              body: 'Every Mriie piece comes with a lifetime repair commitment. We will fix a broken seam, replace a button, or re-sole a shoe for the life of the garment. We mean it.',
-            },
-            {
-              number: '06',
-              title: 'Carbon Neutral',
-              body: 'We offset 100% of the carbon footprint of every shipment and have committed to net-zero operations by 2027. Our packaging is made from recycled and compostable materials only.',
-            },
-          ].map((value) => (
-            <div key={value.number} className="flex flex-col gap-4">
-              <p className="font-serif text-5xl font-light text-mriie-sand">{value.number}</p>
-              <h3 className="font-serif text-xl font-light text-mriie-black">{value.title}</h3>
-              <p className="font-sans text-sm text-mriie-muted leading-relaxed">{value.body}</p>
+            <div className="flex flex-wrap gap-4">
+              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-bold text-sm tracking-widest uppercase shadow-lg shadow-[#b70049]/20 active:scale-95 transition-all">
+                Read Our Journey
+              </button>
+              <button className="px-8 py-4 rounded-full border-2 border-[#b70049] text-[#b70049] font-bold text-sm tracking-widest uppercase hover:bg-[#b70049]/5 transition-all">
+                Wholesale Portal
+              </button>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Craftsmanship */}
-      <section className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="bg-mriie-cream flex items-center px-8 lg:px-16 xl:px-24 py-20 lg:py-32 order-2 lg:order-1">
-          <div className="max-w-sm">
-            <p className="section-label mb-6">The Craft</p>
-            <h2 className="font-serif text-display-md font-light text-mriie-black leading-tight mb-8">
-              Made by hands that know what they are doing
-            </h2>
-            <p className="font-sans text-sm text-mriie-muted leading-relaxed mb-6">
-              Our partner workshops in Portugal and Italy have been making fine garments for three and four generations. They bring a depth of knowledge that no amount of automation can replicate — the ability to feel whether a seam is right, to judge tension by touch, to spot an imperfection that a machine would pass.
-            </p>
-            <p className="font-sans text-sm text-mriie-muted leading-relaxed mb-8">
-              We pay above the living wage in every country we work in, and we maintain long-term relationships with our makers. Stability, we have found, is the foundation of quality.
-            </p>
-            <Link href="/products" className="btn-primary">
-              Shop Now
-            </Link>
+          </div>
+          <div className="lg:col-span-5 relative">
+            <div className="aspect-[4/5] rounded-lg overflow-hidden transform rotate-2 relative" style={{boxShadow: '0 40px 60px -15px rgba(48,46,43,0.06)'}}>
+              <Image
+                src="/images/img_12.jpg"
+                alt="Close up of skilled artisan hands weaving intricate sustainable fabric in a sun-drenched tropical workshop"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#ff9800] rounded-full mix-blend-multiply filter blur-3xl opacity-30 pointer-events-none"></div>
           </div>
         </div>
-
-        <div className="relative aspect-square lg:aspect-auto overflow-hidden order-1 lg:order-2">
-          <img
-            src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&q=85"
-            alt="Artisan craftsmanship"
-            className="w-full h-full object-cover"
-          />
-        </div>
       </section>
 
-      {/* Team */}
-      <section className="max-w-site mx-auto px-6 lg:px-12 py-20 lg:py-28">
-        <div className="mb-12 lg:mb-16">
-          <p className="section-label mb-3">The People</p>
-          <h2 className="font-serif text-display-sm font-light text-mriie-black">
-            Who we are
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            {
-              name: 'Elena Marchetti',
-              role: 'Founder & Creative Director',
-              image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80',
-            },
-            {
-              name: 'James Willoughby',
-              role: 'Head of Product',
-              image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80',
-            },
-            {
-              name: 'Sofia Chen',
-              role: 'Head of Sustainability',
-              image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80',
-            },
-            {
-              name: 'Luca Ferrante',
-              role: 'Production Director',
-              image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80',
-            },
-          ].map((person) => (
-            <div key={person.name} className="group">
-              <div className="aspect-[3/4] overflow-hidden bg-mriie-cream mb-4">
-                <img
-                  src={person.image}
-                  alt={person.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading="lazy"
-                />
+      {/* Pillar Section: Regenerative Sourcing (Teal Block) */}
+      <section className="bg-[#0e666a] text-[#c8fcff] py-32 px-8 overflow-hidden rounded-t-xl">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div className="order-2 lg:order-1">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4 pt-12">
+                  <div className="relative w-full aspect-[3/4]">
+                    <Image
+                      src="/images/img_05.jpg"
+                      alt="Lush regenerative cotton plantation in Bali at dawn with morning mist and soft green tones"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="p-6 bg-white/10 backdrop-blur-md rounded-lg">
+                    <h4 className="font-headline text-2xl italic mb-2">100% Traceable</h4>
+                    <p className="text-sm opacity-80">From seed to stitch, every fiber tells a story of ecological respect.</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  <div className="p-6 bg-[#ff7290] text-[#4d001a] rounded-lg">
+                    <span className="material-symbols-outlined text-4xl mb-4 block">eco</span>
+                    <h4 className="font-headline text-2xl italic mb-2">Closed Loop</h4>
+                    <p className="text-sm opacity-90">Our dyeing processes utilize recycled rainwater and organic pigments.</p>
+                  </div>
+                  <div className="relative w-full aspect-square">
+                    <Image
+                      src="/images/img_17.jpg"
+                      alt="Abstract macro shot of sustainable fabric texture with soft emerald and deep teal organic patterns"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                </div>
               </div>
-              <h3 className="font-serif text-lg font-light text-mriie-black">{person.name}</h3>
-              <p className="font-sans text-xs text-mriie-muted mt-1">{person.role}</p>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Press */}
-      <section className="bg-mriie-cream border-t border-mriie-sand py-16 lg:py-20">
-        <div className="max-w-site mx-auto px-6 lg:px-12">
-          <p className="section-label text-center mb-10">As seen in</p>
-          <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-16">
-            {['Vogue', 'Financial Times', 'The Guardian', 'Wallpaper*', 'Monocle'].map((pub) => (
-              <p
-                key={pub}
-                className="font-serif text-xl lg:text-2xl font-light text-mriie-stone italic"
-              >
-                {pub}
+            <div className="order-1 lg:order-2">
+              <h2 className="font-headline text-5xl md:text-7xl italic leading-tight mb-8">Regenerative Sourcing</h2>
+              <p className="text-xl opacity-90 leading-relaxed mb-8">
+                We don&apos;t just &ldquo;sustain&rdquo;; we restore. By partnering with Balinese regenerative farms, Mriie ensures that every piece of sportswear produced contributes to the healing of the soil. Our fabrics are engineered for high performance while remaining entirely biodegradable.
               </p>
-            ))}
+              <ul className="space-y-6">
+                <li className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-[#a6eff3]">check_circle</span>
+                  <div>
+                    <span className="block font-bold tracking-widest uppercase text-xs mb-1">GOTS Certified Organic</span>
+                    <span className="text-sm opacity-70">Ensuring the highest international standards for textile ecology.</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="material-symbols-outlined text-[#a6eff3]">check_circle</span>
+                  <div>
+                    <span className="block font-bold tracking-widest uppercase text-xs mb-1">Low-Impact Botanicals</span>
+                    <span className="text-sm opacity-70">Dyes extracted from waste agricultural products.</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="max-w-narrow mx-auto px-6 py-20 lg:py-28 text-center">
-        <p className="section-label mb-4">Ready to Start?</p>
-        <h2 className="font-serif text-display-md font-light text-mriie-black mb-8">
-          Build a wardrobe<br />that lasts
-        </h2>
-        <p className="font-sans text-sm text-mriie-muted mb-10 leading-relaxed">
-          Every piece we make is a step toward a wardrobe you truly love — fewer things, better things, more meaning.
-        </p>
-        <Link href="/products" className="btn-primary">
-          Explore the Collection
-        </Link>
+      {/* Pillar Section: Artisan Equity (Pink Block) */}
+      <section className="bg-[#ff7290] text-[#4d001a] py-32 px-8">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-20">
+            <div className="lg:w-1/2">
+              <h2 className="font-headline text-5xl md:text-7xl italic leading-tight mb-8">Artisan Equity</h2>
+              <p className="text-xl opacity-90 leading-relaxed mb-12">
+                Luxury is defined by the hands that create it. Mriie operates on a model of radical transparency and profit-sharing. Our artisans are not just &ldquo;labor&rdquo;; they are shareholders in the craft, receiving 3x the local fair-trade minimum and healthcare for their entire families.
+              </p>
+              <div className="bg-[#4d001a]/5 p-10 rounded-lg border border-[#4d001a]/10">
+                <blockquote className="font-headline text-3xl italic mb-6">
+                  &ldquo;Mriie allows us to keep our village traditions alive while reaching women across the world.&rdquo;
+                </blockquote>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-[#0e666a]"></div>
+                  <div>
+                    <p className="font-bold uppercase text-xs tracking-widest">Ni Wayan</p>
+                    <p className="text-xs opacity-70">Master Weaver, Ubud Collective</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2 grid grid-cols-2 gap-6">
+              <div className="space-y-6">
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src="/images/img_20.jpg"
+                    alt="Artisan community workspace in Bali with sunlight streaming through bamboo structures and vibrant pink fabrics"
+                    fill
+                    className="object-cover rounded-lg shadow-2xl"
+                  />
+                </div>
+              </div>
+              <div className="space-y-6 pt-12">
+                <div className="relative aspect-[4/5]">
+                  <Image
+                    src="/images/img_22.jpg"
+                    alt="A portrait of a smiling Balinese craftswoman working with natural textiles in a traditional setting"
+                    fill
+                    className="object-cover rounded-lg shadow-2xl"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Global Compliance & B2B Section */}
+      <section className="bg-[#fbf5f0] py-32 px-8">
+        <div className="max-w-screen-2xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h2 className="font-headline text-5xl italic mb-6">Global Standards, Local Soul.</h2>
+            <p className="text-[#5e5b57]">We merge artisanal beauty with global logistical excellence. From EU environmental compliance to seamless worldwide distribution, Mriie is built for the global stage.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+            <div className="p-10 bg-[#f6f0ea] rounded-lg border-b-4 border-[#0e666a]">
+              <span className="material-symbols-outlined text-[#0e666a] text-4xl mb-6 block">verified</span>
+              <h3 className="font-headline text-2xl mb-4">Global Compliance</h3>
+              <p className="text-sm text-[#5e5b57] leading-relaxed">Full adherence to REACH, GOTS, and international labor standards. We provide comprehensive ESG reporting for all B2B partners.</p>
+            </div>
+            <div className="p-10 bg-[#f6f0ea] rounded-lg border-b-4 border-[#b70049]">
+              <span className="material-symbols-outlined text-[#b70049] text-4xl mb-6 block">public</span>
+              <h3 className="font-headline text-2xl mb-4">Scalable Logistics</h3>
+              <p className="text-sm text-[#5e5b57] leading-relaxed">DDP shipping options to 60+ countries. Optimized carbon-neutral supply chain from our Bali hub to your storefront.</p>
+            </div>
+            <div className="p-10 bg-[#f6f0ea] rounded-lg border-b-4 border-[#874e00]">
+              <span className="material-symbols-outlined text-[#874e00] text-4xl mb-6 block">handshake</span>
+              <h3 className="font-headline text-2xl mb-4">Artisan Equity</h3>
+              <p className="text-sm text-[#5e5b57] leading-relaxed">Direct-to-artisan payments verified via blockchain technology. 100% transparency in our financial ecosystem.</p>
+            </div>
+          </div>
+
+          {/* B2B Inquiry Form */}
+          <div className="bg-[#ede7e2] rounded-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 editorial-shadow">
+            <div className="p-12 lg:p-20 bg-[#0e666a] text-[#c8fcff] flex flex-col justify-center">
+              <h2 className="font-headline text-5xl italic mb-8">Wholesale &amp; Partnership</h2>
+              <p className="text-lg opacity-80 mb-10 leading-relaxed">Join our global network of sustainable luxury retailers. Let&apos;s bring the soul of Bali to your customers.</p>
+              <div className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <span className="material-symbols-outlined text-[#a6eff3]">mail</span>
+                  <span className="text-sm tracking-wider uppercase font-bold">partnerships@mriie.com</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="material-symbols-outlined text-[#a6eff3]">phone_iphone</span>
+                  <span className="text-sm tracking-wider uppercase font-bold">+62 361 900 1234</span>
+                </div>
+              </div>
+            </div>
+            <div className="p-12 lg:p-20 bg-white">
+              <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Full Name</label>
+                    <input
+                      className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                      placeholder="John Doe"
+                      type="text"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Company Name</label>
+                    <input
+                      className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                      placeholder="Luxury Retails Inc."
+                      type="text"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Business Email</label>
+                  <input
+                    className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                    placeholder="john@company.com"
+                    type="email"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Inquiry Type</label>
+                  <select className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm">
+                    <option>Wholesale Inquiry</option>
+                    <option>B2B Custom Production</option>
+                    <option>Brand Collaboration</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Tell us about your project</label>
+                  <textarea
+                    className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                    placeholder="How can we work together?"
+                    rows={4}
+                  />
+                </div>
+                <button
+                  className="w-full py-5 rounded-full bg-[#b70049] text-[#ffeff0] font-bold uppercase tracking-widest text-sm active:scale-95 transition-all shadow-xl shadow-[#b70049]/20"
+                  type="submit"
+                >
+                  Send Inquiry
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
       </section>
     </Layout>
   )
