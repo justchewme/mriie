@@ -1,8 +1,29 @@
 import Layout from '@/components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
 export default function OurStoryPage() {
+  const [formData, setFormData] = useState({ name: '', company: '', email: '', type: 'Wholesale Inquiry', message: '' })
+  const [formStatus, setFormStatus] = useState(null)
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setFormStatus('loading')
+    try {
+      const res = await fetch('/api/b2b-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json()
+      if (data.success) setFormStatus('success')
+      else setFormStatus('error')
+    } catch {
+      setFormStatus('error')
+    }
+  }
+
   return (
     <Layout
       title="Our Story"
@@ -24,12 +45,18 @@ export default function OurStoryPage() {
               Mriie was born in the lush heart of Bali, not just as a label, but as a bridge. We connect ancestral weaving techniques with the rigorous demands of global performance wear.
             </p>
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-bold text-sm tracking-widest uppercase shadow-lg shadow-[#b70049]/20 active:scale-95 transition-all">
+              <a
+                href="#sustainability"
+                className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-bold text-sm tracking-widest uppercase shadow-lg shadow-[#b70049]/20 active:scale-95 transition-all"
+              >
                 Read Our Journey
-              </button>
-              <button className="px-8 py-4 rounded-full border-2 border-[#b70049] text-[#b70049] font-bold text-sm tracking-widest uppercase hover:bg-[#b70049]/5 transition-all">
+              </a>
+              <a
+                href="#wholesale"
+                className="px-8 py-4 rounded-full border-2 border-[#b70049] text-[#b70049] font-bold text-sm tracking-widest uppercase hover:bg-[#b70049]/5 transition-all"
+              >
                 Wholesale Portal
-              </button>
+              </a>
             </div>
           </div>
           <div className="lg:col-span-5 relative">
@@ -47,7 +74,7 @@ export default function OurStoryPage() {
       </section>
 
       {/* Pillar Section: Regenerative Sourcing (Teal Block) */}
-      <section className="bg-[#0e666a] text-[#c8fcff] py-32 px-8 overflow-hidden rounded-t-xl">
+      <section id="sustainability" className="bg-[#0e666a] text-[#c8fcff] py-32 px-8 overflow-hidden rounded-t-xl">
         <div className="max-w-screen-2xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div className="order-2 lg:order-1">
@@ -158,7 +185,7 @@ export default function OurStoryPage() {
       </section>
 
       {/* Global Compliance & B2B Section */}
-      <section className="bg-[#fbf5f0] py-32 px-8">
+      <section id="wholesale" className="bg-[#fbf5f0] py-32 px-8">
         <div className="max-w-screen-2xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="font-headline text-5xl italic mb-6">Global Standards, Local Soul.</h2>
@@ -199,56 +226,85 @@ export default function OurStoryPage() {
               </div>
             </div>
             <div className="p-12 lg:p-20 bg-white">
-              <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {formStatus === 'success' ? (
+                <div className="text-center space-y-6 py-12">
+                  <span className="material-symbols-outlined text-6xl text-[#0e666a]">check_circle</span>
+                  <h3 className="font-headline text-3xl italic text-[#302e2b]">Inquiry Received</h3>
+                  <p className="text-[#5e5b57]">Our partnerships team will be in touch within 2 business days.</p>
+                  <button onClick={() => setFormStatus(null)} className="px-8 py-4 rounded-full border-2 border-[#0e666a] text-[#0e666a] font-bold text-xs tracking-widest uppercase hover:bg-[#0e666a]/5 transition-all">
+                    Submit Another
+                  </button>
+                </div>
+              ) : (
+                <form className="space-y-8" onSubmit={handleSubmit}>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                      <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Full Name</label>
+                      <input
+                        className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                        placeholder="John Doe"
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={e => setFormData(f => ({ ...f, name: e.target.value }))}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Company Name</label>
+                      <input
+                        className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                        placeholder="Luxury Retails Inc."
+                        type="text"
+                        value={formData.company}
+                        onChange={e => setFormData(f => ({ ...f, company: e.target.value }))}
+                      />
+                    </div>
+                  </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Full Name</label>
+                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Business Email</label>
                     <input
                       className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
-                      placeholder="John Doe"
-                      type="text"
+                      placeholder="john@company.com"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={e => setFormData(f => ({ ...f, email: e.target.value }))}
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Company Name</label>
-                    <input
+                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Inquiry Type</label>
+                    <select
                       className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
-                      placeholder="Luxury Retails Inc."
-                      type="text"
+                      value={formData.type}
+                      onChange={e => setFormData(f => ({ ...f, type: e.target.value }))}
+                    >
+                      <option>Wholesale Inquiry</option>
+                      <option>B2B Custom Production</option>
+                      <option>Brand Collaboration</option>
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Tell us about your project</label>
+                    <textarea
+                      className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
+                      placeholder="How can we work together?"
+                      rows={4}
+                      value={formData.message}
+                      onChange={e => setFormData(f => ({ ...f, message: e.target.value }))}
                     />
                   </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Business Email</label>
-                  <input
-                    className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
-                    placeholder="john@company.com"
-                    type="email"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Inquiry Type</label>
-                  <select className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm">
-                    <option>Wholesale Inquiry</option>
-                    <option>B2B Custom Production</option>
-                    <option>Brand Collaboration</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] tracking-widest uppercase font-bold text-[#7a7672]">Tell us about your project</label>
-                  <textarea
-                    className="w-full bg-[#f6f0ea] border-b-2 border-[#b1aca8] focus:border-[#b70049] focus:outline-none transition-all px-4 py-3 rounded-t-sm"
-                    placeholder="How can we work together?"
-                    rows={4}
-                  />
-                </div>
-                <button
-                  className="w-full py-5 rounded-full bg-[#b70049] text-[#ffeff0] font-bold uppercase tracking-widest text-sm active:scale-95 transition-all shadow-xl shadow-[#b70049]/20"
-                  type="submit"
-                >
-                  Send Inquiry
-                </button>
-              </form>
+                  {formStatus === 'error' && (
+                    <p className="text-[#b31b25] text-sm">Something went wrong. Please try again or email partnerships@mriie.com.</p>
+                  )}
+                  <button
+                    className="w-full py-5 rounded-full bg-[#b70049] text-[#ffeff0] font-bold uppercase tracking-widest text-sm active:scale-95 transition-all shadow-xl shadow-[#b70049]/20 disabled:opacity-60"
+                    type="submit"
+                    disabled={formStatus === 'loading'}
+                  >
+                    {formStatus === 'loading' ? 'Sending...' : 'Send Inquiry'}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

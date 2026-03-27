@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 
 export default function Layout({ children, title, description }) {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [newsletterEmail, setNewsletterEmail] = useState('')
+  const [newsletterStatus, setNewsletterStatus] = useState(null)
   const router = useRouter()
 
   useEffect(() => {
@@ -15,6 +17,28 @@ export default function Layout({ children, title, description }) {
   const pageDesc = description || 'Precision-engineered performance wear infused with Balinese craftsmanship. Designed for the global athlete who values the planet as much as the podium.'
 
   const isActive = (href) => router.pathname === href || router.pathname.startsWith(href + '/')
+
+  async function handleNewsletterSubmit(e) {
+    e.preventDefault()
+    if (!newsletterEmail) return
+    setNewsletterStatus('loading')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail, source: 'footer' }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        setNewsletterStatus('success')
+        setNewsletterEmail('')
+      } else {
+        setNewsletterStatus('error')
+      }
+    } catch {
+      setNewsletterStatus('error')
+    }
+  }
 
   return (
     <>
@@ -55,12 +79,26 @@ export default function Layout({ children, title, description }) {
             >
               Collections
             </Link>
-            <a href="#" className="tracking-widest uppercase text-[10px] font-bold text-[#302e2b] opacity-80 hover:text-[#b70049] transition-colors duration-300">
+            <Link
+              href="/artisans"
+              className={`tracking-widest uppercase text-[10px] font-bold transition-colors duration-300 ${
+                isActive('/artisans')
+                  ? 'text-[#b70049] border-b-2 border-[#b70049] pb-1'
+                  : 'text-[#302e2b] opacity-80 hover:text-[#b70049]'
+              }`}
+            >
               Artisans
-            </a>
-            <a href="#" className="tracking-widest uppercase text-[10px] font-bold text-[#302e2b] opacity-80 hover:text-[#b70049] transition-colors duration-300">
+            </Link>
+            <Link
+              href="/b2b"
+              className={`tracking-widest uppercase text-[10px] font-bold transition-colors duration-300 ${
+                isActive('/b2b')
+                  ? 'text-[#b70049] border-b-2 border-[#b70049] pb-1'
+                  : 'text-[#302e2b] opacity-80 hover:text-[#b70049]'
+              }`}
+            >
               B2B Partners
-            </a>
+            </Link>
             <Link
               href="/our-story"
               className={`tracking-widest uppercase text-[10px] font-bold transition-colors duration-300 ${
@@ -95,12 +133,12 @@ export default function Layout({ children, title, description }) {
             <Link href="/products" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
               Collections
             </Link>
-            <a href="#" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+            <Link href="/artisans" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
               Artisans
-            </a>
-            <a href="#" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
+            </Link>
+            <Link href="/b2b" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
               B2B Partners
-            </a>
+            </Link>
             <Link href="/our-story" className="tracking-widest uppercase text-xs font-bold text-[#302e2b] hover:text-[#b70049] transition-colors">
               Our Story
             </Link>
@@ -120,22 +158,34 @@ export default function Layout({ children, title, description }) {
               Elevating movement through the harmony of Indonesian heritage and modern performance.
             </p>
             <div className="flex gap-4">
-              <button className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors" aria-label="Website">
-                <span className="material-symbols-outlined text-sm">public</span>
-              </button>
-              <button className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors" aria-label="Share">
+              <a
+                href="https://instagram.com/mriie.bali"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors"
+                aria-label="Instagram"
+              >
+                <span className="material-symbols-outlined text-sm">photo_camera</span>
+              </a>
+              <a
+                href="https://pinterest.com/mriie_bali"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full border border-[#fbf5f0]/20 flex items-center justify-center hover:bg-[#fbf5f0]/10 transition-colors"
+                aria-label="Pinterest"
+              >
                 <span className="material-symbols-outlined text-sm">filter_vintage</span>
-              </button>
+              </a>
             </div>
           </div>
 
           <div className="space-y-6">
             <h4 className="font-headline text-3xl italic">Explore</h4>
             <ul className="space-y-4">
-              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Global Reach</a></li>
-              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Sustainability</a></li>
-              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">B2B Inquiries</a></li>
-              <li><a href="#" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Newsletter</a></li>
+              <li><Link href="/artisans" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Our Artisans</Link></li>
+              <li><Link href="/sustainability" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Sustainability</Link></li>
+              <li><Link href="/b2b" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">B2B Inquiries</Link></li>
+              <li><Link href="/contact" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Contact</Link></li>
             </ul>
           </div>
 
@@ -144,8 +194,9 @@ export default function Layout({ children, title, description }) {
             <ul className="space-y-4">
               <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Yoga &amp; Flow</Link></li>
               <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">High Performance</Link></li>
-              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Limited Drops</Link></li>
-              <li><Link href="/products" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Bali Editions</Link></li>
+              <li><Link href="/shipping" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Shipping &amp; Returns</Link></li>
+              <li><Link href="/size-guide" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Size Guide</Link></li>
+              <li><Link href="/care" className="text-[#fbf5f0]/70 hover:text-[#ff7290] transition-all font-medium text-sm">Product Care</Link></li>
             </ul>
           </div>
 
@@ -153,16 +204,30 @@ export default function Layout({ children, title, description }) {
             <h4 className="font-headline text-3xl italic">Stay Connected</h4>
             <div className="space-y-4">
               <p className="text-xs tracking-widest uppercase opacity-70">Join our newsletter for exclusive Bali stories.</p>
-              <div className="flex flex-col gap-4">
-                <input
-                  className="bg-transparent border-b-2 border-[#fbf5f0]/20 py-2 outline-none focus:border-[#b70049] transition-all placeholder-[#fbf5f0]/30 text-sm"
-                  placeholder="email@address.com"
-                  type="email"
-                />
-                <button className="text-left text-[#ff7290] underline underline-offset-4 font-bold tracking-widest uppercase text-[10px] hover:opacity-80 transition-opacity">
-                  Subscribe
-                </button>
-              </div>
+              {newsletterStatus === 'success' ? (
+                <p className="text-[#a6eff3] text-sm font-medium">You&apos;re subscribed. Welcome to Mriie.</p>
+              ) : (
+                <form className="flex flex-col gap-4" onSubmit={handleNewsletterSubmit}>
+                  <input
+                    className="bg-transparent border-b-2 border-[#fbf5f0]/20 py-2 outline-none focus:border-[#b70049] transition-all placeholder-[#fbf5f0]/30 text-sm"
+                    placeholder="email@address.com"
+                    type="email"
+                    required
+                    value={newsletterEmail}
+                    onChange={e => setNewsletterEmail(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    disabled={newsletterStatus === 'loading'}
+                    className="text-left text-[#ff7290] underline underline-offset-4 font-bold tracking-widest uppercase text-[10px] hover:opacity-80 transition-opacity disabled:opacity-50"
+                  >
+                    {newsletterStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                  </button>
+                  {newsletterStatus === 'error' && (
+                    <p className="text-[#fb5151] text-xs">Something went wrong. Try again.</p>
+                  )}
+                </form>
+              )}
             </div>
           </div>
         </div>
@@ -170,9 +235,9 @@ export default function Layout({ children, title, description }) {
         <div className="px-12 py-10 border-t border-[#fbf5f0]/5 w-full max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] tracking-widest uppercase font-bold text-[#fbf5f0]/50">
           <span>© {new Date().getFullYear()} Mriie Bali. Sustainable Luxury Sportswear.</span>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-[#fbf5f0] transition-colors">Accessibility</a>
+            <Link href="/privacy" className="hover:text-[#fbf5f0] transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-[#fbf5f0] transition-colors">Terms of Service</Link>
+            <Link href="/contact" className="hover:text-[#fbf5f0] transition-colors">Contact</Link>
           </div>
         </div>
       </footer>

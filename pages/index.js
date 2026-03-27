@@ -1,8 +1,11 @@
 import Layout from '@/components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
 export default function HomePage() {
+  const [stockistOpen, setStockistOpen] = useState(false)
+
   return (
     <Layout title="Home" description="Precision-engineered performance wear infused with Balinese craftsmanship.">
       {/* Hero Section */}
@@ -106,9 +109,42 @@ export default function HomePage() {
               <h2 className="text-5xl md:text-6xl font-headline italic text-[#302e2b]">Mriie Near You</h2>
               <p className="text-[#5e5b57] tracking-widest uppercase text-xs font-bold">Find our signature experience in the world&apos;s most vibrant cities.</p>
             </div>
-            <button className="px-8 py-4 bg-[#0e666a] text-[#c8fcff] rounded-full text-xs font-bold tracking-widest uppercase hover:opacity-90 transition-all">
+            <button
+              onClick={() => setStockistOpen(true)}
+              className="px-8 py-4 bg-[#0e666a] text-[#c8fcff] rounded-full text-xs font-bold tracking-widest uppercase hover:opacity-90 transition-all"
+            >
               Find a Stockist
             </button>
+            {stockistOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onClick={() => setStockistOpen(false)}>
+                <div className="bg-[#fbf5f0] rounded-lg p-10 max-w-md w-full mx-4 shadow-2xl" onClick={e => e.stopPropagation()}>
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="font-headline text-3xl italic text-[#302e2b]">Find a Stockist</h3>
+                    <button onClick={() => setStockistOpen(false)} className="material-symbols-outlined text-[#7a7672] hover:text-[#302e2b]">close</button>
+                  </div>
+                  <div className="space-y-4 text-sm text-[#5e5b57]">
+                    {[
+                      ['Seminyak Flagship', 'Jl. Kayu Aya No.17, Seminyak, Bali', 'Indonesia'],
+                      ['Bond Street', '14 Bond Street, London W1S 1SG', 'United Kingdom'],
+                      ['Santa Monica', '2800 Ocean Ave, Santa Monica, CA', 'United States'],
+                      ['The Wellness Collective', '152 W 42nd St, New York, NY', 'United States'],
+                    ].map(([name, addr, country]) => (
+                      <div key={name} className="flex items-start gap-3 p-4 bg-[#f6f0ea] rounded-lg">
+                        <span className="material-symbols-outlined text-[#b70049] mt-0.5">location_on</span>
+                        <div>
+                          <p className="font-bold text-[#302e2b]">{name}</p>
+                          <p className="text-xs">{addr}</p>
+                          <p className="text-xs text-[#874e00] font-bold uppercase tracking-widest">{country}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <Link href="/b2b" className="mt-6 block text-center py-4 rounded-full bg-[#0e666a] text-[#c8fcff] font-bold text-xs tracking-widest uppercase hover:opacity-90 transition-all">
+                    Become a Stockist
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-6 h-[800px] md:h-[600px]">
             <div className="md:col-span-2 md:row-span-2 relative group overflow-hidden rounded-lg">
@@ -178,9 +214,12 @@ export default function HomePage() {
                 Supplying elite athletic clubs and luxury resorts worldwide. Join our B2B network and bring Mriie&apos;s sustainable excellence to your clientele.
               </p>
               <div className="pt-4">
-                <button className="px-10 py-5 bg-[#b70049] text-[#ffeff0] rounded-full font-sans text-xs font-bold tracking-widest uppercase hover:bg-[#a1003f] transition-all active:scale-95 shadow-xl shadow-black/10">
+                <Link
+                  href="/b2b"
+                  className="px-10 py-5 bg-[#b70049] text-[#ffeff0] rounded-full font-sans text-xs font-bold tracking-widest uppercase hover:bg-[#a1003f] transition-all active:scale-95 shadow-xl shadow-black/10 inline-block"
+                >
                   Become a B2B Partner
-                </button>
+                </Link>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-8 md:gap-12 w-full md:w-auto opacity-60 z-10">

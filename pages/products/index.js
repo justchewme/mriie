@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const products = [
   {
@@ -36,6 +37,26 @@ const products = [
 ]
 
 export default function ProductCatalogPage() {
+  const [nlEmail, setNlEmail] = useState('')
+  const [nlStatus, setNlStatus] = useState(null)
+
+  async function handleNewsletter(e) {
+    e.preventDefault()
+    setNlStatus('loading')
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: nlEmail, source: 'products-page' }),
+      })
+      const data = await res.json()
+      if (data.success) { setNlStatus('success'); setNlEmail('') }
+      else setNlStatus('error')
+    } catch {
+      setNlStatus('error')
+    }
+  }
+
   return (
     <Layout
       title="Collections"
@@ -55,11 +76,14 @@ export default function ProductCatalogPage() {
             Hand-crafted in Bali. Sustainable luxury sportswear designed for the movement of light and the spirit of the sun.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-medium tracking-wide active:scale-95 transition-transform">
+            <a
+              href="#catalog"
+              className="px-8 py-4 rounded-full bg-gradient-to-r from-[#b70049] to-[#ff7290] text-[#ffeff0] font-medium tracking-wide active:scale-95 transition-transform"
+            >
               Explore Collections
-            </button>
+            </a>
             <Link
-              href="/our-story"
+              href="/b2b"
               className="px-8 py-4 rounded-full border-2 border-[#0e666a] text-[#0e666a] font-medium tracking-wide hover:bg-[#0e666a] hover:text-[#c8fcff] transition-all"
             >
               B2B Inquiries
@@ -69,7 +93,7 @@ export default function ProductCatalogPage() {
       </section>
 
       {/* Product Bento Grid */}
-      <section className="px-8 md:px-16 py-24 max-w-screen-2xl mx-auto">
+      <section id="catalog" className="px-8 md:px-16 py-24 max-w-screen-2xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Main Featured Card */}
           <Link href={`/products/${products[0].slug}`} className="md:col-span-8 group cursor-pointer relative overflow-hidden rounded-lg bg-[#f6f0ea]">
@@ -149,18 +173,30 @@ export default function ProductCatalogPage() {
             <p className="text-[#5e5b57] mb-10 text-lg leading-relaxed">
               Stay updated with our latest artisan collaborations and B2B opportunities. We value sustainability and heritage in every stitch.
             </p>
-            <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative">
-                <input
-                  className="w-full bg-transparent border-b-2 border-[#b1aca8] py-4 px-0 focus:outline-none focus:border-[#b70049] transition-all placeholder-[#b1aca8] placeholder-text-[10px] placeholder-tracking-widest"
-                  placeholder="YOUR EMAIL"
-                  type="email"
-                />
-              </div>
-              <button className="bg-[#b70049] text-[#ffeff0] py-4 px-10 rounded-full w-fit font-bold tracking-widest uppercase text-xs active:scale-95 transition-transform">
-                Subscribe
-              </button>
-            </form>
+            {nlStatus === 'success' ? (
+              <p className="text-[#0e666a] font-bold text-sm">You&apos;re subscribed. Welcome to the community.</p>
+            ) : (
+              <form className="flex flex-col gap-6" onSubmit={handleNewsletter}>
+                <div className="relative">
+                  <input
+                    className="w-full bg-transparent border-b-2 border-[#b1aca8] py-4 px-0 focus:outline-none focus:border-[#b70049] transition-all placeholder-[#b1aca8]"
+                    placeholder="YOUR EMAIL"
+                    type="email"
+                    required
+                    value={nlEmail}
+                    onChange={e => setNlEmail(e.target.value)}
+                  />
+                </div>
+                {nlStatus === 'error' && <p className="text-[#b31b25] text-xs">Something went wrong. Try again.</p>}
+                <button
+                  type="submit"
+                  disabled={nlStatus === 'loading'}
+                  className="bg-[#b70049] text-[#ffeff0] py-4 px-10 rounded-full w-fit font-bold tracking-widest uppercase text-xs active:scale-95 transition-transform disabled:opacity-60"
+                >
+                  {nlStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                </button>
+              </form>
+            )}
           </div>
           <div className="relative h-[500px] rounded-lg overflow-hidden shadow-xl">
             <Image
