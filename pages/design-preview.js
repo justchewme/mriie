@@ -9,347 +9,108 @@ const palette = [
   { name: 'Ink', hex: '#14110F', text: '#F4EFE6' },
 ]
 
-const Wordmark = ({ size = 28, color = '#14110F' }) => (
-  <span
-    style={{
-      fontFamily: 'Fraunces, serif',
-      fontWeight: 300,
-      letterSpacing: '0.42em',
-      fontSize: size,
-      color,
-      textTransform: 'uppercase',
-    }}
-  >
-    M R I I E
-  </span>
-)
-
-const Label = ({ children, color = '#8A7560' }) => (
-  <span
-    style={{
-      fontFamily: 'Inter, sans-serif',
-      fontSize: 10,
-      letterSpacing: '0.32em',
-      textTransform: 'uppercase',
-      color,
-      fontWeight: 500,
-    }}
-  >
-    {children}
-  </span>
-)
-
-const SectionTitle = ({ children, color = '#14110F' }) => (
-  <h2
-    style={{
-      fontFamily: 'Fraunces, serif',
-      fontWeight: 300,
-      fontStyle: 'italic',
-      fontSize: 'clamp(40px, 6vw, 84px)',
-      lineHeight: 1.02,
-      letterSpacing: '-0.02em',
-      color,
-      margin: 0,
-    }}
-  >
-    {children}
-  </h2>
-)
-
-const Body = ({ children, color = '#3a342d', max = 520 }) => (
-  <p
-    style={{
-      fontFamily: 'Inter, sans-serif',
-      fontSize: 15,
-      lineHeight: 1.7,
-      color,
-      maxWidth: max,
-      fontWeight: 400,
-    }}
-  >
-    {children}
-  </p>
-)
+const products = [
+  { img: '/images/catalog_hibiscus_bikini.jpg', name: 'The Frangipani', kind: 'Bikini set', price: '$100' },
+  { img: '/images/catalog_oceanic_flow.jpg', name: 'The Uluwatu', kind: 'Bikini set', price: '$100' },
+  { img: '/images/catalog_padel_racket.jpg', name: 'The Canggu Cover', kind: 'Padel cover', price: '$85' },
+]
 
 export default function DesignPreview() {
   return (
     <>
       <Head>
         <title>Mriie — Design Preview</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main
-        style={{
-          background: '#F4EFE6',
-          color: '#14110F',
-          fontFamily: 'Inter, sans-serif',
-          minHeight: '100vh',
-        }}
-      >
-        {/* TOP NOTICE */}
-        <div
-          style={{
-            background: '#14110F',
-            color: '#F4EFE6',
-            padding: '10px 32px',
-            fontSize: 11,
-            letterSpacing: '0.3em',
-            textTransform: 'uppercase',
-            textAlign: 'center',
-          }}
-        >
-          design preview · sun-bleached atelier · branch claude/redesign-premium-bali-brand
+
+      <main className="page">
+        <div className="topnotice">
+          design preview · sun-bleached atelier
         </div>
 
-        {/* NAV */}
-        <header
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '28px 48px',
-            borderBottom: '1px solid rgba(20,17,15,0.08)',
-          }}
-        >
-          <Label>Made in Ubud · Bali</Label>
-          <Wordmark />
-          <Label>Cart (0)</Label>
+        <header className="nav">
+          <span className="label">Made in Ubud</span>
+          <span className="wordmark">M R I I E</span>
+          <span className="label">Cart (0)</span>
         </header>
 
         {/* HERO */}
-        <section
-          style={{
-            position: 'relative',
-            height: '88vh',
-            minHeight: 600,
-            backgroundImage:
-              'linear-gradient(180deg, rgba(20,17,15,0.15) 0%, rgba(20,17,15,0.55) 100%), url(/images/home_hero_bali.jpg)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: '64px 48px',
-            color: '#F4EFE6',
-          }}
-        >
-          <div style={{ maxWidth: 720 }}>
-            <Label color="#E8DFD0">Volume 01 · Resort 2026</Label>
-            <h1
-              style={{
-                fontFamily: 'Fraunces, serif',
-                fontWeight: 200,
-                fontStyle: 'italic',
-                fontSize: 'clamp(56px, 9vw, 132px)',
-                lineHeight: 0.95,
-                letterSpacing: '-0.03em',
-                margin: '20px 0 28px',
-              }}
-            >
-              Stitched by hand,
-              <br />
-              worn by the sea.
+        <section className="hero">
+          <div className="hero-inner">
+            <span className="label light">Volume 01 · Resort 2026</span>
+            <h1 className="hero-title">
+              Stitched by hand,<br />worn by the sea.
             </h1>
-            <Body color="#E8DFD0" max={500}>
-              A small atelier in Ubud making two things, slowly: bikinis that move
-              with the tide and padel covers that travel from Canggu to Mallorca.
-            </Body>
-            <div style={{ display: 'flex', gap: 16, marginTop: 40 }}>
-              <button
-                style={{
-                  background: '#F4EFE6',
-                  color: '#14110F',
-                  border: 'none',
-                  padding: '18px 32px',
-                  fontSize: 11,
-                  letterSpacing: '0.32em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  fontFamily: 'Inter, sans-serif',
-                }}
-              >
-                The bikinis
-              </button>
-              <button
-                style={{
-                  background: 'transparent',
-                  color: '#F4EFE6',
-                  border: '1px solid #F4EFE6',
-                  padding: '18px 32px',
-                  fontSize: 11,
-                  letterSpacing: '0.32em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  fontFamily: 'Inter, sans-serif',
-                }}
-              >
-                Padel covers
-              </button>
+            <p className="hero-body">
+              A small atelier in Ubud making two things, slowly: bikinis that
+              move with the tide and padel covers that travel from Canggu to
+              Mallorca.
+            </p>
+            <div className="hero-ctas">
+              <button className="btn btn-light">The bikinis</button>
+              <button className="btn btn-ghost">Padel covers</button>
             </div>
           </div>
         </section>
 
         {/* PALETTE */}
-        <section style={{ padding: '120px 48px', borderBottom: '1px solid rgba(20,17,15,0.08)' }}>
-          <Label>01 · Palette</Label>
-          <div style={{ marginTop: 16, marginBottom: 56 }}>
-            <SectionTitle>Sun-bleached, sea-worn.</SectionTitle>
-          </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(6, 1fr)',
-              gap: 2,
-            }}
-          >
+        <section className="section">
+          <span className="label">01 · Palette</span>
+          <h2 className="display">Sun-bleached, sea-worn.</h2>
+          <div className="palette-grid">
             {palette.map((c) => (
               <div
                 key={c.name}
-                style={{
-                  background: c.hex,
-                  color: c.text,
-                  aspectRatio: '3 / 4',
-                  padding: 20,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                }}
+                className="swatch"
+                style={{ background: c.hex, color: c.text }}
               >
-                <Label color={c.text}>{c.name}</Label>
-                <div
-                  style={{
-                    fontFamily: 'Fraunces, serif',
-                    fontStyle: 'italic',
-                    fontSize: 22,
-                    fontWeight: 300,
-                  }}
-                >
-                  {c.hex}
-                </div>
+                <span className="label" style={{ color: c.text }}>{c.name}</span>
+                <span className="swatch-hex">{c.hex}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* TYPOGRAPHY */}
-        <section
-          style={{
-            padding: '120px 48px',
-            background: '#E8DFD0',
-            borderBottom: '1px solid rgba(20,17,15,0.08)',
-          }}
-        >
-          <Label>02 · Typography</Label>
-          <div style={{ marginTop: 16, marginBottom: 56 }}>
-            <SectionTitle>A serif that whispers.</SectionTitle>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 64 }}>
+        <section className="section sand">
+          <span className="label">02 · Typography</span>
+          <h2 className="display">A serif that whispers.</h2>
+          <div className="type-grid">
             <div>
-              <Label>Display · Fraunces Italic</Label>
-              <p
-                style={{
-                  fontFamily: 'Fraunces, serif',
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  fontSize: 88,
-                  lineHeight: 0.95,
-                  letterSpacing: '-0.025em',
-                  margin: '20px 0 8px',
-                }}
-              >
-                Aa
-              </p>
-              <p
-                style={{
-                  fontFamily: 'Fraunces, serif',
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  fontSize: 32,
-                  margin: '0 0 4px',
-                }}
-              >
-                The hibiscus set.
-              </p>
-              <p
-                style={{
-                  fontFamily: 'Fraunces, serif',
-                  fontWeight: 300,
-                  letterSpacing: '0.4em',
-                  textTransform: 'uppercase',
-                  fontSize: 13,
-                }}
-              >
-                Wordmark sample
-              </p>
+              <span className="label">Display · Fraunces Italic</span>
+              <p className="type-aa serif">Aa</p>
+              <p className="serif type-sample">The hibiscus set.</p>
+              <p className="wordmark">Wordmark sample</p>
             </div>
             <div>
-              <Label>Body · Inter</Label>
-              <p
-                style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontWeight: 300,
-                  fontSize: 88,
-                  lineHeight: 0.95,
-                  margin: '20px 0 8px',
-                }}
-              >
-                Aa
-              </p>
-              <Body>
+              <span className="label">Body · Inter</span>
+              <p className="type-aa">Aa</p>
+              <p className="body">
                 Cut from a single bolt of Italian econyl. Sewn by Komang in our
-                Ubud atelier over the course of two afternoons. Made for one
-                woman at a time, never two of the same.
-              </Body>
-              <Label>Caption · 10/12</Label>
+                Ubud atelier over the course of two afternoons.
+              </p>
+              <span className="label">Caption · 10/12</span>
             </div>
           </div>
         </section>
 
         {/* PRODUCT CARDS */}
-        <section style={{ padding: '120px 48px', borderBottom: '1px solid rgba(20,17,15,0.08)' }}>
-          <Label>03 · Product card</Label>
-          <div style={{ marginTop: 16, marginBottom: 56 }}>
-            <SectionTitle>Quiet on the page.</SectionTitle>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
-            {[
-              { img: '/images/catalog_hibiscus_bikini.jpg', name: 'The Frangipani', kind: 'Bikini set', price: '$100' },
-              { img: '/images/catalog_oceanic_flow.jpg', name: 'The Uluwatu', kind: 'Bikini set', price: '$100' },
-              { img: '/images/catalog_padel_racket.jpg', name: 'The Canggu Cover', kind: 'Padel cover', price: '$85' },
-            ].map((p) => (
-              <div key={p.name}>
+        <section className="section">
+          <span className="label">03 · Product card</span>
+          <h2 className="display">Quiet on the page.</h2>
+          <div className="card-grid">
+            {products.map((p) => (
+              <div key={p.name} className="card">
                 <div
-                  style={{
-                    aspectRatio: '3 / 4',
-                    backgroundImage: `url(${p.img})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    marginBottom: 20,
-                  }}
+                  className="card-img"
+                  style={{ backgroundImage: `url(${p.img})` }}
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <div className="card-row">
                   <div>
-                    <Label>{p.kind}</Label>
-                    <div
-                      style={{
-                        fontFamily: 'Fraunces, serif',
-                        fontStyle: 'italic',
-                        fontWeight: 300,
-                        fontSize: 24,
-                        marginTop: 8,
-                      }}
-                    >
-                      {p.name}
-                    </div>
+                    <span className="label">{p.kind}</span>
+                    <div className="card-name serif">{p.name}</div>
                   </div>
-                  <div
-                    style={{
-                      fontFamily: 'Inter, sans-serif',
-                      fontSize: 11,
-                      letterSpacing: '0.3em',
-                    }}
-                  >
-                    {p.price}
-                  </div>
+                  <div className="card-price">{p.price}</div>
                 </div>
               </div>
             ))}
@@ -357,246 +118,485 @@ export default function DesignPreview() {
         </section>
 
         {/* EDITORIAL SPLIT */}
-        <section
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            background: '#1F3A3D',
-            color: '#F4EFE6',
-            borderBottom: '1px solid rgba(20,17,15,0.08)',
-          }}
-        >
+        <section className="split">
           <div
-            style={{
-              backgroundImage: 'url(/images/story_craftswoman_portrait.jpg)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              minHeight: 640,
-            }}
+            className="split-img"
+            style={{ backgroundImage: 'url(/images/story_craftswoman_portrait.jpg)' }}
           />
-          <div style={{ padding: '120px 64px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <Label color="#E8DFD0">04 · The atelier</Label>
-            <div style={{ marginTop: 16, marginBottom: 32 }}>
-              <SectionTitle color="#F4EFE6">
-                Six women.
-                <br />
-                Two products.
-              </SectionTitle>
-            </div>
-            <Body color="#E8DFD0">
-              Our atelier sits on the edge of a rice field in Ubud. Six women cut,
-              dye and stitch every Mriie piece by hand. Each bikini takes about
-              nine hours. Each padel cover, four. We do not scale.
-            </Body>
-            <div style={{ marginTop: 40 }}>
-              <Label color="#E8DFD0">Meet them →</Label>
-            </div>
+          <div className="split-text">
+            <span className="label light">04 · The atelier</span>
+            <h2 className="display light">Six women.<br />Two products.</h2>
+            <p className="body light">
+              Our atelier sits on the edge of a rice field in Ubud. Six women
+              cut, dye and stitch every Mriie piece by hand. Each bikini takes
+              about nine hours. Each padel cover, four. We do not scale.
+            </p>
+            <span className="label light" style={{ marginTop: 32, display: 'block' }}>
+              Meet them →
+            </span>
           </div>
         </section>
 
-        {/* PRODUCT DETAIL MOCK */}
-        <section style={{ padding: '120px 48px', borderBottom: '1px solid rgba(20,17,15,0.08)' }}>
-          <Label>05 · Product page</Label>
-          <div style={{ marginTop: 16, marginBottom: 56 }}>
-            <SectionTitle>One woman at a time.</SectionTitle>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 64 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-              <div
-                style={{
-                  aspectRatio: '3 / 4',
-                  backgroundImage: 'url(/images/detail_bikini_ladder.jpg)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  gridRow: 'span 2',
-                }}
-              />
-              <div
-                style={{
-                  aspectRatio: '1 / 1',
-                  backgroundImage: 'url(/images/catalog_hibiscus_bikini.jpg)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              />
-              <div
-                style={{
-                  aspectRatio: '1 / 1',
-                  backgroundImage: 'url(/images/story_fabric_texture.jpg)',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                }}
-              />
+        {/* PRODUCT DETAIL */}
+        <section className="section">
+          <span className="label">05 · Product page</span>
+          <h2 className="display">One woman at a time.</h2>
+          <div className="pdp">
+            <div className="pdp-imgs">
+              <div className="pdp-tall" style={{ backgroundImage: 'url(/images/detail_bikini_ladder.jpg)' }} />
+              <div className="pdp-sq" style={{ backgroundImage: 'url(/images/catalog_hibiscus_bikini.jpg)' }} />
+              <div className="pdp-sq" style={{ backgroundImage: 'url(/images/story_fabric_texture.jpg)' }} />
             </div>
-            <div style={{ paddingTop: 24 }}>
-              <Label>Bikini set · 01</Label>
-              <h3
-                style={{
-                  fontFamily: 'Fraunces, serif',
-                  fontStyle: 'italic',
-                  fontWeight: 300,
-                  fontSize: 56,
-                  lineHeight: 1,
-                  margin: '16px 0 12px',
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                The Frangipani
-              </h3>
-              <div
-                style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: 12,
-                  letterSpacing: '0.3em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                $100 · USD
-              </div>
-              <div
-                style={{
-                  margin: '40px 0',
-                  height: 1,
-                  background: 'rgba(20,17,15,0.12)',
-                }}
-              />
-              <Body>
+            <div className="pdp-info">
+              <span className="label">Bikini set · 01</span>
+              <h3 className="pdp-title serif">The Frangipani</h3>
+              <div className="pdp-price">$100 · USD</div>
+              <hr className="rule" />
+              <p className="body">
                 A high-cut brief and a tied-string top in hand-dyed botanical
-                ochre. Cut from regenerated Italian econyl, lined twice. Sewn by
-                Komang over two afternoons in our Ubud atelier.
-              </Body>
+                ochre. Cut from regenerated Italian econyl, lined twice. Sewn
+                by Komang over two afternoons in our Ubud atelier.
+              </p>
               <div style={{ marginTop: 32 }}>
-                <Label>Size</Label>
-                <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
+                <span className="label">Size</span>
+                <div className="size-row">
                   {['XS', 'S', 'M', 'L'].map((s) => (
-                    <div
-                      key={s}
-                      style={{
-                        width: 44,
-                        height: 44,
-                        border: '1px solid rgba(20,17,15,0.4)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 11,
-                        letterSpacing: '0.2em',
-                      }}
-                    >
-                      {s}
-                    </div>
+                    <div key={s} className="size-chip">{s}</div>
                   ))}
                 </div>
               </div>
-              <button
-                style={{
-                  marginTop: 40,
-                  width: '100%',
-                  background: '#14110F',
-                  color: '#F4EFE6',
-                  border: 'none',
-                  padding: '22px',
-                  fontSize: 11,
-                  letterSpacing: '0.4em',
-                  textTransform: 'uppercase',
-                  cursor: 'pointer',
-                  fontFamily: 'Inter, sans-serif',
-                }}
-              >
+              <button className="btn btn-dark btn-block">
                 Take it home — $100
               </button>
-              <div style={{ marginTop: 16, textAlign: 'center' }}>
-                <Label>Ships from Bali in 48 hours</Label>
-              </div>
+              <div className="ships">Ships from Bali in 48 hours</div>
             </div>
           </div>
         </section>
 
         {/* TERRACOTTA STRIP */}
-        <section
-          style={{
-            background: '#B5532A',
-            color: '#F4EFE6',
-            padding: '120px 48px',
-            textAlign: 'center',
-          }}
-        >
-          <Label color="#F4EFE6">06 · Accent block</Label>
-          <div style={{ marginTop: 24, maxWidth: 900, marginLeft: 'auto', marginRight: 'auto' }}>
-            <SectionTitle color="#F4EFE6">
-              Find us at COMO Shambhala, Potato Head, La Brisa, and a few quiet villas in Uluwatu.
-            </SectionTitle>
-          </div>
+        <section className="terracotta">
+          <span className="label light">06 · Accent block</span>
+          <h2 className="display light center">
+            Find us at COMO Shambhala, Potato Head, La Brisa, and a few quiet villas in Uluwatu.
+          </h2>
         </section>
 
         {/* FOOTER */}
-        <footer
-          style={{
-            background: '#14110F',
-            color: '#E8DFD0',
-            padding: '80px 48px 48px',
-          }}
-        >
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 64, marginBottom: 80 }}>
+        <footer className="footer">
+          <div className="footer-grid">
             <div>
-              <Wordmark color="#F4EFE6" size={20} />
-              <div style={{ marginTop: 24, maxWidth: 320 }}>
-                <Body color="#A8A096" max={320}>
-                  An atelier in Ubud. Two things, made slowly, by hand.
-                </Body>
-              </div>
+              <div className="wordmark light">M R I I E</div>
+              <p className="body muted" style={{ marginTop: 24 }}>
+                An atelier in Ubud. Two things, made slowly, by hand.
+              </p>
             </div>
             <div>
-              <Label color="#A8A096">Shop</Label>
-              <div style={{ marginTop: 16, fontSize: 13, lineHeight: 2.2, fontFamily: 'Fraunces, serif', fontStyle: 'italic' }}>
+              <span className="label muted">Shop</span>
+              <div className="footer-links serif">
                 Bikinis<br />Padel covers<br />Gift cards
               </div>
             </div>
             <div>
-              <Label color="#A8A096">House</Label>
-              <div style={{ marginTop: 16, fontSize: 13, lineHeight: 2.2, fontFamily: 'Fraunces, serif', fontStyle: 'italic' }}>
+              <span className="label muted">House</span>
+              <div className="footer-links serif">
                 The atelier<br />Stockists<br />Journal
               </div>
             </div>
             <div>
-              <Label color="#A8A096">Letters</Label>
-              <div style={{ marginTop: 16 }}>
-                <Body color="#A8A096" max={240}>
-                  One letter a season. No noise.
-                </Body>
-                <input
-                  placeholder="email"
-                  style={{
-                    marginTop: 16,
-                    background: 'transparent',
-                    border: 'none',
-                    borderBottom: '1px solid #A8A096',
-                    color: '#F4EFE6',
-                    padding: '8px 0',
-                    width: '100%',
-                    fontSize: 13,
-                    fontFamily: 'Inter, sans-serif',
-                  }}
-                />
-              </div>
+              <span className="label muted">Letters</span>
+              <p className="body muted" style={{ marginTop: 16 }}>
+                One letter a season. No noise.
+              </p>
+              <input className="email-input" placeholder="email" />
             </div>
           </div>
-          <div
-            style={{
-              borderTop: '1px solid rgba(232,223,208,0.15)',
-              paddingTop: 32,
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: 10,
-              letterSpacing: '0.3em',
-              textTransform: 'uppercase',
-              color: '#A8A096',
-            }}
-          >
+          <div className="footer-bottom">
             <span>© 2026 Mriie · Ubud, Bali</span>
             <span>Privacy · Terms · Care</span>
           </div>
         </footer>
       </main>
+
+      <style jsx global>{`
+        html, body { margin: 0; padding: 0; }
+        * { box-sizing: border-box; }
+      `}</style>
+
+      <style jsx>{`
+        .page {
+          background: #F4EFE6;
+          color: #14110F;
+          font-family: Inter, sans-serif;
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+
+        .label {
+          font-family: Inter, sans-serif;
+          font-size: 10px;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          color: #8A7560;
+          font-weight: 500;
+        }
+        .label.light { color: #E8DFD0; }
+        .label.muted { color: #A8A096; }
+
+        .wordmark {
+          font-family: Fraunces, serif;
+          font-weight: 300;
+          letter-spacing: 0.42em;
+          font-size: 16px;
+          text-transform: uppercase;
+          color: #14110F;
+        }
+        .wordmark.light { color: #F4EFE6; font-size: 18px; }
+
+        .display {
+          font-family: Fraunces, serif;
+          font-weight: 300;
+          font-style: italic;
+          font-size: clamp(34px, 7vw, 84px);
+          line-height: 1.02;
+          letter-spacing: -0.02em;
+          margin: 12px 0 32px;
+        }
+        .display.light { color: #F4EFE6; }
+        .display.center { text-align: center; max-width: 900px; margin-left: auto; margin-right: auto; }
+
+        .body {
+          font-family: Inter, sans-serif;
+          font-size: 15px;
+          line-height: 1.7;
+          color: #3a342d;
+          max-width: 520px;
+          font-weight: 400;
+        }
+        .body.light { color: #E8DFD0; }
+        .body.muted { color: #A8A096; max-width: 320px; }
+
+        .topnotice {
+          background: #14110F;
+          color: #F4EFE6;
+          padding: 10px 20px;
+          font-size: 9px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          text-align: center;
+        }
+
+        .nav {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 20px 20px;
+          border-bottom: 1px solid rgba(20,17,15,0.08);
+          gap: 12px;
+        }
+        .nav .label:first-child,
+        .nav .label:last-child {
+          flex: 1;
+        }
+        .nav .label:last-child { text-align: right; }
+
+        .hero {
+          position: relative;
+          min-height: 80vh;
+          background-image:
+            linear-gradient(180deg, rgba(20,17,15,0.15) 0%, rgba(20,17,15,0.6) 100%),
+            url(/images/home_hero_bali.jpg);
+          background-size: cover;
+          background-position: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          padding: 32px 20px 48px;
+          color: #F4EFE6;
+        }
+        .hero-inner { max-width: 720px; }
+        .hero-title {
+          font-family: Fraunces, serif;
+          font-weight: 200;
+          font-style: italic;
+          font-size: clamp(40px, 11vw, 132px);
+          line-height: 0.95;
+          letter-spacing: -0.03em;
+          margin: 16px 0 20px;
+        }
+        .hero-body {
+          font-family: Inter, sans-serif;
+          font-size: 15px;
+          line-height: 1.7;
+          color: #E8DFD0;
+          max-width: 500px;
+          margin: 0;
+        }
+        .hero-ctas {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 32px;
+        }
+
+        .btn {
+          padding: 16px 24px;
+          font-size: 10px;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          cursor: pointer;
+          font-family: Inter, sans-serif;
+          border: 1px solid transparent;
+        }
+        .btn-light { background: #F4EFE6; color: #14110F; }
+        .btn-ghost { background: transparent; color: #F4EFE6; border-color: #F4EFE6; }
+        .btn-dark { background: #14110F; color: #F4EFE6; }
+        .btn-block {
+          width: 100%;
+          padding: 22px;
+          margin-top: 32px;
+          letter-spacing: 0.4em;
+        }
+
+        .section {
+          padding: 64px 20px;
+          border-bottom: 1px solid rgba(20,17,15,0.08);
+        }
+        .section.sand { background: #E8DFD0; }
+
+        .palette-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2px;
+        }
+        .swatch {
+          aspect-ratio: 3 / 4;
+          padding: 16px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .swatch-hex {
+          font-family: Fraunces, serif;
+          font-style: italic;
+          font-size: 18px;
+          font-weight: 300;
+        }
+
+        .type-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+        .type-aa {
+          font-size: clamp(56px, 18vw, 120px);
+          line-height: 0.9;
+          margin: 16px 0 8px;
+          font-weight: 300;
+        }
+        .type-aa.serif {
+          font-family: Fraunces, serif;
+          font-style: italic;
+          letter-spacing: -0.025em;
+        }
+        .type-aa:not(.serif) { font-family: Inter, sans-serif; }
+        .type-sample {
+          font-family: Fraunces, serif;
+          font-style: italic;
+          font-weight: 300;
+          font-size: 26px;
+          margin: 0 0 12px;
+        }
+        .serif { font-family: Fraunces, serif; }
+
+        .card-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .card-img {
+          aspect-ratio: 3 / 4;
+          background-size: cover;
+          background-position: center;
+          margin-bottom: 16px;
+        }
+        .card-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 16px;
+        }
+        .card-name {
+          font-style: italic;
+          font-weight: 300;
+          font-size: 22px;
+          margin-top: 6px;
+        }
+        .card-price {
+          font-size: 11px;
+          letter-spacing: 0.3em;
+          white-space: nowrap;
+        }
+
+        .split {
+          display: grid;
+          grid-template-columns: 1fr;
+          background: #1F3A3D;
+          color: #F4EFE6;
+          border-bottom: 1px solid rgba(20,17,15,0.08);
+        }
+        .split-img {
+          background-size: cover;
+          background-position: center;
+          min-height: 360px;
+        }
+        .split-text {
+          padding: 64px 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+
+        .pdp {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 32px;
+        }
+        .pdp-imgs {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
+        }
+        .pdp-tall {
+          aspect-ratio: 3 / 4;
+          background-size: cover;
+          background-position: center;
+          grid-row: span 2;
+        }
+        .pdp-sq {
+          aspect-ratio: 1 / 1;
+          background-size: cover;
+          background-position: center;
+        }
+        .pdp-info { padding-top: 8px; }
+        .pdp-title {
+          font-style: italic;
+          font-weight: 300;
+          font-size: clamp(38px, 9vw, 56px);
+          line-height: 1;
+          margin: 12px 0 10px;
+          letter-spacing: -0.02em;
+        }
+        .pdp-price {
+          font-size: 12px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+        }
+        .rule {
+          margin: 32px 0;
+          height: 1px;
+          background: rgba(20,17,15,0.12);
+          border: none;
+        }
+        .size-row { display: flex; gap: 8px; margin-top: 12px; }
+        .size-chip {
+          width: 44px;
+          height: 44px;
+          border: 1px solid rgba(20,17,15,0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          letter-spacing: 0.2em;
+        }
+        .ships {
+          margin-top: 14px;
+          text-align: center;
+          font-family: Inter, sans-serif;
+          font-size: 10px;
+          letter-spacing: 0.32em;
+          text-transform: uppercase;
+          color: #8A7560;
+        }
+
+        .terracotta {
+          background: #B5532A;
+          color: #F4EFE6;
+          padding: 80px 20px;
+          text-align: center;
+        }
+
+        .footer {
+          background: #14110F;
+          color: #E8DFD0;
+          padding: 56px 20px 32px;
+        }
+        .footer-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 40px;
+          margin-bottom: 48px;
+        }
+        .footer-links {
+          margin-top: 14px;
+          font-size: 13px;
+          line-height: 2.2;
+          font-style: italic;
+        }
+        .email-input {
+          margin-top: 16px;
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid #A8A096;
+          color: #F4EFE6;
+          padding: 8px 0;
+          width: 100%;
+          font-size: 13px;
+          font-family: Inter, sans-serif;
+          outline: none;
+        }
+        .footer-bottom {
+          border-top: 1px solid rgba(232,223,208,0.15);
+          padding-top: 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          font-size: 9px;
+          letter-spacing: 0.3em;
+          text-transform: uppercase;
+          color: #A8A096;
+        }
+
+        @media (min-width: 640px) {
+          .nav { padding: 24px 32px; }
+          .hero { padding: 48px 32px 64px; }
+          .section { padding: 96px 32px; }
+          .terracotta { padding: 100px 32px; }
+          .footer { padding: 72px 32px 40px; }
+
+          .palette-grid { grid-template-columns: repeat(3, 1fr); }
+          .type-grid { grid-template-columns: 1fr 1fr; gap: 56px; }
+          .card-grid { grid-template-columns: 1fr 1fr; }
+          .pdp-imgs { gap: 8px; }
+          .footer-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+          .footer-bottom { flex-direction: row; justify-content: space-between; }
+        }
+
+        @media (min-width: 960px) {
+          .nav { padding: 28px 48px; }
+          .hero { padding: 64px 48px 80px; min-height: 86vh; }
+          .section { padding: 120px 48px; }
+          .terracotta { padding: 120px 48px; }
+          .footer { padding: 80px 48px 48px; }
+
+          .palette-grid { grid-template-columns: repeat(6, 1fr); }
+          .card-grid { grid-template-columns: repeat(3, 1fr); }
+          .split { grid-template-columns: 1fr 1fr; }
+          .split-img { min-height: 640px; }
+          .split-text { padding: 120px 64px; }
+          .pdp { grid-template-columns: 1.3fr 1fr; gap: 64px; }
+          .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; }
+        }
+      `}</style>
     </>
   )
 }
