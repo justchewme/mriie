@@ -121,7 +121,7 @@ export default function DesignPreview() {
         <section className="split">
           <div
             className="split-img"
-            style={{ backgroundImage: 'url(/images/story_craftswoman_portrait.jpg)' }}
+            style={{ backgroundImage: 'url(/images/home_artisan_stitch.jpg)' }}
           />
           <div className="split-text">
             <span className="label light">04 · The atelier</span>
