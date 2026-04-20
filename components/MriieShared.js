@@ -22,8 +22,8 @@ export const Frangipani = ({ size = 40, color = C.sand, stroke = 1 }) => (
   </svg>
 );
 
-export const Wave = ({ width = 120, color = C.sand, stroke = 1 }) => (
-  <svg width={width} height="14" viewBox="0 0 120 14" fill="none" preserveAspectRatio="none">
+export const Wave = ({ width = 120, color = C.sand, stroke = 1, style }) => (
+  <svg width={width} height="14" viewBox="0 0 120 14" fill="none" preserveAspectRatio="none" style={style}>
     <path
       d="M0 7 Q 10 1, 20 7 T 40 7 T 60 7 T 80 7 T 100 7 T 120 7"
       stroke={color} strokeWidth={stroke} fill="none" strokeLinecap="round"
@@ -99,6 +99,7 @@ export const Photo = ({
   tone = 'warm',
   src,
   style,
+  imgStyle,
   children,
 }) => {
   const palettes = {
@@ -131,6 +132,7 @@ export const Photo = ({
             objectFit: 'cover', objectPosition: 'center',
             imageRendering: 'auto',
             filter: 'contrast(1.04) saturate(1.08) brightness(1.01)',
+            ...imgStyle,
           }}
         />
       )}

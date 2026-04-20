@@ -139,12 +139,9 @@ const DesktopCategories = () => (
       </div>
 
       <div id="padel-covers">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <Photo ratio="5 / 4" tone="ink" src="/images/padel-editorial.jpg"
-            label="THE PADEL COVERS · EDITORIAL" sublabel="six patterns · dark studio"/>
-          <Photo ratio="5 / 4" tone="coconut" src="/images/padel-colorful.jpg"
-            label="THE PADEL COVERS · FULL RANGE" sublabel="eight colourways · all available"/>
-        </div>
+        <Photo ratio="4 / 5" tone="coconut" src="/images/padel-colorful.jpg"
+          label="THE PADEL COVERS · FULL RANGE" sublabel="eight colourways · all available"
+          imgStyle={{ objectPosition: 'center 18%' }}/>
         <div style={{ marginTop: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div>
             <Label>category 002</Label>
@@ -230,7 +227,7 @@ const DesktopDispatch = () => (
         <Label color="#F1D9C8">made by hand · please be patient</Label>
         <Wave width={80} color={C.bone} stroke={0.9} style={{ marginTop: 28 }}/>
       </div>
-      <H size={54} color={C.bone}>orders take a little longer. each piece is sewn, by one woman, in our ubud atelier.</H>
+      <H size={54} color={C.bone}>orders take a little longer. each piece is hand-sewn by a small number of women, in our ubud atelier.</H>
       <div>
         <Body size={14} color="#F1D9C8">
           wrapped in banana-leaf paper. a note from the maker, tucked inside. sent worldwide, when she has finished.
@@ -364,7 +361,7 @@ const DesktopFooter = ({ email, setEmail, onSubmit, status }) => (
             <div style={{ marginTop: 16, display: 'flex', borderBottom: '1px solid rgba(244,239,230,0.22)', paddingBottom: 8 }}>
               <input
                 type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="email"
+                placeholder="email" className="input-dark"
                 style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontFamily: 'Inter', fontSize: 12, color: C.bone }}
               />
               <button type="submit" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Inter', fontSize: 11, color: FM, letterSpacing: '0.22em' }}>→</button>
@@ -497,12 +494,9 @@ const MobileCategories = () => (
     </div>
 
     <div id="m-padel-covers" style={{ marginTop: 54 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <Photo ratio="5 / 4" tone="ink" src="/images/padel-editorial.jpg"
-          label="THE PADEL COVERS · EDITORIAL" sublabel="six patterns · dark studio"/>
-        <Photo ratio="5 / 4" tone="coconut" src="/images/padel-colorful.jpg"
-          label="THE PADEL COVERS · FULL RANGE" sublabel="eight colourways · all available"/>
-      </div>
+      <Photo ratio="4 / 5" tone="coconut" src="/images/padel-colorful.jpg"
+        label="THE PADEL COVERS · FULL RANGE" sublabel="eight colourways · all available"
+        imgStyle={{ objectPosition: 'center 18%' }}/>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 14 }}>
         <H size={26}>the padel covers</H>
         <Body size={11} color={C.sand} style={{ letterSpacing: '0.2em' }}>$85 · usd</Body>
@@ -569,7 +563,7 @@ const MobileDispatch = () => (
       <Wave width={32} color={C.bone} stroke={0.8}/>
       <Label color="#F1D9C8" style={{ display: 'inline' }}>made by hand · please be patient</Label>
     </div>
-    <H size={28} color={C.bone} style={{ marginTop: 18 }}>orders take a little longer. each piece is sewn by one woman.</H>
+    <H size={28} color={C.bone} style={{ marginTop: 18 }}>orders take a little longer. each piece is hand-sewn by a small number of women.</H>
     <Body size={12} color="#F1D9C8" style={{ marginTop: 16 }}>
       wrapped in banana-leaf paper, sent from jl. raya ubud. a note from the maker, tucked inside.
     </Body>
@@ -651,7 +645,7 @@ const MobileFooter = ({ email, setEmail, onSubmit, status }) => (
             <div style={{ display: 'flex', borderBottom: '1px solid rgba(244,239,230,0.22)', paddingBottom: 8 }}>
               <input
                 type="email" required value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="email"
+                placeholder="email" className="input-dark"
                 style={{ flex: 1, border: 'none', background: 'transparent', outline: 'none', fontFamily: 'Inter', fontSize: 12, color: C.bone }}
               />
               <button type="submit" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'Inter', fontSize: 11, color: FM, letterSpacing: '0.22em' }}>→</button>

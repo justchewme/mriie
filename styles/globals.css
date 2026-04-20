@@ -24,6 +24,10 @@ input::placeholder {
   color: rgba(20, 17, 15, 0.35);
 }
 
+.input-dark::placeholder {
+  color: rgba(244, 239, 230, 0.30);
+}
+
 ::selection {
   background: #B5532A;
   color: #F4EFE6;
