@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { products } from '@/lib/products'
+import { products, getVariant } from '@/lib/products'
 
-// Cart shape: { [productId]: { qty: number, pref: string } }
+// Cart shape: { ["productId|variantId"]: { qty: number } }
 const CartContext = createContext(null)
 
-const STORAGE_KEY = 'mriie-cart-v1'
+const STORAGE_KEY = 'mriie-cart-v2'
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState({})
@@ -25,36 +25,42 @@ export function CartProvider({ children }) {
     } catch {}
   }, [cart, loaded])
 
-  const setQty = (id, qty, pref) => {
-    setCart((c) => {
-      const next = { ...c }
-      if (qty <= 0) {
-        delete next[id]
-      } else {
-        next[id] = { qty, pref: pref ?? c[id]?.pref ?? 'Decide later on WhatsApp' }
-      }
-      return next
-    })
+  const keyOf = (productId, variantId) => `${productId}|${variantId}`
+
+  const addItem = (productId, variantId, qty) => {
+    const key = keyOf(productId, variantId)
+    setCart((c) => ({ ...c, [key]: { qty: (c[key]?.qty || 0) + qty } }))
   }
 
-  const setPref = (id, pref) => {
-    setCart((c) => (c[id] ? { ...c, [id]: { ...c[id], pref } } : c))
+  const setQty = (key, qty) => {
+    setCart((c) => {
+      const next = { ...c }
+      if (qty <= 0) delete next[key]
+      else next[key] = { qty }
+      return next
+    })
   }
 
   const clear = () => setCart({})
 
   const items = Object.entries(cart)
-    .map(([id, line]) => {
-      const product = products.find((p) => p.id === id)
-      return product ? { ...product, qty: line.qty, pref: line.pref } : null
+    .map(([key, line]) => {
+      const [productId, variantId] = key.split('|')
+      const product = products.find((p) => p.id === productId)
+      if (!product) return null
+      const variant = getVariant(product, variantId)
+      return { key, ...product, variant, qty: line.qty }
     })
     .filter(Boolean)
 
   const count = items.reduce((n, i) => n + i.qty, 0)
   const subtotal = items.reduce((n, i) => n + i.qty * i.price, 0)
 
+  const inCartFor = (productId) =>
+    items.filter((i) => i.id === productId).reduce((n, i) => n + i.qty, 0)
+
   return (
-    <CartContext.Provider value={{ cart, items, count, subtotal, setQty, setPref, clear, loaded }}>
+    <CartContext.Provider value={{ cart, items, count, subtotal, addItem, setQty, clear, inCartFor, loaded }}>
       {children}
     </CartContext.Provider>
   )

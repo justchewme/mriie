@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
-import { products, PRINTS } from '@/lib/products'
-import { SHOP } from '@/lib/config'
+import { products } from '@/lib/products'
+import { SHOP, waLink } from '@/lib/config'
 import { useCart } from '@/components/CartContext'
 
 function QtyStepper({ value, onChange }) {
@@ -29,29 +29,65 @@ function QtyStepper({ value, onChange }) {
 }
 
 function ProductCard({ product }) {
-  const { cart, setQty } = useCart()
-  const inCart = cart[product.id]?.qty || 0
+  const { addItem, inCartFor } = useCart()
+  const inCart = inCartFor(product.id)
   const [qty, setLocalQty] = useState(1)
-  const [pref, setPref] = useState(PRINTS[0])
+  const [variant, setVariant] = useState(product.variants[0])
   const [added, setAdded] = useState(false)
 
   const add = () => {
-    setQty(product.id, inCart + qty, pref)
+    addItem(product.id, variant.id, qty)
     setAdded(true)
     setTimeout(() => setAdded(false), 1600)
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', background: '#fff' }}>
-      <div style={{ aspectRatio: '4 / 5', overflow: 'hidden', background: C.coconut }}>
+      <div style={{ aspectRatio: '4 / 5', overflow: 'hidden', background: C.coconut, position: 'relative' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={product.image}
-          alt={product.name}
+          key={variant.id}
+          src={variant.image}
+          alt={`${product.name} — ${variant.name}`}
           style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
         />
+        <div
+          style={{
+            position: 'absolute', left: 12, bottom: 12,
+            background: 'rgba(244,239,230,0.92)', padding: '6px 12px',
+            fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.18em',
+            textTransform: 'uppercase', color: C.ink,
+          }}
+        >
+          {variant.name}
+        </div>
       </div>
-      <div style={{ padding: '26px 24px 28px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
+
+      {/* Colour swatches */}
+      <div style={{ display: 'flex', gap: 8, padding: '14px 24px 0', flexWrap: 'wrap' }}>
+        {product.variants.map((v) => (
+          <button
+            key={v.id}
+            onClick={() => setVariant(v)}
+            aria-label={v.name}
+            title={v.name}
+            style={{
+              width: 46, height: 46, padding: 0, cursor: 'pointer', overflow: 'hidden',
+              border: v.id === variant.id ? `2px solid ${C.ink}` : `1px solid rgba(20,17,15,0.18)`,
+              background: 'transparent',
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={v.image}
+              alt={v.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </button>
+        ))}
+      </div>
+
+      <div style={{ padding: '18px 24px 28px', display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
         <div>
           <H size={26}>{product.name}</H>
           <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 6, letterSpacing: '0.04em' }}>
@@ -61,33 +97,11 @@ function ProductCard({ product }) {
         <Body size={13} color="rgba(20,17,15,0.75)">
           {product.description}
         </Body>
-        <div
-          style={{
-            fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400,
-            color: C.terra, marginTop: 'auto',
-          }}
-        >
-          {SHOP.currency}{product.price}
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <label style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)' }}>
-            Print preference
-          </label>
-          <select
-            value={pref}
-            onChange={(e) => setPref(e.target.value)}
-            style={{
-              appearance: 'none', WebkitAppearance: 'none',
-              border: `1px solid rgba(20,17,15,0.25)`, background: 'transparent',
-              padding: '12px 14px', fontFamily: 'Inter, sans-serif', fontSize: 13, color: C.ink,
-              borderRadius: 0,
-            }}
-          >
-            {PRINTS.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 'auto' }}>
+          <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
+            {SHOP.currency}{product.price}
+          </div>
+          <Body size={11} color="rgba(20,17,15,0.5)">Colour: {variant.name}</Body>
         </div>
 
         <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
@@ -122,7 +136,7 @@ export default function Shop() {
         <H size={44}>Keep it cool. Play it hot.</H>
         <Body size={14} color="rgba(20,17,15,0.6)" style={{ maxWidth: 520, margin: '18px auto 0' }}>
           Thermal covers, court bags and linen towels in signature prints —
-          each piece handmade by our artisans in Bali.
+          each piece handmade by our artisans in Bali. Tap a swatch to see the colours.
         </Body>
       </section>
 
@@ -146,7 +160,7 @@ export default function Shop() {
             <Label color={C.terra}>Ordering</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
               Add your pieces and check out — your order opens in WhatsApp, where we confirm
-              stock, prints and payment (bank transfer or card). No account needed.
+              stock, colours and payment (bank transfer or card). No account needed.
             </Body>
           </div>
           <div>
@@ -157,10 +171,18 @@ export default function Shop() {
             </Body>
           </div>
           <div>
-            <Label color={C.terra}>Prints</Label>
+            <Label color={C.terra}>More prints</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              Every piece is handmade in 20+ signature prints. Pick a colour direction now,
-              or choose your exact print with us on WhatsApp.
+              Every piece is handmade in 20+ signature prints — the swatches are just the start.{' '}
+              <a
+                href={waLink('Hello Mriie PADL! Can I see more prints?')}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: C.terra }}
+              >
+                Ask us on WhatsApp
+              </a>{' '}
+              to see them all.
             </Body>
           </div>
         </div>

@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
-import { PRINTS } from '@/lib/products'
 import { SHOP, waLink } from '@/lib/config'
 import { useCart } from '@/components/CartContext'
 
@@ -28,7 +27,7 @@ function Field({ label, required, ...props }) {
 }
 
 export default function Checkout() {
-  const { items, count, subtotal, setQty, setPref, clear, loaded } = useCart()
+  const { items, count, subtotal, setQty, clear, loaded } = useCart()
   const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl'
   const [form, setForm] = useState({ name: '', whatsapp: '', email: '', address: '', city: '', country: '', postal: '', notes: '' })
   const [error, setError] = useState('')
@@ -47,10 +46,9 @@ export default function Checkout() {
       return setError('Please fill in your delivery address and country.')
     setError('')
 
-    const lines = items.map((i) => {
-      const pref = i.pref && i.pref !== PRINTS[0] ? ` (${i.pref})` : ''
-      return `• ${i.name} ×${i.qty}${pref} — ${SHOP.currency}${i.price * i.qty}`
-    })
+    const lines = items.map(
+      (i) => `• ${i.name} — ${i.variant.name} ×${i.qty} — ${SHOP.currency}${i.price * i.qty}`
+    )
     const msg = [
       'Hello Mriie PADL! I would like to order:',
       '',
@@ -86,7 +84,7 @@ export default function Checkout() {
           <H size={36}>Press send in WhatsApp</H>
           <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '20px 0 32px' }}>
             Your order is waiting in your WhatsApp chat — just press send.
-            We&apos;ll reply shortly to confirm your prints, stock and payment
+            We&apos;ll reply shortly to confirm your colours, stock and payment
             (bank transfer or card).
           </Body>
           <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
@@ -166,37 +164,25 @@ export default function Checkout() {
           <H size={30} style={{ marginBottom: 24 }}>Your bag</H>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             {items.map((i) => (
-              <div key={i.id} style={{ display: 'flex', gap: 16, background: '#fff', padding: 14 }}>
+              <div key={i.key} style={{ display: 'flex', gap: 16, background: '#fff', padding: 14 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={i.image} alt={i.name} style={{ width: 84, height: 105, objectFit: 'cover', flexShrink: 0 }} />
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <img src={i.variant.image} alt={`${i.name} — ${i.variant.name}`} style={{ width: 84, height: 105, objectFit: 'cover', flexShrink: 0 }} />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
                     <Body size={14} weight={500}>{i.name}</Body>
                     <span style={{ fontFamily: '"Fraunces", serif', fontSize: 16, color: C.terra }}>
                       {SHOP.currency}{i.price * i.qty}
                     </span>
                   </div>
-                  <select
-                    value={i.pref}
-                    onChange={(e) => setPref(i.id, e.target.value)}
-                    style={{
-                      appearance: 'none', WebkitAppearance: 'none', maxWidth: 220,
-                      border: `1px solid rgba(20,17,15,0.2)`, background: 'transparent',
-                      padding: '7px 10px', fontFamily: 'Inter, sans-serif', fontSize: 12, color: C.ink, borderRadius: 0,
-                    }}
-                  >
-                    {PRINTS.map((p) => (
-                      <option key={p} value={p}>{p}</option>
-                    ))}
-                  </select>
+                  <Body size={12} color="rgba(20,17,15,0.55)">Colour: {i.variant.name}</Body>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 'auto' }}>
                     <div style={{ display: 'flex', alignItems: 'center', border: `1px solid rgba(20,17,15,0.2)` }}>
-                      <button onClick={() => setQty(i.id, i.qty - 1)} style={{ width: 32, height: 32, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 15 }}>−</button>
+                      <button onClick={() => setQty(i.key, i.qty - 1)} style={{ width: 32, height: 32, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 15 }}>−</button>
                       <span style={{ minWidth: 30, textAlign: 'center', fontFamily: 'Inter, sans-serif', fontSize: 13 }}>{i.qty}</span>
-                      <button onClick={() => setQty(i.id, i.qty + 1)} style={{ width: 32, height: 32, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 15 }}>+</button>
+                      <button onClick={() => setQty(i.key, i.qty + 1)} style={{ width: 32, height: 32, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 15 }}>+</button>
                     </div>
                     <button
-                      onClick={() => setQty(i.id, 0)}
+                      onClick={() => setQty(i.key, 0)}
                       style={{
                         border: 'none', background: 'transparent', cursor: 'pointer',
                         fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.1em',
@@ -252,7 +238,7 @@ export default function Checkout() {
                 <Field label="Country" required placeholder="Country" value={form.country} onChange={set('country')} />
               </>
             )}
-            <Field label="Notes" textarea placeholder="Anything else — favourite colours, gift wrapping, questions…" value={form.notes} onChange={set('notes')} />
+            <Field label="Notes" textarea placeholder="Anything else — other prints, gift wrapping, questions…" value={form.notes} onChange={set('notes')} />
           </div>
 
           {error && (
@@ -270,7 +256,7 @@ export default function Checkout() {
             Place order via WhatsApp
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
-            Your order opens in WhatsApp — we confirm stock, prints and payment there.
+            Your order opens in WhatsApp — we confirm stock, colours and payment there.
             Nothing is charged on this page.
           </Body>
         </div>
