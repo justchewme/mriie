@@ -32,19 +32,51 @@ export default function Checkout() {
   const [form, setForm] = useState({ name: '', whatsapp: '', email: '', address: '', city: '', country: '', postal: '', notes: '' })
   const [error, setError] = useState('')
   const [placed, setPlaced] = useState(false)
+  const [paying, setPaying] = useState(false)
+
+  const stripeEnabled = process.env.NEXT_PUBLIC_STRIPE_ENABLED === '1'
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const deliveryFee = delivery === 'dhl' ? SHOP.deliveryFee : 0
   const total = subtotal + deliveryFee
 
-  const placeOrder = () => {
-    if (!delivery) return setError('Please choose delivery or self-collection.')
-    if (!form.name.trim()) return setError('Please tell us your name.')
-    if (!form.whatsapp.trim()) return setError('Please add your WhatsApp number so we can confirm your order.')
-    if (delivery === 'dhl' && (!form.address.trim() || !form.country.trim()))
-      return setError('Please fill in your delivery address and country.')
+  // Card checkout skips the address check — Stripe collects the delivery address itself.
+  const validate = (requireAddress) => {
+    if (!delivery) { setError('Please choose delivery or self-collection.'); return false }
+    if (!form.name.trim()) { setError('Please tell us your name.'); return false }
+    if (!form.whatsapp.trim()) { setError('Please add your WhatsApp number so we can confirm your order.'); return false }
+    if (requireAddress && delivery === 'dhl' && (!form.address.trim() || !form.country.trim())) {
+      setError('Please fill in your delivery address and country.'); return false
+    }
     setError('')
+    return true
+  }
+
+  const payByCard = async () => {
+    if (!validate(false)) return
+    setPaying(true)
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: items.map((i) => ({ productId: i.id, variantId: i.variant.id, qty: i.qty })),
+          delivery,
+          customer: { name: form.name, whatsapp: form.whatsapp, email: form.email, notes: form.notes },
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.url) throw new Error(data.error || 'Could not start the card payment.')
+      window.location.href = data.url
+    } catch (e) {
+      setError(e.message || 'Could not start the card payment — please try again or order via WhatsApp.')
+      setPaying(false)
+    }
+  }
+
+  const placeOrder = () => {
+    if (!validate(true)) return
 
     const lines = items.map(
       (i) => `• ${i.name} — ${i.variant.name} ×${i.qty} — ${SHOP.currency}${i.price * i.qty}`
@@ -245,19 +277,37 @@ export default function Checkout() {
             <Body size={13} color={C.terra} style={{ marginTop: 16 }}>{error}</Body>
           )}
 
+          {stripeEnabled && (
+            <button
+              onClick={payByCard}
+              disabled={paying}
+              style={{
+                width: '100%', marginTop: 22, background: C.ink, color: C.bone, border: 'none',
+                padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13,
+                letterSpacing: '0.18em', textTransform: 'uppercase',
+                cursor: paying ? 'wait' : 'pointer', opacity: paying ? 0.6 : 1,
+              }}
+            >
+              {paying ? 'Opening secure payment…' : `Pay by card — ${SHOP.currency}${total}`}
+            </button>
+          )}
           <button
             onClick={placeOrder}
             style={{
-              width: '100%', marginTop: 22, background: C.ink, color: C.bone, border: 'none',
+              width: '100%', marginTop: stripeEnabled ? 12 : 22,
+              background: stripeEnabled ? 'transparent' : C.ink,
+              color: stripeEnabled ? C.ink : C.bone,
+              border: stripeEnabled ? `1px solid rgba(20,17,15,0.3)` : 'none',
               padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13,
               letterSpacing: '0.18em', textTransform: 'uppercase', cursor: 'pointer',
             }}
           >
-            Place order via WhatsApp
+            {stripeEnabled ? 'Or order via WhatsApp' : 'Place order via WhatsApp'}
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
-            Your order opens in WhatsApp — we confirm stock, colours and payment there.
-            Nothing is charged on this page.
+            {stripeEnabled
+              ? 'Card payments are processed securely by Stripe. Prefer to chat first? Order via WhatsApp and we confirm everything there.'
+              : 'Your order opens in WhatsApp — we confirm stock, colours and payment there. Nothing is charged on this page.'}
           </Body>
         </div>
       </div>
