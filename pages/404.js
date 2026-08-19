@@ -1,27 +1,25 @@
-import Layout from '@/components/Layout'
 import Link from 'next/link'
+import Layout from '@/components/Layout'
+import { C, H, Body } from '@/components/MriieShared'
 
 export default function NotFound() {
   return (
-    <Layout title="Page Not Found">
-      <div className="min-h-screen flex items-center justify-center px-6">
-        <div className="text-center max-w-md">
-          <p className="font-serif text-8xl font-light text-mriie-sand mb-6">404</p>
-          <h1 className="font-serif text-display-sm font-light text-mriie-black mb-6">
-            This page seems to have wandered off
-          </h1>
-          <p className="font-sans text-sm text-mriie-muted mb-10 leading-relaxed">
-            Like a garment that has lived a long life, some things can't be found where we left them. Let's get you back on track.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/" className="btn-primary">
-              Return Home
-            </Link>
-            <Link href="/products" className="btn-secondary">
-              Shop Collection
-            </Link>
-          </div>
-        </div>
+    <Layout title="Page not found">
+      <div style={{ maxWidth: 560, margin: '0 auto', padding: '100px 20px', textAlign: 'center' }}>
+        <H size={36}>Out of bounds</H>
+        <Body size={14} color="rgba(20,17,15,0.6)" style={{ margin: '18px 0 30px' }}>
+          That page doesn&apos;t exist — the shop is this way.
+        </Body>
+        <Link
+          href="/"
+          style={{
+            display: 'inline-block', background: C.ink, color: C.bone, textDecoration: 'none',
+            padding: '16px 30px', fontFamily: 'Inter, sans-serif', fontSize: 12,
+            letterSpacing: '0.16em', textTransform: 'uppercase',
+          }}
+        >
+          Back to the shop
+        </Link>
       </div>
     </Layout>
   )
