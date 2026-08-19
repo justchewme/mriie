@@ -100,6 +100,16 @@ export default function Layout({ children, title, description, ogImage }) {
                 </Link>
               ))}
             </span>
+            <Link
+              href="/wholesale"
+              style={{
+                fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
+                letterSpacing: '0.14em', textTransform: 'uppercase',
+                color: C.terra, textDecoration: 'none',
+              }}
+            >
+              {t('Wholesale')}
+            </Link>
             <a
               href={waLink('Hello Mriie PADL! I have a question 🙂')}
               target="_blank"
@@ -146,6 +156,7 @@ export default function Layout({ children, title, description, ogImage }) {
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
                 {t('Shop')}
               </span>
+              <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Wholesale')}</Link>
               <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('FAQ')}</Link>
               <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Padel in Bali guide')}</Link>
               <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Shipping & Delivery')}</Link>

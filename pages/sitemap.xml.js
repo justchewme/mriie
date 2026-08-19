@@ -2,7 +2,7 @@
 import { courts } from '@/lib/courts'
 import { absUrl } from '@/lib/seo'
 
-const STATIC_PATHS = ['/', '/faq', '/shipping', '/returns', '/terms', '/padel-bali']
+const STATIC_PATHS = ['/', '/wholesale', '/faq', '/shipping', '/returns', '/terms', '/padel-bali']
 
 export async function getServerSideProps({ res }) {
   const urls = [

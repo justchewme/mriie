@@ -190,6 +190,11 @@ export default function Shop() {
             {t('New to the island? Our guide to padel in Bali →')}
           </Link>
         </Body>
+        <Body size={12} style={{ marginTop: 8 }}>
+          <Link href="/wholesale" style={{ color: C.terra }}>
+            {t('Buying for a store or club? Wholesale tiers →')}
+          </Link>
+        </Body>
       </section>
 
       {/* Instagram gallery */}
