@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'Card payments are not live yet — please order via WhatsApp.' })
   }
 
-  const { items, delivery, customer = {} } = req.body || {}
+  const { items, delivery, customer = {}, locale } = req.body || {}
   if (!Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'Your bag is empty.' })
   if (delivery !== 'pickup' && delivery !== 'dhl') return res.status(400).json({ error: 'Please choose a delivery option.' })
 
@@ -53,6 +53,7 @@ export default async function handler(req, res) {
   try {
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
+      locale: ['en', 'es', 'id'].includes(locale) ? locale : 'auto',
       line_items,
       phone_number_collection: { enabled: true },
       customer_email: (customer.email || '').trim() || undefined,

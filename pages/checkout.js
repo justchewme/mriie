@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
+import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
 const inputStyle = {
@@ -28,6 +29,7 @@ function Field({ label, required, ...props }) {
 
 export default function Checkout() {
   const { items, count, subtotal, setQty, clear, loaded } = useCart()
+  const { t, locale } = useT()
   const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl'
   const [form, setForm] = useState({ name: '', whatsapp: '', email: '', address: '', city: '', country: '', postal: '', notes: '' })
   const [error, setError] = useState('')
@@ -43,11 +45,11 @@ export default function Checkout() {
 
   // Card checkout skips the address check — Stripe collects the delivery address itself.
   const validate = (requireAddress) => {
-    if (!delivery) { setError('Please choose delivery or self-collection.'); return false }
-    if (!form.name.trim()) { setError('Please tell us your name.'); return false }
-    if (!form.whatsapp.trim()) { setError('Please add your WhatsApp number so we can confirm your order.'); return false }
+    if (!delivery) { setError(t('Please choose delivery or self-collection.')); return false }
+    if (!form.name.trim()) { setError(t('Please tell us your name.')); return false }
+    if (!form.whatsapp.trim()) { setError(t('Please add your WhatsApp number so we can confirm your order.')); return false }
     if (requireAddress && delivery === 'dhl' && (!form.address.trim() || !form.country.trim())) {
-      setError('Please fill in your delivery address and country.'); return false
+      setError(t('Please fill in your delivery address and country.')); return false
     }
     setError('')
     return true
@@ -63,14 +65,15 @@ export default function Checkout() {
         body: JSON.stringify({
           items: items.map((i) => ({ productId: i.id, variantId: i.variant.id, qty: i.qty })),
           delivery,
+          locale,
           customer: { name: form.name, whatsapp: form.whatsapp, email: form.email, notes: form.notes },
         }),
       })
       const data = await res.json()
-      if (!res.ok || !data.url) throw new Error(data.error || 'Could not start the card payment.')
+      if (!res.ok || !data.url) throw new Error(data.error || t('Could not start the card payment — please try again or order via WhatsApp.'))
       window.location.href = data.url
     } catch (e) {
-      setError(e.message || 'Could not start the card payment — please try again or order via WhatsApp.')
+      setError(e.message || t('Could not start the card payment — please try again or order via WhatsApp.'))
       setPaying(false)
     }
   }
@@ -112,19 +115,17 @@ export default function Checkout() {
     return (
       <Layout title="Order sent">
         <div style={{ maxWidth: 560, margin: '0 auto', padding: '90px 20px', textAlign: 'center' }}>
-          <Label color={C.terra} style={{ marginBottom: 18 }}>Almost there</Label>
-          <H size={36}>Press send in WhatsApp</H>
+          <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Almost there')}</Label>
+          <H size={36}>{t('Press send in WhatsApp')}</H>
           <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '20px 0 32px' }}>
-            Your order is waiting in your WhatsApp chat — just press send.
-            We&apos;ll reply shortly to confirm your colours, stock and payment
-            (bank transfer or card).
+            {t('Your order is waiting in your WhatsApp chat — just press send. We’ll reply shortly to confirm your colours, stock and payment (bank transfer or card).')}
           </Body>
           <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
-            WhatsApp didn&apos;t open?{' '}
+            {t('WhatsApp didn’t open?')}{' '}
             <a href={waLink('Hello Mriie PADL! I just tried to place an order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-              Tap here to chat with us
+              {t('Tap here to chat with us')}
             </a>{' '}
-            or email {SHOP.email}.
+            {t('or email')} {SHOP.email}.
           </Body>
           <button
             onClick={() => { clear(); }}
@@ -134,7 +135,7 @@ export default function Checkout() {
               letterSpacing: '0.16em', textTransform: 'uppercase', cursor: 'pointer',
             }}
           >
-            Done — clear my bag
+            {t('Done — clear my bag')}
           </button>
         </div>
       </Layout>
@@ -145,9 +146,9 @@ export default function Checkout() {
     return (
       <Layout title="Your bag">
         <div style={{ maxWidth: 560, margin: '0 auto', padding: '90px 20px', textAlign: 'center' }}>
-          <H size={34}>Your bag is empty</H>
+          <H size={34}>{t('Your bag is empty')}</H>
           <Body size={14} color="rgba(20,17,15,0.6)" style={{ margin: '18px 0 30px' }}>
-            Add a cover, bag or towel and come back here to check out.
+            {t('Add a cover, bag or towel and come back here to check out.')}
           </Body>
           <Link
             href="/"
@@ -157,7 +158,7 @@ export default function Checkout() {
               letterSpacing: '0.16em', textTransform: 'uppercase',
             }}
           >
-            Back to the shop
+            {t('Back to the shop')}
           </Link>
         </div>
       </Layout>
@@ -193,7 +194,7 @@ export default function Checkout() {
       >
         {/* Bag */}
         <div>
-          <H size={30} style={{ marginBottom: 24 }}>Your bag</H>
+          <H size={30} style={{ marginBottom: 24 }}>{t('Your bag')}</H>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             {items.map((i) => (
               <div key={i.key} style={{ display: 'flex', gap: 16, background: '#fff', padding: 14 }}>
@@ -201,12 +202,12 @@ export default function Checkout() {
                 <img src={i.variant.image} alt={`${i.name} — ${i.variant.name}`} style={{ width: 84, height: 105, objectFit: 'cover', flexShrink: 0 }} />
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
-                    <Body size={14} weight={500}>{i.name}</Body>
+                    <Body size={14} weight={500}>{localizeProduct(i, locale).name}</Body>
                     <span style={{ fontFamily: '"Fraunces", serif', fontSize: 16, color: C.terra }}>
                       {SHOP.currency}{i.price * i.qty}
                     </span>
                   </div>
-                  <Body size={12} color="rgba(20,17,15,0.55)">Colour: {i.variant.name}</Body>
+                  <Body size={12} color="rgba(20,17,15,0.55)">{t('Colour:')} {i.variant.name}</Body>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 'auto' }}>
                     <div style={{ display: 'flex', alignItems: 'center', border: `1px solid rgba(20,17,15,0.2)` }}>
                       <button onClick={() => setQty(i.key, i.qty - 1)} style={{ width: 32, height: 32, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 15 }}>−</button>
@@ -221,7 +222,7 @@ export default function Checkout() {
                         textTransform: 'uppercase', color: 'rgba(20,17,15,0.45)',
                       }}
                     >
-                      Remove
+                      {t('Remove')}
                     </button>
                   </div>
                 </div>
@@ -232,17 +233,17 @@ export default function Checkout() {
           {/* Totals */}
           <div style={{ marginTop: 26, borderTop: `1px solid rgba(20,17,15,0.15)`, paddingTop: 18, fontFamily: 'Inter, sans-serif', fontSize: 14 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ opacity: 0.65 }}>Subtotal</span>
+              <span style={{ opacity: 0.65 }}>{t('Subtotal')}</span>
               <span>{SHOP.currency}{subtotal}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-              <span style={{ opacity: 0.65 }}>Delivery</span>
+              <span style={{ opacity: 0.65 }}>{t('Delivery')}</span>
               <span>
-                {delivery === null ? 'Choose below' : delivery === 'dhl' ? `${SHOP.currency}${SHOP.deliveryFee}` : 'Free'}
+                {delivery === null ? t('Choose below') : delivery === 'dhl' ? `${SHOP.currency}${SHOP.deliveryFee}` : t('Free')}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 14, fontFamily: '"Fraunces", serif', fontSize: 22, color: C.ink }}>
-              <span>Total</span>
+              <span>{t('Total')}</span>
               <span style={{ color: C.terra }}>{SHOP.currency}{total}</span>
             </div>
           </div>
@@ -250,27 +251,27 @@ export default function Checkout() {
 
         {/* Delivery + details */}
         <div>
-          <H size={30} style={{ marginBottom: 24 }}>Delivery</H>
+          <H size={30} style={{ marginBottom: 24 }}>{t('Delivery')}</H>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {radioCard('pickup', 'Self-collection — Bali', 'We share the pickup point with you on WhatsApp', 'Free')}
-            {radioCard('dhl', 'DHL Express — worldwide', 'Tracked door-to-door, typically 5–10 business days', `${SHOP.currency}${SHOP.deliveryFee}`)}
+            {radioCard('pickup', t('Self-collection — Bali'), t('We share the pickup point with you on WhatsApp'), t('Free'))}
+            {radioCard('dhl', t('DHL Express — worldwide'), t('Tracked door-to-door, typically 5–10 business days'), `${SHOP.currency}${SHOP.deliveryFee}`)}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 28 }}>
-            <Field label="Name" required placeholder="Your name" value={form.name} onChange={set('name')} />
-            <Field label="WhatsApp number" required placeholder="+971 50 123 4567" value={form.whatsapp} onChange={set('whatsapp')} />
-            <Field label="Email" placeholder="you@email.com (optional)" value={form.email} onChange={set('email')} />
+            <Field label={t('Name')} required placeholder={t('Your name')} value={form.name} onChange={set('name')} />
+            <Field label={t('WhatsApp number')} required placeholder="+971 50 123 4567" value={form.whatsapp} onChange={set('whatsapp')} />
+            <Field label={t('Email')} placeholder={t('you@email.com (optional)')} value={form.email} onChange={set('email')} />
             {delivery === 'dhl' && (
               <>
-                <Field label="Address" required placeholder="Street address" value={form.address} onChange={set('address')} />
+                <Field label={t('Address')} required placeholder={t('Street address')} value={form.address} onChange={set('address')} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                  <Field label="City" placeholder="City" value={form.city} onChange={set('city')} />
-                  <Field label="Postal code" placeholder="Postal code" value={form.postal} onChange={set('postal')} />
+                  <Field label={t('City')} placeholder={t('City')} value={form.city} onChange={set('city')} />
+                  <Field label={t('Postal code')} placeholder={t('Postal code')} value={form.postal} onChange={set('postal')} />
                 </div>
-                <Field label="Country" required placeholder="Country" value={form.country} onChange={set('country')} />
+                <Field label={t('Country')} required placeholder={t('Country')} value={form.country} onChange={set('country')} />
               </>
             )}
-            <Field label="Notes" textarea placeholder="Anything else — other prints, gift wrapping, questions…" value={form.notes} onChange={set('notes')} />
+            <Field label={t('Notes')} textarea placeholder={t('Anything else — other prints, gift wrapping, questions…')} value={form.notes} onChange={set('notes')} />
           </div>
 
           {error && (
@@ -288,7 +289,7 @@ export default function Checkout() {
                 cursor: paying ? 'wait' : 'pointer', opacity: paying ? 0.6 : 1,
               }}
             >
-              {paying ? 'Opening secure payment…' : `Pay by card — ${SHOP.currency}${total}`}
+              {paying ? t('Opening secure payment…') : t('Pay by card — {currency}{total}', { currency: SHOP.currency, total })}
             </button>
           )}
           <button
@@ -302,11 +303,11 @@ export default function Checkout() {
               letterSpacing: '0.18em', textTransform: 'uppercase', cursor: 'pointer',
             }}
           >
-            {stripeEnabled ? 'Or order via WhatsApp' : 'Place order via WhatsApp'}
+            {stripeEnabled ? t('Or order via WhatsApp') : t('Place order via WhatsApp')}
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
             {stripeEnabled
-              ? 'Card payments are processed securely by Stripe. Prefer to chat first? Order via WhatsApp and we confirm everything there.'
+              ? t('Card payments are processed securely by Stripe. Prefer to chat first? Order via WhatsApp and we confirm everything there.')
               : 'Your order opens in WhatsApp — we confirm stock, colours and payment there. Nothing is charged on this page.'}
           </Body>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginTop: 14 }}>
@@ -324,11 +325,11 @@ export default function Checkout() {
             ))}
           </div>
           <Body size={11} color="rgba(20,17,15,0.45)" style={{ marginTop: 12, textAlign: 'center' }}>
-            <Link href="/shipping" style={{ color: 'inherit' }}>Shipping &amp; Delivery</Link>
+            <Link href="/shipping" style={{ color: 'inherit' }}>{t('Shipping & Delivery')}</Link>
             {' · '}
-            <Link href="/returns" style={{ color: 'inherit' }}>Returns</Link>
+            <Link href="/returns" style={{ color: 'inherit' }}>{t('Returns')}</Link>
             {' · '}
-            <Link href="/terms" style={{ color: 'inherit' }}>Terms &amp; Privacy</Link>
+            <Link href="/terms" style={{ color: 'inherit' }}>{t('Terms & Privacy')}</Link>
           </Body>
         </div>
       </div>

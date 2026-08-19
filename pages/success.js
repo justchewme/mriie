@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
+import { useT } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
 export async function getServerSideProps({ query }) {
@@ -27,6 +28,7 @@ export async function getServerSideProps({ query }) {
 
 export default function Success({ order }) {
   const { clear, loaded } = useCart()
+  const { t } = useT()
 
   useEffect(() => {
     if (loaded && order) clear()
@@ -36,8 +38,8 @@ export default function Success({ order }) {
   return (
     <Layout title="Payment received">
       <div style={{ maxWidth: 560, margin: '0 auto', padding: '90px 20px', textAlign: 'center' }}>
-        <Label color={C.terra} style={{ marginBottom: 18 }}>Thank you</Label>
-        <H size={36}>{order ? 'Payment received' : 'Thank you for your order'}</H>
+        <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Thank you')}</Label>
+        <H size={36}>{order ? t('Payment received') : t('Thank you for your order')}</H>
         <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '20px 0 32px' }}>
           {order?.name ? `Thank you, ${order.name}. ` : ''}
           {order
@@ -47,11 +49,11 @@ export default function Success({ order }) {
           {order ? ' arrange ' : ' '}delivery.
         </Body>
         <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
-          Questions?{' '}
+          {t('Questions?')}{' '}
           <a href={waLink('Hello Mriie PADL! I just paid for an order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-            Chat with us on WhatsApp
+            {t('Chat with us on WhatsApp')}
           </a>{' '}
-          or email {SHOP.email}.
+          {t('or email')} {SHOP.email}.
         </Body>
         <Link
           href="/"
@@ -61,7 +63,7 @@ export default function Success({ order }) {
             letterSpacing: '0.16em', textTransform: 'uppercase',
           }}
         >
-          Back to the shop
+          {t('Back to the shop')}
         </Link>
       </div>
     </Layout>

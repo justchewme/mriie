@@ -6,6 +6,7 @@ import { productLd, ld } from '@/lib/seo'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
 import { products } from '@/lib/products'
 import { SHOP, waLink } from '@/lib/config'
+import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
 function QtyStepper({ value, onChange }) {
@@ -30,8 +31,10 @@ function QtyStepper({ value, onChange }) {
   )
 }
 
-function ProductCard({ product }) {
+function ProductCard({ product: baseProduct }) {
   const { addItem, inCartFor } = useCart()
+  const { t, locale } = useT()
+  const product = localizeProduct(baseProduct, locale)
   const inCart = inCartFor(product.id)
   const [qty, setLocalQty] = useState(1)
   const [variant, setVariant] = useState(product.variants[0])
@@ -109,13 +112,13 @@ function ProductCard({ product }) {
           </ul>
         )}
         <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
-          {SHOP.leadNote}
+          {t(SHOP.leadNote)}
         </Body>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 'auto' }}>
           <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
             {SHOP.currency}{product.price}
           </div>
-          <Body size={11} color="rgba(20,17,15,0.5)">Colour: {variant.name}</Body>
+          <Body size={11} color="rgba(20,17,15,0.5)">{t('Colour:')} {variant.name}</Body>
         </div>
 
         <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
@@ -128,11 +131,11 @@ function ProductCard({ product }) {
               textTransform: 'uppercase', cursor: 'pointer', transition: 'background .25s',
             }}
           >
-            {added ? 'Added ✓' : 'Add to bag'}
+            {added ? t('Added ✓') : t('Add to bag')}
           </button>
         </div>
         {inCart > 0 && (
-          <Body size={11} color="rgba(20,17,15,0.5)">{inCart} in your bag</Body>
+          <Body size={11} color="rgba(20,17,15,0.5)">{inCart} {t('in your bag')}</Body>
         )}
       </div>
     </div>
@@ -141,6 +144,7 @@ function ProductCard({ product }) {
 
 export default function Shop() {
   const { count, subtotal } = useCart()
+  const { t } = useT()
 
   return (
     <Layout>
@@ -151,11 +155,10 @@ export default function Shop() {
       </Head>
       {/* Intro strip */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '52px 20px 36px', textAlign: 'center' }}>
-        <Label color={C.terra} style={{ marginBottom: 18 }}>Handmade in Bali · Ships Worldwide</Label>
+        <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Handmade in Bali · Ships Worldwide')}</Label>
         <H size={44}>Keep it cool. Play it hot.</H>
         <Body size={14} color="rgba(20,17,15,0.6)" style={{ maxWidth: 520, margin: '18px auto 0' }}>
-          Thermal covers, court bags and linen towels in signature prints —
-          each piece handmade by our artisans in Bali. Tap a swatch to see the colours.
+          {t('Thermal covers, court bags and linen towels in signature prints — each piece handmade by our artisans in Bali. Tap a swatch to see the colours.')}
         </Body>
       </section>
 
@@ -174,19 +177,17 @@ export default function Shop() {
       {/* Story + proof */}
       <section style={{ maxWidth: 760, margin: '0 auto', padding: '72px 20px 0', textAlign: 'center' }}>
         <MotifDivider motif="frangipani" />
-        <Label color={C.terra} style={{ marginTop: 44, marginBottom: 16 }}>From a Bali workshop</Label>
-        <H size={30}>Stitched in the village</H>
+        <Label color={C.terra} style={{ marginTop: 44, marginBottom: 16 }}>{t('From a Bali workshop')}</Label>
+        <H size={30}>{t('Stitched in the village')}</H>
         <Body size={14} color="rgba(20,17,15,0.7)" style={{ maxWidth: 540, margin: '18px auto 0' }}>
-          Every cover, bag and towel is cut and sewn by hand by our artisans in Bali —
-          over 10,000 pieces so far, shipped to players in six countries. Soon you can
-          visit us too: our {SHOP.store.area} shop on {SHOP.store.street} is opening soon.
+          {t('Every cover, bag and towel is cut and sewn by hand by our artisans in Bali — over 10,000 pieces so far, shipped to players in six countries. Soon you can visit us too: our {area} shop on {street} is opening soon.', { area: SHOP.store.area, street: SHOP.store.street })}
         </Body>
         <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 22, letterSpacing: '0.06em' }}>
-          Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam
+          {t('Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam')}
         </Body>
         <Body size={12} style={{ marginTop: 12 }}>
           <Link href="/padel-bali" style={{ color: C.terra }}>
-            New to the island? Our guide to padel in Bali →
+            {t('New to the island? Our guide to padel in Bali →')}
           </Link>
         </Body>
       </section>
@@ -203,7 +204,7 @@ export default function Shop() {
             color: C.ink, textDecoration: 'none',
           }}
         >
-          Follow us — @{SHOP.instagram} ↗
+          {t('Follow us — @{ig} ↗', { ig: SHOP.instagram })}
         </a>
         <div
           style={{
@@ -225,33 +226,30 @@ export default function Shop() {
         <MotifDivider motif="frangipani" />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 32, marginTop: 44 }}>
           <div>
-            <Label color={C.terra}>Ordering</Label>
+            <Label color={C.terra}>{t('Ordering')}</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              Add your pieces and pay securely by card — checkout is handled by Stripe.
-              Prefer to chat? Order via WhatsApp and pay by bank transfer instead.
-              No account needed either way.
+              {t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.')}
             </Body>
           </div>
           <div>
-            <Label color={C.terra}>Delivery</Label>
+            <Label color={C.terra}>{t('Delivery')}</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              DHL Express worldwide at a flat {SHOP.currency}{SHOP.deliveryFee}, typically 5–10 business days.
-              In Bali? Self-collection is free.
+              {t('DHL Express worldwide at a flat {currency}{fee}, typically 5–10 business days. In Bali? Self-collection is free.', { currency: SHOP.currency, fee: SHOP.deliveryFee })}
             </Body>
           </div>
           <div>
-            <Label color={C.terra}>More prints</Label>
+            <Label color={C.terra}>{t('More prints')}</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              Every piece is handmade in 20+ signature prints — the swatches are just the start.{' '}
+              {t('Every piece is handmade in 20+ signature prints — the swatches are just the start.')}{' '}
               <a
                 href={waLink('Hello Mriie PADL! Can I see more prints?')}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{ color: C.terra }}
               >
-                Ask us on WhatsApp
+                {t('Ask us on WhatsApp')}
               </a>{' '}
-              to see them all.
+              {t('to see them all.')}
             </Body>
           </div>
         </div>
@@ -274,9 +272,9 @@ export default function Shop() {
               fontFamily: 'Inter, sans-serif', fontSize: 13, letterSpacing: '0.1em',
             }}
           >
-            <span>{count} item{count > 1 ? 's' : ''} · {SHOP.currency}{subtotal}</span>
+            <span>{count} {count > 1 ? t('items') : t('item')} · {SHOP.currency}{subtotal}</span>
             <span style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: 12 }}>
-              Checkout →
+              {t('Checkout →')}
             </span>
           </Link>
         </div>

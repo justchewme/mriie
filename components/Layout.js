@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { C, Wordmark } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
 import { SITE, absUrl, organizationLd, ld } from '@/lib/seo'
+import { LOCALES, useT } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
 const WaIcon = ({ size = 20, color = C.bone }) => (
@@ -15,10 +16,12 @@ const WaIcon = ({ size = 20, color = C.bone }) => (
 export default function Layout({ children, title, description, ogImage }) {
   const { count } = useCart()
   const router = useRouter()
+  const { t, locale } = useT()
 
   const pageTitle = title ? `${title} — Mriie PADL` : SITE.title
   const pageDesc = description || SITE.description
-  const canonical = absUrl(router.asPath.split('?')[0].split('#')[0])
+  const path = router.asPath.split('?')[0].split('#')[0]
+  const canonical = absUrl(locale === 'en' ? path : `/${locale}${path === '/' ? '' : path}`)
   const image = absUrl(ogImage || SITE.ogImage)
 
   return (
@@ -28,6 +31,15 @@ export default function Layout({ children, title, description, ogImage }) {
         <meta name="description" content={pageDesc} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={canonical} />
+        <link rel="alternate" hrefLang="x-default" href={absUrl(path)} />
+        {LOCALES.map((l) => (
+          <link
+            key={l.code}
+            rel="alternate"
+            hrefLang={l.code}
+            href={absUrl(l.code === 'en' ? path : `/${l.code}${path === '/' ? '' : path}`)}
+          />
+        ))}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -69,7 +81,25 @@ export default function Layout({ children, title, description, ogImage }) {
               Padl
             </span>
           </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+            <span style={{ display: 'flex', gap: 2 }}>
+              {LOCALES.map((l) => (
+                <Link
+                  key={l.code}
+                  href={router.asPath}
+                  locale={l.code}
+                  style={{
+                    fontFamily: 'Inter, sans-serif', fontSize: 10, fontWeight: 500,
+                    letterSpacing: '0.1em', textDecoration: 'none', padding: '5px 6px',
+                    color: locale === l.code ? C.bone : C.ink,
+                    background: locale === l.code ? C.terra : 'transparent',
+                    opacity: locale === l.code ? 1 : 0.55,
+                  }}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </span>
             <a
               href={waLink('Hello Mriie PADL! I have a question 🙂')}
               target="_blank"
@@ -80,7 +110,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 color: C.ink, textDecoration: 'none', opacity: 0.75,
               }}
             >
-              Help
+              {t('Help')}
             </a>
             <Link
               href="/checkout"
@@ -91,7 +121,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8,
               }}
             >
-              Bag{count > 0 ? ` · ${count}` : ''}
+              {t('Bag')}{count > 0 ? ` · ${count}` : ''}
             </Link>
           </div>
         </div>
@@ -106,28 +136,28 @@ export default function Layout({ children, title, description, ogImage }) {
             <div style={{ maxWidth: 320 }}>
               <Wordmark color={C.bone} size={14} />
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 16 }}>
-                Thermal padel covers, bags and linen towels — handmade in Bali, shipped worldwide.
+                {t('Thermal padel covers, bags and linen towels — handmade in Bali, shipped worldwide.')}
               </p>
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 12 }}>
-                Our {SHOP.store.area} shop on {SHOP.store.street} is opening soon.
+                {t('Our {area} shop on {street} is opening soon.', { area: SHOP.store.area, street: SHOP.store.street })}
               </p>
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
-                Shop
+                {t('Shop')}
               </span>
-              <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>FAQ</Link>
-              <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Padel in Bali guide</Link>
-              <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Shipping &amp; Delivery</Link>
-              <Link href="/returns" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Returns</Link>
-              <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Terms &amp; Privacy</Link>
+              <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('FAQ')}</Link>
+              <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Padel in Bali guide')}</Link>
+              <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Shipping & Delivery')}</Link>
+              <Link href="/returns" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Returns')}</Link>
+              <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Terms & Privacy')}</Link>
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
-                Contact
+                {t('Contact')}
               </span>
               <a href={waLink()} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
-                WhatsApp us
+                {t('WhatsApp us')}
               </a>
               <a href={`mailto:${SHOP.email}`} style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 {SHOP.email}
@@ -144,10 +174,10 @@ export default function Layout({ children, title, description, ogImage }) {
             }}
           >
             <div style={{ opacity: 0.45, fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em' }}>
-              © {new Date().getFullYear()} {SHOP.company} · NIB {SHOP.nib} · Handmade in Bali
+              © {new Date().getFullYear()} {SHOP.company} · NIB {SHOP.nib} · {t('Handmade in Bali')}
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {['Visa', 'Mastercard', 'Amex', 'Secured by Stripe', 'WhatsApp'].map((m) => (
+              {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe'), 'WhatsApp'].map((m) => (
                 <span
                   key={m}
                   style={{

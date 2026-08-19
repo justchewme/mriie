@@ -7,8 +7,11 @@ import { products } from '@/lib/products'
 import { breadcrumbLd, faqLd, ld } from '@/lib/seo'
 import { SHOP, waLink } from '@/lib/config'
 
-export async function getStaticPaths() {
-  return { paths: courts.map((c) => ({ params: { slug: c.slug } })), fallback: false }
+export async function getStaticPaths({ locales }) {
+  return {
+    paths: locales.flatMap((locale) => courts.map((c) => ({ params: { slug: c.slug }, locale }))),
+    fallback: false,
+  }
 }
 
 export async function getStaticProps({ params }) {
