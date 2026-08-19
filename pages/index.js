@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import Head from 'next/head'
 import { useState } from 'react'
 import Layout from '@/components/Layout'
+import { productLd, ld } from '@/lib/seo'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
 import { products } from '@/lib/products'
 import { SHOP, waLink } from '@/lib/config'
@@ -142,6 +144,11 @@ export default function Shop() {
 
   return (
     <Layout>
+      <Head>
+        {products.map((p) => (
+          <script key={p.id} type="application/ld+json" dangerouslySetInnerHTML={ld(productLd(p))} />
+        ))}
+      </Head>
       {/* Intro strip */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '52px 20px 36px', textAlign: 'center' }}>
         <Label color={C.terra} style={{ marginBottom: 18 }}>Handmade in Bali · Ships Worldwide</Label>
@@ -176,6 +183,11 @@ export default function Shop() {
         </Body>
         <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 22, letterSpacing: '0.06em' }}>
           Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam
+        </Body>
+        <Body size={12} style={{ marginTop: 12 }}>
+          <Link href="/padel-bali" style={{ color: C.terra }}>
+            New to the island? Our guide to padel in Bali →
+          </Link>
         </Body>
       </section>
 

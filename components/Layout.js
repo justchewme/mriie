@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { C, Wordmark } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
+import { SITE, absUrl, organizationLd, ld } from '@/lib/seo'
 import { useCart } from '@/components/CartContext'
 
 const WaIcon = ({ size = 20, color = C.bone }) => (
@@ -10,13 +12,14 @@ const WaIcon = ({ size = 20, color = C.bone }) => (
   </svg>
 )
 
-export default function Layout({ children, title, description }) {
+export default function Layout({ children, title, description, ogImage }) {
   const { count } = useCart()
+  const router = useRouter()
 
-  const pageTitle = title ? `${title} — Mriie PADL` : 'Mriie PADL — Handmade in Bali'
-  const pageDesc =
-    description ||
-    'Thermal padel covers, padel bags and linen sport towels — handmade in Bali, shipped worldwide.'
+  const pageTitle = title ? `${title} — Mriie PADL` : SITE.title
+  const pageDesc = description || SITE.description
+  const canonical = absUrl(router.asPath.split('?')[0].split('#')[0])
+  const image = absUrl(ogImage || SITE.ogImage)
 
   return (
     <div style={{ background: C.bone, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -24,12 +27,21 @@ export default function Layout({ children, title, description }) {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDesc} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href={canonical} />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDesc} />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Mriie PADL" />
-        <meta property="og:image" content="/shop/covers.jpg" />
+        <meta property="og:site_name" content={SITE.name} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={image} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta name="twitter:description" content={pageDesc} />
+        <meta name="twitter:image" content={image} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={ld(organizationLd())} />
       </Head>
 
       {/* Header */}
@@ -105,6 +117,7 @@ export default function Layout({ children, title, description }) {
                 Shop
               </span>
               <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>FAQ</Link>
+              <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Padel in Bali guide</Link>
               <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Shipping &amp; Delivery</Link>
               <Link href="/returns" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Returns</Link>
               <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Terms &amp; Privacy</Link>
