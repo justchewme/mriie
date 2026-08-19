@@ -309,6 +309,27 @@ export default function Checkout() {
               ? 'Card payments are processed securely by Stripe. Prefer to chat first? Order via WhatsApp and we confirm everything there.'
               : 'Your order opens in WhatsApp — we confirm stock, colours and payment there. Nothing is charged on this page.'}
           </Body>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginTop: 14 }}>
+            {['Visa', 'Mastercard', 'Amex', 'Secured by Stripe'].map((m) => (
+              <span
+                key={m}
+                style={{
+                  fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.1em',
+                  textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)',
+                  border: '1px solid rgba(20,17,15,0.2)', padding: '5px 10px',
+                }}
+              >
+                {m}
+              </span>
+            ))}
+          </div>
+          <Body size={11} color="rgba(20,17,15,0.45)" style={{ marginTop: 12, textAlign: 'center' }}>
+            <Link href="/shipping" style={{ color: 'inherit' }}>Shipping &amp; Delivery</Link>
+            {' · '}
+            <Link href="/returns" style={{ color: 'inherit' }}>Returns</Link>
+            {' · '}
+            <Link href="/terms" style={{ color: 'inherit' }}>Terms &amp; Privacy</Link>
+          </Body>
         </div>
       </div>
     </Layout>

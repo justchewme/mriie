@@ -97,6 +97,18 @@ function ProductCard({ product }) {
         <Body size={13} color="rgba(20,17,15,0.75)">
           {product.description}
         </Body>
+        {product.specs && (
+          <ul style={{ margin: 0, paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {product.specs.map((s) => (
+              <li key={s} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 12, lineHeight: 1.5, color: 'rgba(20,17,15,0.6)' }}>
+                {s}
+              </li>
+            ))}
+          </ul>
+        )}
+        <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
+          {SHOP.leadNote}
+        </Body>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 'auto' }}>
           <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
             {SHOP.currency}{product.price}
@@ -152,6 +164,50 @@ export default function Shop() {
         ))}
       </section>
 
+      {/* Story + proof */}
+      <section style={{ maxWidth: 760, margin: '0 auto', padding: '72px 20px 0', textAlign: 'center' }}>
+        <MotifDivider motif="frangipani" />
+        <Label color={C.terra} style={{ marginTop: 44, marginBottom: 16 }}>From a Bali workshop</Label>
+        <H size={30}>Stitched in the village</H>
+        <Body size={14} color="rgba(20,17,15,0.7)" style={{ maxWidth: 540, margin: '18px auto 0' }}>
+          Every cover, bag and towel is cut and sewn by hand by our artisans in Bali —
+          over 10,000 pieces so far, shipped to players in six countries. Soon you can
+          visit us too: our {SHOP.store.area} shop on {SHOP.store.street} is opening soon.
+        </Body>
+        <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 22, letterSpacing: '0.06em' }}>
+          Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam
+        </Body>
+      </section>
+
+      {/* Instagram gallery */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '56px 20px 0', textAlign: 'center' }}>
+        <a
+          href={SHOP.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
+            letterSpacing: '0.24em', textTransform: 'uppercase',
+            color: C.ink, textDecoration: 'none',
+          }}
+        >
+          Follow us — @{SHOP.instagram} ↗
+        </a>
+        <div
+          style={{
+            marginTop: 24, display: 'grid', gap: 12,
+            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+          }}
+        >
+          {['/shop/collection.jpg', '/shop/bag-riviera-stripe-2.jpg', '/shop/crossbody.jpg', '/shop/cover-noir-stripe-2.jpg', '/shop/towel-2.jpg'].map((src) => (
+            <a key={src} href={SHOP.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', aspectRatio: '1 / 1', overflow: 'hidden', background: C.coconut }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={src} alt={`Mriie PADL on Instagram — @${SHOP.instagram}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            </a>
+          ))}
+        </div>
+      </section>
+
       {/* How it works / FAQ */}
       <section style={{ maxWidth: 760, margin: '0 auto', padding: '72px 20px 0' }}>
         <MotifDivider motif="frangipani" />
@@ -159,8 +215,9 @@ export default function Shop() {
           <div>
             <Label color={C.terra}>Ordering</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              Add your pieces and check out — your order opens in WhatsApp, where we confirm
-              stock, colours and payment (bank transfer or card). No account needed.
+              Add your pieces and pay securely by card — checkout is handled by Stripe.
+              Prefer to chat? Order via WhatsApp and pay by bank transfer instead.
+              No account needed either way.
             </Body>
           </div>
           <div>

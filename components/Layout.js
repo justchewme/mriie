@@ -96,8 +96,23 @@ export default function Layout({ children, title, description }) {
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 16 }}>
                 Thermal padel covers, bags and linen towels — handmade in Bali, shipped worldwide.
               </p>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 12 }}>
+                Our {SHOP.store.area} shop on {SHOP.store.street} is opening soon.
+              </p>
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
+              <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
+                Shop
+              </span>
+              <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>FAQ</Link>
+              <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Shipping &amp; Delivery</Link>
+              <Link href="/returns" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Returns</Link>
+              <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>Terms &amp; Privacy</Link>
+            </div>
+            <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
+              <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
+                Contact
+              </span>
               <a href={waLink()} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 WhatsApp us
               </a>
@@ -109,8 +124,29 @@ export default function Layout({ children, title, description }) {
               </a>
             </div>
           </div>
-          <div style={{ marginTop: 40, opacity: 0.45, fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em' }}>
-            © {new Date().getFullYear()} {SHOP.company} · Handmade in Bali
+          <div
+            style={{
+              marginTop: 40, paddingTop: 24, borderTop: '1px solid rgba(244,239,230,0.15)',
+              display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', justifyContent: 'space-between',
+            }}
+          >
+            <div style={{ opacity: 0.45, fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em' }}>
+              © {new Date().getFullYear()} {SHOP.company} · NIB {SHOP.nib} · Handmade in Bali
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {['Visa', 'Mastercard', 'Amex', 'Secured by Stripe', 'WhatsApp'].map((m) => (
+                <span
+                  key={m}
+                  style={{
+                    fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.1em',
+                    textTransform: 'uppercase', color: C.bone, opacity: 0.6,
+                    border: '1px solid rgba(244,239,230,0.3)', padding: '5px 10px',
+                  }}
+                >
+                  {m}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </footer>
