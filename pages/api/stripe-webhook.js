@@ -52,6 +52,26 @@ export default async function handler(req, res) {
         `Stripe: https://dashboard.stripe.com/${session.livemode ? '' : 'test/'}payments/${session.payment_intent}`,
       ].filter(Boolean)
 
+      // Phone push first — it is the alert Justin actually sees in seconds.
+      if (process.env.NTFY_TOPIC) {
+        try {
+          await fetch('https://ntfy.sh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              topic: process.env.NTFY_TOPIC,
+              title: `New Mriie order — ${session.currency.toUpperCase()} ${(session.amount_total / 100).toFixed(2)}${session.livemode ? '' : ' [TEST]'}`,
+              message: lines.slice(2).join('\n'),
+              tags: ['shopping_bags'],
+              priority: 4,
+              click: `https://dashboard.stripe.com/${session.livemode ? '' : 'test/'}payments/${session.payment_intent}`,
+            }),
+          })
+        } catch (err) {
+          console.error('Push alert failed:', err.message)
+        }
+      }
+
       if (RESEND_API_KEY) {
         const resp = await fetch('https://api.resend.com/emails', {
           method: 'POST',
