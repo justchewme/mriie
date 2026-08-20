@@ -64,15 +64,11 @@ export default function Layout({ children, title, description, ogImage }) {
           borderBottom: `1px solid rgba(20,17,15,0.08)`,
         }}
       >
-        <div
-          style={{
-            maxWidth: 1200, margin: '0 auto', padding: '18px 20px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
-          }}
-        >
-          <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: 10 }}>
+        <div className="nav-row">
+          <Link href="/" className="brand-link">
             <Wordmark size={15} />
             <span
+              className="brand-sub"
               style={{
                 fontFamily: 'Inter, sans-serif', fontSize: 10, fontWeight: 500,
                 letterSpacing: '0.4em', textTransform: 'uppercase', color: C.terra,
@@ -81,7 +77,7 @@ export default function Layout({ children, title, description, ogImage }) {
               Padl
             </span>
           </Link>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
+          <div className="nav-right">
             <span style={{ display: 'flex', gap: 2 }}>
               {LOCALES.map((l) => (
                 <Link
@@ -102,10 +98,11 @@ export default function Layout({ children, title, description, ogImage }) {
             </span>
             <Link
               href="/wholesale"
+              className="nav-wholesale"
               style={{
                 fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
-                color: C.terra, textDecoration: 'none',
+                color: C.terra, textDecoration: 'none', whiteSpace: 'nowrap',
               }}
             >
               {t('Wholesale')}
@@ -114,6 +111,7 @@ export default function Layout({ children, title, description, ogImage }) {
               href={waLink('Hello Mriie PADL! I have a question 🙂')}
               target="_blank"
               rel="noopener noreferrer"
+              className="nav-help"
               style={{
                 fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
@@ -124,11 +122,13 @@ export default function Layout({ children, title, description, ogImage }) {
             </a>
             <Link
               href="/checkout"
+              className="nav-bag"
               style={{
                 fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
                 letterSpacing: '0.14em', textTransform: 'uppercase',
                 color: C.bone, background: C.ink, textDecoration: 'none',
                 padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8,
+                whiteSpace: 'nowrap',
               }}
             >
               {t('Bag')}{count > 0 ? ` · ${count}` : ''}
@@ -205,14 +205,14 @@ export default function Layout({ children, title, description, ogImage }) {
         </div>
       </footer>
 
-      {/* Floating WhatsApp help */}
+      {/* Floating WhatsApp help — lifted on the home page when the sticky cart bar is showing */}
       <a
         href={waLink('Hello Mriie PADL! I need some help 🙂')}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
         style={{
-          position: 'fixed', right: 20, bottom: 20, zIndex: 60,
+          position: 'fixed', right: 20, bottom: router.pathname === '/' && count > 0 ? 84 : 20, zIndex: 60,
           width: 54, height: 54, borderRadius: '50%',
           background: '#25D366', display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 6px 18px rgba(20,17,15,0.25)',

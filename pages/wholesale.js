@@ -11,9 +11,10 @@ const WHOLESALE = [
   { id: 'towel', name: 'Linen Sport Towel', rrp: 60, tiers: [['500', 28], ['1,000', 26], ['3,000', 24]], image: '/shop/towel.jpg' },
 ]
 
+// 16px inputs — anything smaller makes iOS Safari zoom the page on focus.
 const inputStyle = {
   width: '100%', border: '1px solid rgba(20,17,15,0.25)', background: '#fff',
-  padding: '13px 14px', fontFamily: 'Inter, sans-serif', fontSize: 14, color: C.ink,
+  padding: '13px 14px', fontFamily: 'Inter, sans-serif', fontSize: 16, color: C.ink,
   borderRadius: 0, outline: 'none',
 }
 
