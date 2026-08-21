@@ -170,6 +170,9 @@ export default function Layout({ children, title, description, ogImage }) {
               <a href={waLink()} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 {t('WhatsApp us')}
               </a>
+              <Link href="/contact" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
+                {t('Message us')}
+              </Link>
               <a href={`mailto:${SHOP.email}`} style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 {SHOP.email}
               </a>
