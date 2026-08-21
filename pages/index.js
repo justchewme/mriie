@@ -8,6 +8,7 @@ import { products, buySlug } from '@/lib/products'
 import { SHOP, waLink } from '@/lib/config'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
+import InstagramFeed from '@/components/InstagramFeed'
 
 
 function QtyStepper({ value, onChange }) {
@@ -200,6 +201,9 @@ export default function Shop() {
         <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 22, letterSpacing: '0.06em' }}>
           {t('Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam')}
         </Body>
+        <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 8, letterSpacing: '0.06em' }}>
+          {t('Pop-up every Monday at Little Brew, Bali · 08.00–17.00')}
+        </Body>
         <Body size={12} style={{ marginTop: 12 }}>
           <Link href="/padel-bali" style={{ color: C.terra }}>
             {t('New to the island? Our guide to padel in Bali →')}
@@ -210,35 +214,6 @@ export default function Shop() {
             {t('Buying for a store or club? Wholesale tiers →')}
           </Link>
         </Body>
-      </section>
-
-      {/* Instagram gallery */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '56px 20px 0', textAlign: 'center' }}>
-        <a
-          href={SHOP.instagramUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
-            letterSpacing: '0.24em', textTransform: 'uppercase',
-            color: C.ink, textDecoration: 'none',
-          }}
-        >
-          {t('Follow us — @{ig} ↗', { ig: SHOP.instagram })}
-        </a>
-        <div
-          style={{
-            marginTop: 24, display: 'grid', gap: 12,
-            gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-          }}
-        >
-          {['/shop/collection.jpg', '/shop/bag-riviera-stripe-2.jpg', '/shop/crossbody.jpg', '/shop/cover-noir-stripe-2.jpg', '/shop/towel-2.jpg'].map((src) => (
-            <a key={src} href={SHOP.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', aspectRatio: '1 / 1', overflow: 'hidden', background: C.coconut }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt={`Mriie PADL on Instagram — @${SHOP.instagram}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-            </a>
-          ))}
-        </div>
       </section>
 
       {/* How it works / FAQ */}
@@ -273,6 +248,25 @@ export default function Shop() {
             </Body>
           </div>
         </div>
+      </section>
+
+      {/* Live Instagram carousels — real posts, swipeable, lazy-loaded */}
+      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '72px 20px 0', textAlign: 'center' }}>
+        <MotifDivider motif="frangipani" />
+        <a
+          href={SHOP.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block', marginTop: 44,
+            fontFamily: 'Inter, sans-serif', fontSize: 11, fontWeight: 500,
+            letterSpacing: '0.24em', textTransform: 'uppercase',
+            color: C.ink, textDecoration: 'none',
+          }}
+        >
+          {t('Follow us — @{ig} ↗', { ig: SHOP.instagram })}
+        </a>
+        <InstagramFeed />
       </section>
 
       {/* Sticky cart bar */}

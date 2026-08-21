@@ -17,6 +17,11 @@ export default function Shipping() {
         as soon as your order is on its way. Any import duties or taxes charged by your country
         are the responsibility of the recipient.
       </InfoSection>
+      <InfoSection heading="Local courier — within Indonesia">
+        Ordering from anywhere in Indonesia? Choose local courier at checkout — far cheaper
+        than international shipping. We confirm the exact rate for your address on WhatsApp
+        before you pay anything.
+      </InfoSection>
       <InfoSection heading="Self-collection — Bali">
         Free. We share the pickup point with you on WhatsApp when your order is ready.
         Our {SHOP.store.area} shop on {SHOP.store.street} is opening soon — collection will

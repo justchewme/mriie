@@ -22,6 +22,10 @@ export default function Faq() {
         </a>{' '}
         and we&apos;ll send you the full range.
       </InfoSection>
+      <InfoSection heading="I&apos;m in Indonesia — do I pay international shipping?">
+        No — choose <em>Local courier — Indonesia</em> at checkout and we confirm the (much
+        cheaper) local rate on WhatsApp before you pay. Self-collection in Bali is free.
+      </InfoSection>
       <InfoSection heading="How do I pay?">
         Securely by card at checkout (processed by Stripe — we never see your card details), or
         order via WhatsApp and pay by bank transfer.

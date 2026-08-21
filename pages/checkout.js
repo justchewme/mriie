@@ -31,7 +31,7 @@ function Field({ label, required, ...props }) {
 export default function Checkout() {
   const { items, count, subtotal, setQty, clear, loaded } = useCart()
   const { t, locale } = useT()
-  const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl'
+  const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl' | 'local'
   const [form, setForm] = useState({ name: '', whatsapp: '', email: '', address: '', city: '', country: '', postal: '', notes: '' })
   const [error, setError] = useState('')
   const [placed, setPlaced] = useState(false)
@@ -52,6 +52,9 @@ export default function Checkout() {
     if (!form.whatsapp.trim()) { setError(t('Please add your WhatsApp number so we can confirm your order.')); return false }
     if (requireAddress && delivery === 'dhl' && (!form.address.trim() || !form.country.trim())) {
       setError(t('Please fill in your delivery address and country.')); return false
+    }
+    if (requireAddress && delivery === 'local' && !form.address.trim()) {
+      setError(t('Please fill in your delivery address.')); return false
     }
     setError('')
     return true
@@ -95,10 +98,12 @@ export default function Checkout() {
       `Subtotal: ${SHOP.currency}${subtotal}`,
       delivery === 'dhl'
         ? `Delivery: DHL Express — ${SHOP.currency}${SHOP.deliveryFee}`
-        : 'Delivery: Self-collection in Bali — free',
-      `Total: ${SHOP.currency}${total}`,
-      delivery === 'dhl' &&
-        `Address: ${[form.address, form.city, form.postal, form.country].filter(Boolean).join(', ')}`,
+        : delivery === 'local'
+          ? 'Delivery: Local courier (Indonesia) — rate to confirm on WhatsApp'
+          : 'Delivery: Self-collection in Bali — free',
+      `Total: ${SHOP.currency}${total}${delivery === 'local' ? ' + courier' : ''}`,
+      (delivery === 'dhl' || delivery === 'local') &&
+        `Address: ${[form.address, form.city, form.postal, delivery === 'local' ? form.country || 'Indonesia' : form.country].filter(Boolean).join(', ')}`,
       form.notes && `Notes: ${form.notes}`,
     ]
       .filter((l) => l !== false && l !== undefined)
@@ -253,7 +258,7 @@ export default function Checkout() {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ opacity: 0.65 }}>{t('Delivery')}</span>
               <span>
-                {delivery === null ? t('Choose below') : delivery === 'dhl' ? `${SHOP.currency}${SHOP.deliveryFee}` : t('Free')}
+                {delivery === null ? t('Choose below') : delivery === 'dhl' ? `${SHOP.currency}${SHOP.deliveryFee}` : delivery === 'local' ? t('Confirmed on WhatsApp') : t('Free')}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 14, fontFamily: '"Fraunces", serif', fontSize: 22, color: C.ink }}>
@@ -268,6 +273,7 @@ export default function Checkout() {
           <H size={30} style={{ marginBottom: 24 }}>{t('Delivery')}</H>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {radioCard('pickup', t('Self-collection — Bali'), t('We share the pickup point with you on WhatsApp'), t('Free'))}
+            {radioCard('local', t('Local courier — Indonesia'), t('Cheapest within Indonesia — we confirm the exact rate on WhatsApp before you pay'), t('At cost'))}
             {radioCard('dhl', t('DHL Express — worldwide'), t('Tracked door-to-door, typically 5–10 business days'), `${SHOP.currency}${SHOP.deliveryFee}`)}
           </div>
 
@@ -275,14 +281,16 @@ export default function Checkout() {
             <Field label={t('Name')} required placeholder={t('Your name')} value={form.name} onChange={set('name')} />
             <Field label={t('WhatsApp number')} required placeholder="+971 50 123 4567" value={form.whatsapp} onChange={set('whatsapp')} />
             <Field label={t('Email')} placeholder={t('you@email.com (optional)')} value={form.email} onChange={set('email')} />
-            {delivery === 'dhl' && (
+            {(delivery === 'dhl' || delivery === 'local') && (
               <>
                 <Field label={t('Address')} required placeholder={t('Street address')} value={form.address} onChange={set('address')} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <Field label={t('City')} placeholder={t('City')} value={form.city} onChange={set('city')} />
                   <Field label={t('Postal code')} placeholder={t('Postal code')} value={form.postal} onChange={set('postal')} />
                 </div>
-                <Field label={t('Country')} required placeholder={t('Country')} value={form.country} onChange={set('country')} />
+                {delivery === 'dhl' && (
+                  <Field label={t('Country')} required placeholder={t('Country')} value={form.country} onChange={set('country')} />
+                )}
               </>
             )}
             <Field label={t('Notes')} textarea placeholder={t('Anything else — other prints, gift wrapping, questions…')} value={form.notes} onChange={set('notes')} />
@@ -292,7 +300,9 @@ export default function Checkout() {
             <Body size={13} color={C.terra} style={{ marginTop: 16 }}>{error}</Body>
           )}
 
-          {stripeEnabled && (
+          {/* Card checkout can't charge an unknown courier fee, so the local
+              option goes through the place-order path only. */}
+          {stripeEnabled && delivery !== 'local' && (
             <button
               onClick={payByCard}
               disabled={paying}
@@ -306,26 +316,33 @@ export default function Checkout() {
               {paying ? t('Opening secure payment…') : t('Pay by card — {currency}{total}', { currency: SHOP.currency, total })}
             </button>
           )}
-          <button
-            onClick={placeOrder}
-            disabled={sending}
-            style={{
-              width: '100%', marginTop: stripeEnabled ? 12 : 22,
-              background: stripeEnabled ? 'transparent' : C.ink,
-              color: stripeEnabled ? C.ink : C.bone,
-              border: stripeEnabled ? `1px solid rgba(20,17,15,0.3)` : 'none',
-              padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13,
-              letterSpacing: '0.18em', textTransform: 'uppercase',
-              cursor: sending ? 'wait' : 'pointer', opacity: sending ? 0.6 : 1,
-            }}
-          >
-            {sending ? t('Sending…') : stripeEnabled ? t('Or order now, pay on confirmation') : t('Place order — pay on confirmation')}
-          </button>
-          <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
-            {stripeEnabled
-              ? t('Card payments are processed securely by Stripe. Prefer not to pay by card? Place the order and we confirm payment (bank transfer or card) on WhatsApp — nothing is charged on this page.')
-              : t('Your order reaches us instantly — we confirm stock, colours and payment on WhatsApp. Nothing is charged on this page.')}
-          </Body>
+          {(() => {
+            const cardShown = stripeEnabled && delivery !== 'local'
+            return (
+              <>
+                <button
+                  onClick={placeOrder}
+                  disabled={sending}
+                  style={{
+                    width: '100%', marginTop: cardShown ? 12 : 22,
+                    background: cardShown ? 'transparent' : C.ink,
+                    color: cardShown ? C.ink : C.bone,
+                    border: cardShown ? `1px solid rgba(20,17,15,0.3)` : 'none',
+                    padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13,
+                    letterSpacing: '0.18em', textTransform: 'uppercase',
+                    cursor: sending ? 'wait' : 'pointer', opacity: sending ? 0.6 : 1,
+                  }}
+                >
+                  {sending ? t('Sending…') : cardShown ? t('Or order now, pay on confirmation') : t('Place order — pay on confirmation')}
+                </button>
+                <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
+                  {cardShown
+                    ? t('Card payments are processed securely by Stripe. Prefer not to pay by card? Place the order and we confirm payment (bank transfer or card) on WhatsApp — nothing is charged on this page.')
+                    : t('Your order reaches us instantly — we confirm stock, colours and payment on WhatsApp. Nothing is charged on this page.')}
+                </Body>
+              </>
+            )
+          })()}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginTop: 14 }}>
             {['Visa', 'Mastercard', 'Amex', 'Secured by Stripe'].map((m) => (
               <span
