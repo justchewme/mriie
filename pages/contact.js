@@ -1,6 +1,7 @@
 // Mriie PADL — backup contact form.
 // The reliable route when WhatsApp isn't an option: goes straight to Telegram.
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
@@ -15,8 +16,17 @@ const field = {
 
 export default function Contact() {
   const { t } = useT()
+  const router = useRouter()
   const [form, setForm] = useState({ name: '', contact: '', message: '', website: '' })
   const [state, setState] = useState({ sending: false, sent: false, error: null })
+
+  // Arrivals from a WhatsApp button carry their intended message across, so
+  // they only have to add their name and contact.
+  const fromWhatsApp = router.query.via === 'whatsapp'
+  useEffect(() => {
+    const msg = typeof router.query.msg === 'string' ? router.query.msg.slice(0, 300) : ''
+    if (msg) setForm((f) => (f.message ? f : { ...f, message: msg }))
+  }, [router.query.msg])
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
@@ -42,9 +52,17 @@ export default function Contact() {
       <div style={{ maxWidth: 560, margin: '0 auto', padding: '80px 20px' }}>
         <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Message us')}</Label>
         <H size={34}>{t('Send us a message')}</H>
-        <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 30px' }}>
+        <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 24px' }}>
           {t('Prefer not to use WhatsApp, or it did not open? Leave your details here and we will reply personally.')}
         </Body>
+
+        {fromWhatsApp && (
+          <div style={{ background: 'rgba(196,106,74,0.09)', borderLeft: `3px solid ${C.terra}`, padding: '14px 16px', marginBottom: 26 }}>
+            <Body size={13} color="rgba(20,17,15,0.8)">
+              {t('Our WhatsApp is being upgraded right now. Send your message here instead — it reaches us instantly and we reply just as fast.')}
+            </Body>
+          </div>
+        )}
 
         {state.sent ? (
           <div style={{ border: `1px solid ${C.terra}`, padding: '28px 24px', textAlign: 'center' }}>
