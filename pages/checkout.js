@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
 import { SHOP } from '@/lib/config'
+import { products } from '@/lib/products'
 import { SHIPPING_REGIONS, regionById } from '@/lib/shipping'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
@@ -30,7 +31,7 @@ function Field({ label, required, ...props }) {
 }
 
 export default function Checkout() {
-  const { items, count, subtotal, setQty, clear, loaded } = useCart()
+  const { items, count, subtotal, setQty, clear, loaded, addItem } = useCart()
   const { t, locale } = useT()
   const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl' | 'local'
   const [regionId, setRegionId] = useState('')
@@ -273,6 +274,49 @@ export default function Checkout() {
               <span style={{ color: C.terra }}>{SHOP.currency}{total}</span>
             </div>
           </div>
+
+          {/* One parcel, one fee — nudge to fill the parcel while shipping is flat.
+              Hidden for pickup/local, where there is no flat international fee. */}
+          {count <= 2 && delivery !== 'pickup' && delivery !== 'local' && (
+            <div style={{ marginTop: 20, background: '#fff', borderLeft: `3px solid ${C.terra}`, padding: '16px 18px' }}>
+              <Body size={13} weight={500} style={{ marginBottom: 6 }}>
+                {t('One parcel, one shipping fee')}
+              </Body>
+              <Body size={12.5} color="rgba(20,17,15,0.65)" style={{ lineHeight: 1.6 }}>
+                {deliveryFee > 0
+                  ? t('Shipping is {fee} whether the parcel holds one piece or three — right now that’s {per} per piece. One more piece and it drops to {next}.', {
+                      fee: `${SHOP.currency}${deliveryFee}`,
+                      per: `${SHOP.currency}${Math.ceil(deliveryFee / count)}`,
+                      next: `${SHOP.currency}${Math.ceil(deliveryFee / (count + 1))}`,
+                    })
+                  : t('Shipping is one flat fee for the whole parcel — every piece you add ships at no extra cost.')}
+              </Body>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 12 }}>
+                {products
+                  .filter((p) => !items.some((i) => i.id === p.id))
+                  .sort((a, b) => a.price - b.price)
+                  .slice(0, 2)
+                  .map((p) => {
+                    const lp = localizeProduct(p, locale)
+                    return (
+                      <button
+                        key={p.id}
+                        onClick={() => addItem(p.id, p.variants[0].id, 1)}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer',
+                          background: 'transparent', border: '1px solid rgba(20,17,15,0.25)',
+                          padding: '7px 12px 7px 7px', fontFamily: 'Inter, sans-serif', fontSize: 12, color: C.ink,
+                        }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.variants[0].image} alt={lp.name} style={{ width: 30, height: 30, objectFit: 'cover', display: 'block' }} />
+                        + {lp.name} · <span style={{ color: C.terra }}>{SHOP.currency}{p.price}</span>
+                      </button>
+                    )
+                  })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Delivery + details */}
