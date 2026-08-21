@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { C, Wordmark } from '@/components/MriieShared'
 import { SHOP, waLink } from '@/lib/config'
@@ -19,6 +20,25 @@ export default function Layout({ children, title, description, ogImage }) {
   const router = useRouter()
   const { t, locale } = useT()
   const { currency, setCurrency } = useCurrency()
+
+  // Every tap on a wa.me link anywhere on the site pings Justin's Telegram
+  // (his WhatsApp lives on another phone). sendBeacon survives the page
+  // losing focus as WhatsApp opens, and never delays the visitor.
+  useEffect(() => {
+    const onClick = (e) => {
+      const a = e.target.closest?.('a[href*="wa.me/"]')
+      if (!a) return
+      let text = ''
+      try { text = new URL(a.href).searchParams.get('text') || '' } catch {}
+      const payload = new Blob(
+        [JSON.stringify({ page: window.location.pathname, text: text.slice(0, 200) })],
+        { type: 'application/json' }
+      )
+      navigator.sendBeacon?.('/api/wa-click', payload)
+    }
+    document.addEventListener('click', onClick, true)
+    return () => document.removeEventListener('click', onClick, true)
+  }, [])
 
   // WhatsApp taps from the partner page open with wholesale context so the
   // chat starts as a trade inquiry, not a generic help request.
