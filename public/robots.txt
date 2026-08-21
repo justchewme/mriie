@@ -3,5 +3,6 @@ Allow: /
 Disallow: /checkout
 Disallow: /success
 Disallow: /api/
+Disallow: /buy/
 
 Sitemap: https://mriie.com/sitemap.xml

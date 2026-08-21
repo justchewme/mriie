@@ -12,6 +12,7 @@ import { products, buySlug } from '@/lib/products'
 import {
   ADAPTIVE_PRICING, bothDeliveryOptions, lineItem, originOf,
 } from '@/lib/stripe-checkout'
+import { rateLimit } from '@/lib/rate-limit'
 
 /** Match by full slug rather than splitting on '-', since ids contain hyphens. */
 const findBySlug = (slug) => {
@@ -23,10 +24,18 @@ const findBySlug = (slug) => {
   return null
 }
 
-export async function getServerSideProps({ params, req }) {
+export async function getServerSideProps({ params, req, res }) {
   const match = findBySlug(params.slug)
   if (!match) return { notFound: true }
   if (!process.env.STRIPE_SECRET_KEY) return { props: { failed: true } }
+
+  // A plain GET here mints a real Stripe Checkout Session, so a crawler or a
+  // loop could run up thousands. Crawlers are also blocked via robots.txt and
+  // an X-Robots-Tag, but neither stops a hostile client.
+  if (!rateLimit(req, { name: 'buy', limit: 30, windowMs: 10 * 60 * 1000 }).ok) {
+    res.statusCode = 429
+    return { props: { failed: true } }
+  }
 
   const { product, variant } = match
   const origin = originOf(req)

@@ -4,6 +4,10 @@
 // which is exactly what happened in Aug 2026. This route is the path that
 // doesn't depend on the customer having WhatsApp at all: the message lands in
 // Justin's Telegram within a second.
+import { limited } from '@/lib/rate-limit'
+
+export const config = { api: { bodyParser: { sizeLimit: '16kb' } } }
+
 const TELEGRAM_API = 'https://api.telegram.org'
 const MAX = { name: 80, contact: 80, message: 1500, product: 80 }
 
@@ -14,6 +18,8 @@ const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, 
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  // Each accepted message pings Justin's phone, so keep the flood rate low.
+  if (limited(req, res, { name: 'enquiry', limit: 5, windowMs: 10 * 60 * 1000 })) return
 
   const { name, contact, message, product, website, test } = req.body || {}
 

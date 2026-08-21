@@ -3,12 +3,15 @@
 import Stripe from 'stripe'
 import { products, getVariant } from '@/lib/products'
 import { ALLOWED_SHIPPING_COUNTRIES } from '@/lib/shipping'
+import { limited } from '@/lib/rate-limit'
 import {
   ADAPTIVE_PRICING, PICKUP_OPTION, dhlOption, lineItem, originOf,
 } from '@/lib/stripe-checkout'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  // Every call creates a live Stripe Checkout Session.
+  if (limited(req, res, { name: 'checkout', limit: 20, windowMs: 10 * 60 * 1000 })) return
   if (!process.env.STRIPE_SECRET_KEY) {
     return res.status(503).json({ error: 'Card payments are not live yet — please order via WhatsApp.' })
   }
