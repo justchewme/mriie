@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
-import { SHOP } from '@/lib/config'
+import { waLink } from '@/lib/config'
 import { useT } from '@/lib/i18n'
 
 // Wholesale pricing is shared privately via the catalogue — never publish it here.
@@ -251,7 +251,15 @@ export default function Wholesale() {
             {sending ? t('Sending…') : t('Send inquiry')}
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
-            {t('Prefer email?')} <a href={`mailto:${SHOP.email}?subject=Wholesale inquiry`} style={{ color: C.terra }}>{SHOP.email}</a>
+            {t('Prefer to chat?')}{' '}
+            <a
+              href={waLink('Hello Mriie PADL! Wholesale inquiry — I would like the catalogue and pricing for my store/club.')}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: C.terra }}
+            >
+              {t('WhatsApp us directly')}
+            </a>
           </Body>
           </>
           )}

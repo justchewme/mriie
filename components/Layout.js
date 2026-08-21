@@ -20,6 +20,13 @@ export default function Layout({ children, title, description, ogImage }) {
   const { t, locale } = useT()
   const { currency, setCurrency } = useCurrency()
 
+  // WhatsApp taps from the partner page open with wholesale context so the
+  // chat starts as a trade inquiry, not a generic help request.
+  const isWholesale = router.pathname === '/wholesale'
+  const helpMsg = isWholesale
+    ? 'Hello Mriie PADL! Wholesale inquiry — I would like the catalogue and pricing for my store/club.'
+    : 'Hello Mriie PADL! I have a question 🙂'
+
   const pageTitle = title ? `${title} — Mriie PADL` : SITE.title
   const pageDesc = description || SITE.description
   const path = router.asPath.split('?')[0].split('#')[0]
@@ -125,7 +132,7 @@ export default function Layout({ children, title, description, ogImage }) {
               {t('Partners')}
             </Link>
             <a
-              href={waLink('Hello Mriie PADL! I have a question 🙂')}
+              href={waLink(helpMsg)}
               target="_blank"
               rel="noopener noreferrer"
               className="nav-help"
@@ -233,7 +240,7 @@ export default function Layout({ children, title, description, ogImage }) {
 
       {/* Floating WhatsApp help — lifted on the home page when the sticky cart bar is showing */}
       <a
-        href={waLink('Hello Mriie PADL! I need some help 🙂')}
+        href={waLink(isWholesale ? helpMsg : 'Hello Mriie PADL! I need some help 🙂')}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Chat with us on WhatsApp"
