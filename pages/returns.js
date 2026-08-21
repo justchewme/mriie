@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import InfoPage, { InfoSection } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
 import { C } from '@/components/MriieShared'
@@ -36,8 +37,9 @@ export default function Returns() {
         <a href={waLink('Hello Mriie PADL! I have an issue with my order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
           WhatsApp us
         </a>{' '}
-        or email {SHOP.email} with your order details and photos. We reply within a day and give
-        you the return address and instructions.
+        or use the <Link href="/contact" style={{ color: C.terra }}>contact form</Link> with your
+        order details and photos. We reply within a day and give you the return address and
+        instructions.
       </InfoSection>
     </InfoPage>
   )

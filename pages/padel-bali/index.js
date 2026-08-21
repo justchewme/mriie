@@ -21,6 +21,22 @@ export default function PadelBali() {
             { name: 'Padel in Bali', path: '/padel-bali' },
           ]))}
         />
+        {/* ItemList of every club — the schema Google reads for directory pages */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={ld({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: 'Padel courts and clubs in Bali',
+            numberOfItems: courts.length,
+            itemListElement: courts.map((c, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              name: c.name,
+              url: `https://mriie.com/padel-bali/${c.slug}`,
+            })),
+          })}
+        />
       </Head>
       <div style={{ maxWidth: 860, margin: '0 auto', padding: '64px 20px 20px' }}>
         <Label color={C.terra} style={{ marginBottom: 16 }}>The island guide</Label>

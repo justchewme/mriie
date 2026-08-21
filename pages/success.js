@@ -53,7 +53,7 @@ export default function Success({ order }) {
           <a href={waLink('Hello Mriie PADL! I just paid for an order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
             {t('Chat with us on WhatsApp')}
           </a>{' '}
-          {t('or email')} {SHOP.email}.
+          {t('or use the')} <Link href="/contact" style={{ color: C.terra }}>{t('contact form')}</Link>.
         </Body>
         <Link
           href="/"

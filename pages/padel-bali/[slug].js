@@ -54,6 +54,23 @@ export default function CourtPage({ court }) {
           ]))}
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={ld(faqLd(faqs))} />
+        {/* Venue schema — how a padel club is described to search engines */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={ld({
+            '@context': 'https://schema.org',
+            '@type': 'SportsActivityLocation',
+            name: court.name,
+            description: court.blurb,
+            url: `https://mriie.com/padel-bali/${court.slug}`,
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: court.area,
+              addressRegion: isBali ? 'Bali' : 'Kepulauan Riau',
+              addressCountry: 'ID',
+            },
+          })}
+        />
       </Head>
 
       <div style={{ maxWidth: 720, margin: '0 auto', padding: '64px 20px 20px' }}>

@@ -199,9 +199,6 @@ export default function Layout({ children, title, description, ogImage }) {
               <Link href="/contact" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 {t('Message us')}
               </Link>
-              <a href={`mailto:${SHOP.email}`} style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
-                {SHOP.email}
-              </a>
               <a href={SHOP.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 @{SHOP.instagram}
               </a>
@@ -218,7 +215,7 @@ export default function Layout({ children, title, description, ogImage }) {
               <br />
               {SHOP.address}
               <br />
-              {SHOP.email} · WhatsApp +62 811-1973-7114
+              WhatsApp +62 811-1973-7114
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe'), 'WhatsApp'].map((m) => (

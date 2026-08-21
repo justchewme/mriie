@@ -129,7 +129,7 @@ export default function Checkout() {
         }),
       })
       const data = await r.json()
-      if (!r.ok) throw new Error(data.error || t('We could not send your order — please try again or email us.'))
+      if (!r.ok) throw new Error(data.error || t('We could not send your order — please try again or WhatsApp us.'))
       setPlaced(true)
       clear()
     } catch (e) {
@@ -151,7 +151,7 @@ export default function Checkout() {
             {t('Your order has reached us. We’ll message you on WhatsApp shortly to confirm your colours, stock and payment (bank transfer or card). Nothing has been charged.')}
           </Body>
           <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
-            {t('Questions?')} {t('Email us at')} {SHOP.email}.
+            {t('Questions?')} <Link href="/contact" style={{ color: C.terra }}>{t('Message us')}</Link>.
           </Body>
           <Link
             href="/"
@@ -329,15 +329,17 @@ export default function Checkout() {
           </div>
 
           {delivery === 'dhl' && (
-            <>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
+            /* Sub-choices of "International delivery" — indented and lighter
+               than the top-level tiles so the hierarchy reads at a glance. */
+            <div style={{ marginTop: 12, marginLeft: 14, paddingLeft: 18, borderLeft: `2px solid ${C.terra}` }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <label style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)' }}>
                   {t('Deliver to')} <span style={{ color: C.terra }}>*</span>
                 </label>
                 <select
                   value={regionId}
                   onChange={(e) => setRegionId(e.target.value)}
-                  style={{ ...inputStyle, appearance: 'auto', cursor: 'pointer' }}
+                  style={{ ...inputStyle, padding: '10px 12px', fontSize: 14, appearance: 'auto', cursor: 'pointer' }}
                 >
                   <option value="">{t('Choose your region…')}</option>
                   {SHIPPING_REGIONS.map((r) => (
@@ -348,35 +350,34 @@ export default function Checkout() {
                 </select>
               </div>
               {region && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>
+                  <label style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)' }}>
+                    {t('Speed')}
+                  </label>
                   {['standard', 'express'].map((m) => (
                     <button
                       key={m}
                       onClick={() => setMethod(m)}
                       style={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 14,
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12,
                         width: '100%', textAlign: 'left', cursor: 'pointer',
                         background: method === m ? '#fff' : 'transparent',
-                        border: `1px solid ${method === m ? C.ink : 'rgba(20,17,15,0.25)'}`,
-                        padding: '13px 16px',
+                        border: `1px solid ${method === m ? C.ink : 'rgba(20,17,15,0.2)'}`,
+                        padding: '9px 12px',
                       }}
                     >
-                      <span>
-                        <span style={{ display: 'block', fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 500, color: C.ink }}>
-                          {m === 'standard' ? t('Standard — EMS, tracked') : t('Express — DHL')}
-                        </span>
-                        <span style={{ display: 'block', fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 12, color: 'rgba(20,17,15,0.55)', marginTop: 3 }}>
-                          {region[m].days} {t('business days')}
-                        </span>
+                      <span style={{ fontFamily: 'Inter, sans-serif', fontSize: 12, color: C.ink }}>
+                        {m === 'standard' ? t('Standard — EMS, tracked') : t('Express — DHL')}
+                        <span style={{ color: 'rgba(20,17,15,0.5)', fontWeight: 300 }}> · {region[m].days} {t('business days')}</span>
                       </span>
-                      <span style={{ fontFamily: '"Fraunces", serif', fontSize: 16, color: C.terra, whiteSpace: 'nowrap' }}>
+                      <span style={{ fontFamily: '"Fraunces", serif', fontSize: 14, color: C.terra, whiteSpace: 'nowrap' }}>
                         {SHOP.currency}{region[m].fee}
                       </span>
                     </button>
                   ))}
                 </div>
               )}
-            </>
+            </div>
           )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 28 }}>

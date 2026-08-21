@@ -86,7 +86,7 @@ export default function Buy() {
           Chat on WhatsApp
         </a>
         <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginTop: 28 }}>
-          <Link href="/" style={{ color: C.terra }}>Back to the shop</Link> · {SHOP.email}
+          <Link href="/" style={{ color: C.terra }}>Back to the shop</Link>
         </Body>
       </div>
     </Layout>

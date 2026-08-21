@@ -119,8 +119,7 @@ export default function Contact() {
           {t('You can also reach us on')}{' '}
           <a href={waLink('Hello Mriie PADL!')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
             WhatsApp
-          </a>{' '}
-          {t('or email')} {SHOP.email}.
+          </a>.
         </Body>
       </div>
     </Layout>

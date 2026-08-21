@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import InfoPage, { InfoSection } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
 import { SHIPPING_REGIONS, LOCAL_DELIVERY } from '@/lib/shipping'
@@ -68,7 +69,8 @@ export default function Shipping() {
         <a href={waLink('Hello Mriie PADL! I have a question about my delivery.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
           Chat with us on WhatsApp
         </a>{' '}
-        or email {SHOP.email} — we reply within a day.
+        or use the <Link href="/contact" style={{ color: C.terra }}>contact form</Link> — we reply
+        within a day.
       </InfoSection>
     </InfoPage>
   )
