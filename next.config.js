@@ -48,6 +48,13 @@ const nextConfig = {
     // removes that attack surface entirely.
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      // The charcoal bag became its own men's product (21 Aug 2026); keep any
+      // shared direct-buy links alive.
+      { source: '/buy/bag-charcoal', destination: '/buy/bag-men-charcoal', permanent: true },
+    ]
+  },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
