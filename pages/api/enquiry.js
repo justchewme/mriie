@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   // Each accepted message pings Justin's phone, so keep the flood rate low.
   if (limited(req, res, { name: 'enquiry', limit: 5, windowMs: 10 * 60 * 1000 })) return
 
-  const { name, contact, message, product, website, test } = req.body || {}
+  const { name, contact, message, product, source, website, test } = req.body || {}
 
   // Honeypot: real people never fill a field they cannot see.
   if (website) return res.status(200).json({ ok: true })
@@ -42,8 +42,12 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'Our message service is down — please email us instead.' })
   }
 
+  const headers = {
+    wholesale: '🏬 <b>Wholesale inquiry — mriie.com</b>',
+    order: '🛍 <b>New order — mriie.com</b>',
+  }
   const text = [
-    test ? '🩺 <b>PIPE TEST</b> — automated check, no customer' : '📩 <b>New enquiry from mriie.com</b>',
+    test ? '🩺 <b>PIPE TEST</b> — automated check, no customer' : headers[source] || '📩 <b>New enquiry from mriie.com</b>',
     '',
     `<b>Name:</b> ${esc(fields.name)}`,
     `<b>Contact:</b> ${esc(fields.contact)}`,

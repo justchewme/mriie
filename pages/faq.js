@@ -31,11 +31,9 @@ export default function Faq() {
         cold and air dried.
       </InfoSection>
       <InfoSection heading="Do you do wholesale or club orders?">
-        Yes — we already supply clubs and stores in six countries. Email {SHOP.email} or{' '}
-        <a href={waLink('Hello Mriie PADL! I would like to ask about wholesale.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-          message us
-        </a>{' '}
-        for the wholesale catalogue.
+        Yes — we already supply clubs and stores in six countries. Request the catalogue on our{' '}
+        <Link href="/wholesale" style={{ color: C.terra }}>wholesale page</Link> and it goes
+        straight to our founding team.
       </InfoSection>
       <InfoSection heading="Do you have a physical shop?">
         Our {SHOP.store.area} shop on {SHOP.store.street} is opening soon — follow{' '}

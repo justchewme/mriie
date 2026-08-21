@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
-import { SHOP, wholesaleWaLink } from '@/lib/config'
+import { SHOP } from '@/lib/config'
 import { useT } from '@/lib/i18n'
 
 // Wholesale pricing is shared privately via the catalogue — never publish it here.
@@ -25,31 +25,49 @@ const labelStyle = {
 
 export default function Wholesale() {
   const { t } = useT()
-  const [form, setForm] = useState({ company: '', country: '', message: '' })
+  const [form, setForm] = useState({ company: '', country: '', contact: '', message: '', website: '' })
   const [qty, setQty] = useState({ cover: '', bag: '', towel: '' })
   const [error, setError] = useState('')
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
   const setQ = (k) => (e) => setQty((q) => ({ ...q, [k]: e.target.value.replace(/[^0-9]/g, '') }))
 
-  const startChat = () => {
+  const submit = async () => {
     if (!form.country.trim()) return setError(t('Please tell us your country.'))
+    if (!form.contact.trim()) return setError(t('Please add your WhatsApp number or email so we can reply.'))
     const wanted = WHOLESALE.filter((p) => Number(qty[p.id]) > 0)
     if (wanted.length === 0) return setError(t('Please enter a quantity for at least one product.'))
     setError('')
-    const msg = [
-      'Hello Mriie PADL! Wholesale inquiry:',
-      '',
-      form.company.trim() && `Company: ${form.company.trim()}`,
+    setSending(true)
+    const message = [
       `Country: ${form.country.trim()}`,
       '',
       ...wanted.map((p) => `• ${p.name} × ${Number(qty[p.id]).toLocaleString('en-US')} pcs`),
       form.message.trim() && '',
       form.message.trim() && `Message: ${form.message.trim()}`,
-      '',
-      'Please send me the wholesale catalogue and pricing.',
-    ].filter((l) => l !== false && l !== undefined)
-    window.open(wholesaleWaLink(msg.join('\n')), '_blank')
+    ].filter((l) => l !== false && l !== undefined).join('\n')
+    try {
+      const r = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'wholesale',
+          name: form.company.trim() || '(no company given)',
+          contact: form.contact.trim(),
+          message,
+          website: form.website,
+        }),
+      })
+      const data = await r.json()
+      if (!r.ok) throw new Error(data.error || t('Something went wrong — please try again.'))
+      setSent(true)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -93,11 +111,20 @@ export default function Wholesale() {
         {/* Inquiry form */}
         <div style={{ maxWidth: 560, margin: '64px auto 0' }}>
           <MotifDivider motif="frangipani" />
-          <H size={28} style={{ display: 'block', textAlign: 'center', marginTop: 36 }}>{t('Start a wholesale conversation')}</H>
+          <H size={28} style={{ display: 'block', textAlign: 'center', marginTop: 36 }}>{t('Request the catalogue & pricing')}</H>
           <Body size={13} color="rgba(20,17,15,0.6)" style={{ margin: '14px 0 28px', textAlign: 'center' }}>
-            {t('Tell us where you are and roughly what you need — it opens straight into a WhatsApp chat with our founding team, with the catalogue to follow.')}
+            {t('Tell us where you are and roughly what you need — it goes straight to our founding team, and we reply personally with the private catalogue and pricing.')}
           </Body>
 
+          {sent ? (
+            <div style={{ border: `1px solid ${C.terra}`, padding: '28px 24px', textAlign: 'center' }}>
+              <H size={24}>{t('Inquiry sent')}</H>
+              <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 10 }}>
+                {t('Thank you — the catalogue and wholesale pricing are on their way to you.')}
+              </Body>
+            </div>
+          ) : (
+          <>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -108,6 +135,11 @@ export default function Wholesale() {
                 <label style={labelStyle}>{t('Country')} <span style={{ color: C.terra }}>*</span></label>
                 <input style={inputStyle} placeholder={t('e.g. Spain')} value={form.country} onChange={set('country')} />
               </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <label style={labelStyle}>{t('WhatsApp number or email')} <span style={{ color: C.terra }}>*</span></label>
+              <input style={inputStyle} placeholder="+62 812 …" value={form.contact} onChange={set('contact')} />
             </div>
 
             <div>
@@ -126,23 +158,37 @@ export default function Wholesale() {
               <label style={labelStyle}>{t('Anything else?')}</label>
               <textarea style={{ ...inputStyle, minHeight: 70, resize: 'vertical' }} placeholder={t('Custom prints, co-branding, timeline…')} value={form.message} onChange={set('message')} />
             </div>
+
+            {/* Honeypot — hidden from people, catnip for bots. */}
+            <input
+              style={{ position: 'absolute', left: '-9999px' }}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              value={form.website}
+              onChange={set('website')}
+            />
           </div>
 
           {error && <Body size={13} color={C.terra} style={{ marginTop: 16 }}>{error}</Body>}
 
           <button
-            onClick={startChat}
+            onClick={submit}
+            disabled={sending}
             style={{
-              width: '100%', marginTop: 22, background: '#25D366', color: '#fff', border: 'none',
+              width: '100%', marginTop: 22, background: C.ink, color: C.bone, border: 'none',
               padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 500,
-              letterSpacing: '0.18em', textTransform: 'uppercase', cursor: 'pointer',
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              cursor: sending ? 'wait' : 'pointer', opacity: sending ? 0.6 : 1,
             }}
           >
-            {t('Chat with us on WhatsApp')}
+            {sending ? t('Sending…') : t('Send inquiry')}
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
             {t('Prefer email?')} <a href={`mailto:${SHOP.email}?subject=Wholesale inquiry`} style={{ color: C.terra }}>{SHOP.email}</a>
           </Body>
+          </>
+          )}
         </div>
       </div>
     </Layout>

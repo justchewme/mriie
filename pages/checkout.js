@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
-import { SHOP, waLink } from '@/lib/config'
+import { SHOP } from '@/lib/config'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
@@ -36,6 +36,7 @@ export default function Checkout() {
   const [error, setError] = useState('')
   const [placed, setPlaced] = useState(false)
   const [paying, setPaying] = useState(false)
+  const [sending, setSending] = useState(false)
 
   const stripeEnabled = process.env.NEXT_PUBLIC_STRIPE_ENABLED === '1'
 
@@ -79,15 +80,16 @@ export default function Checkout() {
     }
   }
 
-  const placeOrder = () => {
+  // Sends the order straight to our Telegram — one tap, no app switch, no
+  // second form. We then confirm stock, colours and payment on WhatsApp.
+  const placeOrder = async () => {
     if (!validate(true)) return
+    setSending(true)
 
     const lines = items.map(
       (i) => `• ${i.name} — ${i.variant.name} ×${i.qty} — ${SHOP.currency}${i.price * i.qty}`
     )
-    const msg = [
-      'Hello Mriie PADL! I would like to order:',
-      '',
+    const message = [
       ...lines,
       '',
       `Subtotal: ${SHOP.currency}${subtotal}`,
@@ -95,10 +97,6 @@ export default function Checkout() {
         ? `Delivery: DHL Express — ${SHOP.currency}${SHOP.deliveryFee}`
         : 'Delivery: Self-collection in Bali — free',
       `Total: ${SHOP.currency}${total}`,
-      '',
-      `Name: ${form.name}`,
-      `WhatsApp: ${form.whatsapp}`,
-      form.email && `Email: ${form.email}`,
       delivery === 'dhl' &&
         `Address: ${[form.address, form.city, form.postal, form.country].filter(Boolean).join(', ')}`,
       form.notes && `Notes: ${form.notes}`,
@@ -106,38 +104,53 @@ export default function Checkout() {
       .filter((l) => l !== false && l !== undefined)
       .join('\n')
 
-    window.open(waLink(msg), '_blank')
-    setPlaced(true)
+    try {
+      const r = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          source: 'order',
+          name: form.name,
+          contact: [form.whatsapp, form.email].filter(Boolean).join(' · '),
+          message,
+        }),
+      })
+      const data = await r.json()
+      if (!r.ok) throw new Error(data.error || t('We could not send your order — please try again or email us.'))
+      setPlaced(true)
+      clear()
+    } catch (e) {
+      setError(e.message)
+    } finally {
+      setSending(false)
+    }
   }
 
   if (!loaded) return <Layout title="Checkout"><div style={{ minHeight: '50vh' }} /></Layout>
 
   if (placed) {
     return (
-      <Layout title="Order sent">
+      <Layout title="Order received">
         <div style={{ maxWidth: 560, margin: '0 auto', padding: '90px 20px', textAlign: 'center' }}>
-          <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Almost there')}</Label>
-          <H size={36}>{t('Press send in WhatsApp')}</H>
+          <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Thank you')}</Label>
+          <H size={36}>{t('Order received')}</H>
           <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '20px 0 32px' }}>
-            {t('Your order is waiting in your WhatsApp chat — just press send. We’ll reply shortly to confirm your colours, stock and payment (bank transfer or card).')}
+            {t('Your order has reached us. We’ll message you on WhatsApp shortly to confirm your colours, stock and payment (bank transfer or card). Nothing has been charged.')}
           </Body>
           <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
-            {t('WhatsApp didn’t open?')}{' '}
-            <a href={waLink('Hello Mriie PADL! I just tried to place an order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-              {t('Tap here to chat with us')}
-            </a>{' '}
-            {t('or email')} {SHOP.email}.
+            {t('Questions?')} {t('Email us at')} {SHOP.email}.
           </Body>
-          <button
-            onClick={() => { clear(); }}
+          <Link
+            href="/"
             style={{
-              background: 'transparent', border: `1px solid rgba(20,17,15,0.3)`, color: C.ink,
-              padding: '14px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12,
-              letterSpacing: '0.16em', textTransform: 'uppercase', cursor: 'pointer',
+              display: 'inline-block', background: 'transparent', border: `1px solid rgba(20,17,15,0.3)`,
+              color: C.ink, textDecoration: 'none', padding: '14px 26px',
+              fontFamily: 'Inter, sans-serif', fontSize: 12,
+              letterSpacing: '0.16em', textTransform: 'uppercase',
             }}
           >
-            {t('Done — clear my bag')}
-          </button>
+            {t('Back to the shop')}
+          </Link>
         </div>
       </Layout>
     )
@@ -295,21 +308,23 @@ export default function Checkout() {
           )}
           <button
             onClick={placeOrder}
+            disabled={sending}
             style={{
               width: '100%', marginTop: stripeEnabled ? 12 : 22,
               background: stripeEnabled ? 'transparent' : C.ink,
               color: stripeEnabled ? C.ink : C.bone,
               border: stripeEnabled ? `1px solid rgba(20,17,15,0.3)` : 'none',
               padding: '18px 24px', fontFamily: 'Inter, sans-serif', fontSize: 13,
-              letterSpacing: '0.18em', textTransform: 'uppercase', cursor: 'pointer',
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              cursor: sending ? 'wait' : 'pointer', opacity: sending ? 0.6 : 1,
             }}
           >
-            {stripeEnabled ? t('Or order via WhatsApp') : t('Place order via WhatsApp')}
+            {sending ? t('Sending…') : stripeEnabled ? t('Or order now, pay on confirmation') : t('Place order — pay on confirmation')}
           </button>
           <Body size={12} color="rgba(20,17,15,0.5)" style={{ marginTop: 12, textAlign: 'center' }}>
             {stripeEnabled
-              ? t('Card payments are processed securely by Stripe. Prefer to chat first? Order via WhatsApp and we confirm everything there.')
-              : 'Your order opens in WhatsApp — we confirm stock, colours and payment there. Nothing is charged on this page.'}
+              ? t('Card payments are processed securely by Stripe. Prefer not to pay by card? Place the order and we confirm payment (bank transfer or card) on WhatsApp — nothing is charged on this page.')
+              : t('Your order reaches us instantly — we confirm stock, colours and payment on WhatsApp. Nothing is charged on this page.')}
           </Body>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginTop: 14 }}>
             {['Visa', 'Mastercard', 'Amex', 'Secured by Stripe'].map((m) => (
