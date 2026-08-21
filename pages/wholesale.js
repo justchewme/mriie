@@ -4,11 +4,11 @@ import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
 import { SHOP, wholesaleWaLink } from '@/lib/config'
 import { useT } from '@/lib/i18n'
 
-// Published wholesale tiers from the 2026 catalogue (USD/pc, EXW Bali).
+// Wholesale pricing is shared privately via the catalogue — never publish it here.
 const WHOLESALE = [
-  { id: 'cover', name: 'Thermal Padel Cover', rrp: 105, tiers: [['500', 52], ['1,000', 50], ['3,000', 47]], image: '/shop/covers.jpg' },
-  { id: 'bag', name: 'Thermal Padel Bag', rrp: 160, tiers: [['500', 73], ['1,000', 70], ['3,000', 66]], image: '/shop/bag-emerald-weave.jpg' },
-  { id: 'towel', name: 'Linen Sport Towel', rrp: 60, tiers: [['500', 28], ['1,000', 26], ['3,000', 24]], image: '/shop/towel.jpg' },
+  { id: 'cover', name: 'Thermal Padel Cover', rrp: 105, image: '/shop/covers.jpg' },
+  { id: 'bag', name: 'Thermal Padel Bag', rrp: 160, image: '/shop/bag-emerald-weave.jpg' },
+  { id: 'towel', name: 'Linen Sport Towel', rrp: 60, image: '/shop/towel.jpg' },
 ]
 
 // 16px inputs — anything smaller makes iOS Safari zoom the page on focus.
@@ -66,7 +66,7 @@ export default function Wholesale() {
 
         {/* Terms strip */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
-          {[t('Trial orders from 100 pcs'), t('Lead time 3–6 weeks'), 'EXW Bali', t('50% deposit'), t('Custom logo +$4.50/pc')].map((s) => (
+          {[t('Trial orders from 100 pcs'), t('Lead time 3–6 weeks'), 'EXW Bali', t('50% deposit'), t('Custom logo available')].map((s) => (
             <span key={s} style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.6)', border: '1px solid rgba(20,17,15,0.2)', padding: '6px 12px' }}>
               {s}
             </span>
@@ -82,16 +82,9 @@ export default function Wholesale() {
               <div style={{ padding: '16px 18px 20px' }}>
                 <span style={{ fontFamily: '"Fraunces", serif', fontSize: 19, color: C.ink, display: 'block' }}>{p.name}</span>
                 <Body size={11} color="rgba(20,17,15,0.5)" style={{ marginTop: 4 }}>RRP US${p.rrp}</Body>
-                <table style={{ width: '100%', marginTop: 12, fontFamily: 'Inter, sans-serif', fontSize: 12, borderCollapse: 'collapse' }}>
-                  <tbody>
-                    {p.tiers.map(([pcs, price]) => (
-                      <tr key={pcs} style={{ borderTop: '1px solid rgba(20,17,15,0.1)' }}>
-                        <td style={{ padding: '7px 0', color: 'rgba(20,17,15,0.6)' }}>{pcs} {t('pcs')}</td>
-                        <td style={{ padding: '7px 0', textAlign: 'right', fontFamily: '"Fraunces", serif', fontSize: 14, color: C.terra }}>US${price}/{t('pc')}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                <Body size={12} color="rgba(20,17,15,0.6)" style={{ marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(20,17,15,0.1)' }}>
+                  {t('Tiered wholesale pricing — shared privately with the catalogue.')}
+                </Body>
               </div>
             </div>
           ))}
