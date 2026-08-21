@@ -62,7 +62,7 @@ export default async function handler(req, res) {
         addr && `Address: ${[addr.line1, addr.line2, addr.city, addr.postal_code, addr.country].filter(Boolean).join(', ')}`,
         m.notes && `Notes: ${m.notes}`,
         '',
-        `Source: ${session.payment_link ? 'Payment Link' : 'Website bag'}`,
+        `Source: ${m.source === 'buy_link' ? 'Direct buy link' : 'Website bag'}`,
         `Stripe: https://dashboard.stripe.com/${session.livemode ? '' : 'test/'}payments/${session.payment_intent}`,
       ].filter(Boolean)
 
