@@ -39,6 +39,10 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
   const [qty, setLocalQty] = useState(1)
   const [variant, setVariant] = useState(product.variants[0])
   const [added, setAdded] = useState(false)
+  // Grid cards start collapsed; the /product pages (detailLink=false) show
+  // everything. Collapsed content stays in the DOM (display:none) so the
+  // static HTML keeps the copy for search engines.
+  const [expanded, setExpanded] = useState(!detailLink)
 
   // Direct Stripe Payment Link for this exact colourway — a one-item express
   // lane beside the bag. Quantity is adjustable on the Stripe page.
@@ -109,21 +113,36 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
             {product.tagline}
           </Body>
         </div>
-        <Body size={13} color="rgba(20,17,15,0.75)">
-          {product.description}
-        </Body>
-        {product.specs && (
-          <ul style={{ margin: 0, paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {product.specs.map((s) => (
-              <li key={s} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 12, lineHeight: 1.5, color: 'rgba(20,17,15,0.6)' }}>
-                {s}
-              </li>
-            ))}
-          </ul>
+        <div style={{ display: expanded ? 'flex' : 'none', flexDirection: 'column', gap: 14 }}>
+          <Body size={13} color="rgba(20,17,15,0.75)">
+            {product.description}
+          </Body>
+          {product.specs && (
+            <ul style={{ margin: 0, paddingLeft: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
+              {product.specs.map((s) => (
+                <li key={s} style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 12, lineHeight: 1.5, color: 'rgba(20,17,15,0.6)' }}>
+                  {s}
+                </li>
+              ))}
+            </ul>
+          )}
+          <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
+            {t(SHOP.leadNote)}
+          </Body>
+        </div>
+        {detailLink && (
+          <button
+            onClick={() => setExpanded((e) => !e)}
+            aria-expanded={expanded}
+            style={{
+              alignSelf: 'flex-start', background: 'transparent', border: 'none', padding: 0,
+              fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em',
+              textTransform: 'uppercase', color: 'rgba(20,17,15,0.55)', cursor: 'pointer',
+            }}
+          >
+            {expanded ? `${t('Fewer details')} ▴` : `${t('More details')} ▾`}
+          </button>
         )}
-        <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
-          {t(SHOP.leadNote)}
-        </Body>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 'auto' }}>
           <div>
             <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
