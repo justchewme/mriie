@@ -143,47 +143,53 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
             {expanded ? `${t('Fewer details')} ▴` : `${t('More details')} ▾`}
           </button>
         )}
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 'auto' }}>
-          <div>
-            <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
-              {format(product.price)}
+        {/* Purchase block — anchored to the card bottom so price rows and
+            buttons line up across all cards in the grid. */}
+        <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ fontFamily: '"Fraunces", serif', fontSize: 22, fontWeight: 400, color: C.terra }}>
+                {format(product.price)}
+              </div>
+              {currency !== 'USD' && (
+                <Body size={10} color="rgba(20,17,15,0.45)">{t('Billed in USD')} — {SHOP.currency}{product.price}</Body>
+              )}
             </div>
-            {currency !== 'USD' && (
-              <Body size={10} color="rgba(20,17,15,0.45)">{t('Billed in USD')} — {SHOP.currency}{product.price}</Body>
-            )}
+            <Body size={11} color="rgba(20,17,15,0.5)">{t('Colour:')} {variant.name}</Body>
           </div>
-          <Body size={11} color="rgba(20,17,15,0.5)">{t('Colour:')} {variant.name}</Body>
-        </div>
 
-        <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
-          <QtyStepper value={qty} onChange={setLocalQty} />
-          <button
-            onClick={add}
+          <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
+            <QtyStepper value={qty} onChange={setLocalQty} />
+            <button
+              onClick={add}
+              style={{
+                flex: 1, background: added ? C.ocean : C.ink, color: C.bone, border: 'none',
+                fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em',
+                textTransform: 'uppercase', cursor: 'pointer', transition: 'background .25s',
+              }}
+            >
+              {added ? t('Added ✓') : t('Add to bag')}
+            </button>
+          </div>
+          <a
+            href={buyNow}
             style={{
-              flex: 1, background: added ? C.ocean : C.ink, color: C.bone, border: 'none',
+              display: 'block', textAlign: 'center', textDecoration: 'none',
+              border: `1px solid ${C.ink}`, color: C.ink, padding: '13px 16px',
               fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em',
-              textTransform: 'uppercase', cursor: 'pointer', transition: 'background .25s',
+              textTransform: 'uppercase',
             }}
           >
-            {added ? t('Added ✓') : t('Add to bag')}
-          </button>
+            {t('Buy now')}
+          </a>
+          <Body size={10} color="rgba(20,17,15,0.45)" style={{ letterSpacing: '0.06em' }}>
+            🔒 {t('Secure checkout by Stripe')} · {t('{n}-month workmanship guarantee', { n: SHOP.warrantyMonths })}
+          </Body>
+          {/* Always reserve this line so cards keep equal footers */}
+          <Body size={11} color="rgba(20,17,15,0.5)" style={{ visibility: inCart > 0 ? 'visible' : 'hidden' }}>
+            {inCart || 0} {t('in your bag')}
+          </Body>
         </div>
-        <Body size={10} color="rgba(20,17,15,0.45)" style={{ letterSpacing: '0.06em' }}>
-          🔒 {t('Secure checkout by Stripe')} · {t('{n}-month workmanship guarantee', { n: SHOP.warrantyMonths })}
-        </Body>
-        <a
-          href={buyNow}
-          style={{
-            fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em',
-            textTransform: 'uppercase', color: C.terra, textDecoration: 'none',
-            borderBottom: `1px solid ${C.terra}`, alignSelf: 'flex-start', paddingBottom: 2,
-          }}
-        >
-          {t('Or buy this colour now')} &rarr;
-        </a>
-        {inCart > 0 && (
-          <Body size={11} color="rgba(20,17,15,0.5)">{inCart} {t('in your bag')}</Body>
-        )}
       </div>
     </div>
   )
