@@ -7,7 +7,7 @@ import { useT } from '@/lib/i18n'
 // Wholesale pricing is shared privately via the catalogue — never publish it here.
 const WHOLESALE = [
   { id: 'cover', name: 'Thermal Padel Cover', rrp: 105, image: '/shop/covers.jpg' },
-  { id: 'bag', name: 'Thermal Padel Bag', rrp: 160, image: '/shop/bag-emerald-weave.jpg' },
+  { id: 'bag', name: 'Thermal Padel Bag', rrp: 175, image: '/shop/bag-emerald-weave.jpg' },
   { id: 'towel', name: 'Linen Sport Towel', rrp: 60, image: '/shop/towel.jpg' },
 ]
 
