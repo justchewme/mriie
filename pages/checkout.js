@@ -4,7 +4,7 @@ import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
 import { SHOP } from '@/lib/config'
 import { products } from '@/lib/products'
-import { SHIPPING_REGIONS, regionById } from '@/lib/shipping'
+import { SHIPPING_REGIONS, LOCAL_DELIVERY, regionById } from '@/lib/shipping'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 
@@ -47,7 +47,7 @@ export default function Checkout() {
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const deliveryFee = delivery === 'dhl' && region ? region[method].fee : 0
+  const deliveryFee = delivery === 'dhl' && region ? region[method].fee : delivery === 'local' ? LOCAL_DELIVERY.fee : 0
   const total = subtotal + deliveryFee
 
   // Card checkout skips the address check — Stripe collects the delivery address itself.
@@ -107,9 +107,9 @@ export default function Checkout() {
       delivery === 'dhl'
         ? `Delivery: ${method === 'express' ? 'Express DHL' : 'Standard EMS'} ${region ? `(${region.label})` : ''} — ${SHOP.currency}${deliveryFee}`
         : delivery === 'local'
-          ? 'Delivery: Local courier (Indonesia) — rate to confirm on WhatsApp'
+          ? `Delivery: Local courier (Indonesia) — ${SHOP.currency}${LOCAL_DELIVERY.fee}`
           : 'Delivery: Self-collection in Bali — free',
-      `Total: ${SHOP.currency}${total}${delivery === 'local' ? ' + courier' : ''}`,
+      `Total: ${SHOP.currency}${total}`,
       (delivery === 'dhl' || delivery === 'local') &&
         `Address: ${[form.address, form.city, form.postal, delivery === 'local' ? form.country || 'Indonesia' : form.country].filter(Boolean).join(', ')}`,
       form.notes && `Notes: ${form.notes}`,
@@ -266,7 +266,7 @@ export default function Checkout() {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ opacity: 0.65 }}>{t('Delivery')}</span>
               <span>
-                {delivery === null ? t('Choose below') : delivery === 'dhl' ? (region ? `${SHOP.currency}${region[method].fee}` : t('Choose region')) : delivery === 'local' ? t('Confirmed on WhatsApp') : t('Free')}
+                {delivery === null ? t('Choose below') : delivery === 'dhl' ? (region ? `${SHOP.currency}${region[method].fee}` : t('Choose region')) : delivery === 'local' ? `${SHOP.currency}${LOCAL_DELIVERY.fee}` : t('Free')}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 14, fontFamily: '"Fraunces", serif', fontSize: 22, color: C.ink }}>
@@ -277,7 +277,7 @@ export default function Checkout() {
 
           {/* One parcel, one fee — nudge to fill the parcel while shipping is flat.
               Hidden for pickup/local, where there is no flat international fee. */}
-          {count <= 2 && delivery !== 'pickup' && delivery !== 'local' && (
+          {count <= 2 && delivery !== 'pickup' && (
             <div style={{ marginTop: 20, background: '#fff', borderLeft: `3px solid ${C.terra}`, padding: '16px 18px' }}>
               <Body size={13} weight={500} style={{ marginBottom: 6 }}>
                 {t('One parcel, one shipping fee')}
@@ -324,7 +324,7 @@ export default function Checkout() {
           <H size={30} style={{ marginBottom: 24 }}>{t('Delivery')}</H>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {radioCard('pickup', t('Self-collection — Bali'), t('We share the pickup point with you on WhatsApp'), t('Free'))}
-            {radioCard('local', t('Local courier — Indonesia'), t('Cheapest within Indonesia — we confirm the exact rate on WhatsApp before you pay'), t('At cost'))}
+            {radioCard('local', t('Local courier — Indonesia'), t('Flat fee anywhere in Indonesia — 2–5 business days, tracked'), `${SHOP.currency}${LOCAL_DELIVERY.fee}`)}
             {radioCard('dhl', t('International delivery — worldwide'), t('Tracked to your door — price and delivery time depend on your region'), region ? `${SHOP.currency}${region[method].fee}` : t('From {currency}20', { currency: SHOP.currency }))}
           </div>
 
@@ -402,9 +402,7 @@ export default function Checkout() {
             <Body size={13} color={C.terra} style={{ marginTop: 16 }}>{error}</Body>
           )}
 
-          {/* Card checkout can't charge an unknown courier fee, so the local
-              option goes through the place-order path only. */}
-          {stripeEnabled && delivery !== 'local' && (
+          {stripeEnabled && (
             <button
               onClick={payByCard}
               disabled={paying}
@@ -419,7 +417,7 @@ export default function Checkout() {
             </button>
           )}
           {(() => {
-            const cardShown = stripeEnabled && delivery !== 'local'
+            const cardShown = stripeEnabled
             return (
               <>
                 <button

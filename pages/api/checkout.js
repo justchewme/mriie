@@ -5,7 +5,7 @@ import { products, getVariant } from '@/lib/products'
 import { regionById } from '@/lib/shipping'
 import { limited } from '@/lib/rate-limit'
 import {
-  ADAPTIVE_PRICING, PICKUP_OPTION, shipOption, lineItem, originOf,
+  ADAPTIVE_PRICING, PICKUP_OPTION, LOCAL_OPTION, shipOption, lineItem, originOf,
 } from '@/lib/stripe-checkout'
 
 export default async function handler(req, res) {
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   const { items, delivery, region: regionId, method, customer = {}, locale } = req.body || {}
   if (!Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'Your bag is empty.' })
-  if (delivery !== 'pickup' && delivery !== 'dhl') return res.status(400).json({ error: 'Please choose a delivery option.' })
+  if (!['pickup', 'dhl', 'local'].includes(delivery)) return res.status(400).json({ error: 'Please choose a delivery option.' })
   // The shipping fee is looked up server-side from region + method — the
   // client never sends an amount.
   const region = delivery === 'dhl' ? regionById(regionId) : null
@@ -53,7 +53,12 @@ export default async function handler(req, res) {
             shipping_address_collection: { allowed_countries: region.countries },
             shipping_options: [shipOption(region, shipMethod)],
           }
-        : { shipping_options: [PICKUP_OPTION] }),
+        : delivery === 'local'
+          ? {
+              shipping_address_collection: { allowed_countries: ['ID'] },
+              shipping_options: [LOCAL_OPTION],
+            }
+          : { shipping_options: [PICKUP_OPTION] }),
       metadata: {
         name: meta(customer.name),
         whatsapp: meta(customer.whatsapp),

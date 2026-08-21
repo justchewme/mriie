@@ -1,6 +1,6 @@
 import InfoPage, { InfoSection } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
-import { SHIPPING_REGIONS } from '@/lib/shipping'
+import { SHIPPING_REGIONS, LOCAL_DELIVERY } from '@/lib/shipping'
 import { C } from '@/components/MriieShared'
 
 export default function Shipping() {
@@ -55,9 +55,9 @@ export default function Shipping() {
         before ordering and we&apos;ll quote duties upfront where DHL supports it for your country.
       </InfoSection>
       <InfoSection heading="Local courier — within Indonesia">
-        Ordering from anywhere in Indonesia? Choose local courier at checkout — far cheaper
-        than international shipping. We confirm the exact rate for your address on WhatsApp
-        before you pay anything.
+        Flat US${LOCAL_DELIVERY.fee} per order to anywhere in Indonesia, tracked, typically{' '}
+        {LOCAL_DELIVERY.days} business days. Pay by card at checkout, or place the order and pay
+        by bank transfer.
       </InfoSection>
       <InfoSection heading="Self-collection — Bali">
         Free. We share the pickup point with you on WhatsApp when your order is ready.
