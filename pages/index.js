@@ -8,6 +8,7 @@ import { products } from '@/lib/products'
 import { SHOP, waLink } from '@/lib/config'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
+import { linkFor } from '@/lib/payment-links'
 
 function QtyStepper({ value, onChange }) {
   const btn = {
@@ -39,6 +40,10 @@ function ProductCard({ product: baseProduct }) {
   const [qty, setLocalQty] = useState(1)
   const [variant, setVariant] = useState(product.variants[0])
   const [added, setAdded] = useState(false)
+
+  // Direct Stripe Payment Link for this exact colourway — a one-item express
+  // lane beside the bag. Quantity is adjustable on the Stripe page.
+  const buyNow = linkFor(product.id, variant.id)
 
   const add = () => {
     addItem(product.id, variant.id, qty)
@@ -134,6 +139,18 @@ function ProductCard({ product: baseProduct }) {
             {added ? t('Added ✓') : t('Add to bag')}
           </button>
         </div>
+        {buyNow && (
+          <a
+            href={buyNow}
+            style={{
+              fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em',
+              textTransform: 'uppercase', color: C.terra, textDecoration: 'none',
+              borderBottom: `1px solid ${C.terra}`, alignSelf: 'flex-start', paddingBottom: 2,
+            }}
+          >
+            {t('Or buy this colour now')} &rarr;
+          </a>
+        )}
         {inCart > 0 && (
           <Body size={11} color="rgba(20,17,15,0.5)">{inCart} {t('in your bag')}</Body>
         )}

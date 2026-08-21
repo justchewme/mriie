@@ -35,6 +35,19 @@ export default async function handler(req, res) {
     try {
       const { data: lineItems } = await stripe.checkout.sessions.listLineItems(session.id, { limit: 100 })
       const m = session.metadata || {}
+
+      // Cart checkouts record the choice in metadata; Payment Link orders don't,
+      // so fall back to the shipping rate the buyer actually picked in Stripe.
+      let delivery = m.delivery === 'dhl' ? 'DHL Express' : m.delivery === 'pickup' ? 'Self-collection Bali' : null
+      if (!delivery && session.shipping_cost?.shipping_rate) {
+        try {
+          const rate = await stripe.shippingRates.retrieve(session.shipping_cost.shipping_rate)
+          delivery = rate.display_name
+        } catch {
+          // Fall through to the generic label below.
+        }
+      }
+
       const ship = session.shipping_details || session.customer_details
       const addr = ship?.address
       const lines = [
@@ -42,13 +55,14 @@ export default async function handler(req, res) {
         '',
         ...lineItems.map((li) => `• ${li.quantity} × ${li.description} — ${(li.amount_total / 100).toFixed(2)}`),
         '',
-        `Delivery: ${m.delivery === 'dhl' ? 'DHL Express' : 'Self-collection Bali'}`,
+        `Delivery: ${delivery || 'see Stripe'}`,
         `Name: ${m.name || ship?.name || '-'}`,
         `WhatsApp: ${m.whatsapp || session.customer_details?.phone || '-'}`,
         `Email: ${session.customer_details?.email || '-'}`,
         addr && `Address: ${[addr.line1, addr.line2, addr.city, addr.postal_code, addr.country].filter(Boolean).join(', ')}`,
         m.notes && `Notes: ${m.notes}`,
         '',
+        `Source: ${session.payment_link ? 'Payment Link' : 'Website bag'}`,
         `Stripe: https://dashboard.stripe.com/${session.livemode ? '' : 'test/'}payments/${session.payment_intent}`,
       ].filter(Boolean)
 

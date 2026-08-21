@@ -3,14 +3,8 @@
 import Stripe from 'stripe'
 import { products, getVariant } from '@/lib/products'
 import { SHOP } from '@/lib/config'
+import { ALLOWED_SHIPPING_COUNTRIES, DELIVERY } from '@/lib/shipping'
 
-const ALLOWED_SHIPPING_COUNTRIES = [
-  'AE', 'AT', 'AU', 'BE', 'BG', 'BH', 'CA', 'CH', 'CY', 'CZ', 'DE', 'DK',
-  'EE', 'ES', 'FI', 'FR', 'GB', 'GR', 'HK', 'HR', 'HU', 'ID', 'IE', 'IT',
-  'JP', 'KR', 'KW', 'LT', 'LU', 'LV', 'MT', 'MY', 'NL', 'NO', 'NZ', 'OM',
-  'PH', 'PL', 'PT', 'QA', 'RO', 'SA', 'SE', 'SG', 'SI', 'SK', 'TH', 'TR',
-  'TW', 'US', 'VN',
-]
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
@@ -63,7 +57,7 @@ export default async function handler(req, res) {
             shipping_options: [
               {
                 shipping_rate_data: {
-                  display_name: 'DHL Express — worldwide',
+                  display_name: DELIVERY.dhl,
                   type: 'fixed_amount',
                   fixed_amount: { amount: SHOP.deliveryFee * 100, currency: 'usd' },
                 },
@@ -74,7 +68,7 @@ export default async function handler(req, res) {
             shipping_options: [
               {
                 shipping_rate_data: {
-                  display_name: 'Self-collection — Bali',
+                  display_name: DELIVERY.pickup,
                   type: 'fixed_amount',
                   fixed_amount: { amount: 0, currency: 'usd' },
                 },
