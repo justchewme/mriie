@@ -64,7 +64,7 @@ export default function Shop() {
         </Body>
         <Body size={12} style={{ marginTop: 8 }}>
           <Link href="/wholesale" style={{ color: C.terra }}>
-            {t('Buying for a store or club? Wholesale tiers →')}
+            {t('Buying for a store or club? Partner with us →')}
           </Link>
         </Body>
         <Body size={12} style={{ marginTop: 8 }}>

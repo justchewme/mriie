@@ -122,7 +122,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 color: C.terra, textDecoration: 'none', whiteSpace: 'nowrap',
               }}
             >
-              {t('Wholesale')}
+              {t('Partners')}
             </Link>
             <a
               href={waLink('Hello Mriie PADL! I have a question 🙂')}
@@ -174,7 +174,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 {t('Shop')}
               </span>
               <Link href="/about" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Our Story')}</Link>
-              <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Wholesale')}</Link>
+              <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Partners & Wholesale')}</Link>
               <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('FAQ')}</Link>
               <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Padel in Bali guide')}</Link>
               <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Shipping & Delivery')}</Link>
