@@ -108,6 +108,23 @@ export default function Wholesale() {
           ))}
         </div>
 
+        {/* Case studies — real B2B track record, no prices */}
+        <div style={{ marginTop: 56 }}>
+          <Label color={C.terra} style={{ marginBottom: 14 }}>{t('Track record')}</Label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16 }}>
+            {[
+              t('Wholesale partner to Padelbox.de, Germany — repeat production runs shipped to Europe.'),
+              t('600 custom-branded covers produced for a single Pilates studio order.'),
+              t('Bulk orders shipped to clubs and resellers in Australia, Turkey and Thailand.'),
+              t('Consigned island-wide across Bali padel clubs — the covers you see on court are ours.'),
+            ].map((s) => (
+              <Body key={s} size={13} color="rgba(20,17,15,0.75)" style={{ background: '#fff', padding: '16px 18px', lineHeight: 1.7 }}>
+                {s}
+              </Body>
+            ))}
+          </div>
+        </div>
+
         {/* Inquiry form */}
         <div style={{ maxWidth: 560, margin: '64px auto 0' }}>
           <MotifDivider motif="frangipani" />

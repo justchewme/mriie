@@ -2,7 +2,7 @@
 // Prices always come from lib/products.js, never from the client.
 import Stripe from 'stripe'
 import { products, getVariant } from '@/lib/products'
-import { ALLOWED_SHIPPING_COUNTRIES } from '@/lib/shipping'
+import { regionById } from '@/lib/shipping'
 import { limited } from '@/lib/rate-limit'
 import {
   ADAPTIVE_PRICING, PICKUP_OPTION, dhlOption, lineItem, originOf,
@@ -16,9 +16,13 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'Card payments are not live yet — please order via WhatsApp.' })
   }
 
-  const { items, delivery, customer = {}, locale } = req.body || {}
+  const { items, delivery, region: regionId, customer = {}, locale } = req.body || {}
   if (!Array.isArray(items) || items.length === 0) return res.status(400).json({ error: 'Your bag is empty.' })
   if (delivery !== 'pickup' && delivery !== 'dhl') return res.status(400).json({ error: 'Please choose a delivery option.' })
+  // The shipping fee is looked up server-side from the region — the client
+  // never sends an amount.
+  const region = delivery === 'dhl' ? regionById(regionId) : null
+  if (delivery === 'dhl' && !region) return res.status(400).json({ error: 'Please choose your delivery region.' })
 
   const origin = originOf(req)
 
@@ -45,8 +49,8 @@ export default async function handler(req, res) {
       customer_email: (customer.email || '').trim() || undefined,
       ...(delivery === 'dhl'
         ? {
-            shipping_address_collection: { allowed_countries: ALLOWED_SHIPPING_COUNTRIES },
-            shipping_options: [dhlOption()],
+            shipping_address_collection: { allowed_countries: region.countries },
+            shipping_options: [dhlOption(region)],
           }
         : { shipping_options: [PICKUP_OPTION] }),
       metadata: {
@@ -54,6 +58,7 @@ export default async function handler(req, res) {
         whatsapp: meta(customer.whatsapp),
         notes: meta(customer.notes),
         delivery,
+        ...(region ? { region: region.id } : {}),
       },
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/checkout`,

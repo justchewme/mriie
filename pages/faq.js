@@ -11,8 +11,14 @@ export default function Faq() {
         and an overgrip. The bag&apos;s insulated compartment fits two rackets.
       </InfoSection>
       <InfoSection heading="How long until my order ships?">
-        {SHOP.leadNote}. DHL Express then takes typically 5–10 business days worldwide — see{' '}
-        <Link href="/shipping" style={{ color: C.terra }}>Shipping &amp; Delivery</Link>.
+        {SHOP.leadNote}. DHL Express then takes 2–4 business days to Southeast Asia, 3–5 to
+        Australia and East Asia, and 4–7 to Europe, the Gulf and the Americas — full regional
+        prices on <Link href="/shipping" style={{ color: C.terra }}>Shipping &amp; Delivery</Link>.
+      </InfoSection>
+      <InfoSection heading="Is there a warranty?">
+        Yes — every piece carries a {SHOP.warrantyMonths}-month guarantee on stitching and
+        workmanship. If a seam, strap or zip fails in normal use, we repair or replace it at our
+        cost. Details on <Link href="/returns" style={{ color: C.terra }}>Returns &amp; Guarantee</Link>.
       </InfoSection>
       <InfoSection heading="Can I choose a different print?">
         Absolutely. Every piece is handmade in 20+ signature prints — the swatches online are just

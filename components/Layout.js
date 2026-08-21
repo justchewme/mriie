@@ -6,6 +6,7 @@ import { SHOP, waLink } from '@/lib/config'
 import { SITE, absUrl, organizationLd, ld } from '@/lib/seo'
 import { LOCALES, useT } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
+import { useCurrency, CURRENCIES } from '@/components/CurrencyContext'
 
 const WaIcon = ({ size = 20, color = C.bone }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
@@ -17,6 +18,7 @@ export default function Layout({ children, title, description, ogImage }) {
   const { count } = useCart()
   const router = useRouter()
   const { t, locale } = useT()
+  const { currency, setCurrency } = useCurrency()
 
   const pageTitle = title ? `${title} — Mriie PADL` : SITE.title
   const pageDesc = description || SITE.description
@@ -78,6 +80,21 @@ export default function Layout({ children, title, description, ogImage }) {
             </span>
           </Link>
           <div className="nav-right">
+            <select
+              value={currency}
+              onChange={(e) => setCurrency(e.target.value)}
+              aria-label="Display currency"
+              style={{
+                fontFamily: 'Inter, sans-serif', fontSize: 10, fontWeight: 500,
+                letterSpacing: '0.08em', color: C.ink, background: 'transparent',
+                border: '1px solid rgba(20,17,15,0.2)', padding: '4px 4px',
+                borderRadius: 0, cursor: 'pointer',
+              }}
+            >
+              {Object.keys(CURRENCIES).map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
             <span style={{ display: 'flex', gap: 2 }}>
               {LOCALES.map((l) => (
                 <Link
@@ -156,12 +173,14 @@ export default function Layout({ children, title, description, ogImage }) {
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
                 {t('Shop')}
               </span>
+              <Link href="/about" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Our Story')}</Link>
               <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Wholesale')}</Link>
               <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('FAQ')}</Link>
               <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Padel in Bali guide')}</Link>
               <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Shipping & Delivery')}</Link>
               <Link href="/returns" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Returns')}</Link>
-              <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Terms & Privacy')}</Link>
+              <Link href="/terms" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Terms')}</Link>
+              <Link href="/privacy" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Privacy')}</Link>
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
@@ -187,8 +206,12 @@ export default function Layout({ children, title, description, ogImage }) {
               display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', justifyContent: 'space-between',
             }}
           >
-            <div style={{ opacity: 0.45, fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.12em' }}>
+            <div style={{ opacity: 0.45, fontFamily: 'Inter, sans-serif', fontSize: 11, letterSpacing: '0.08em', lineHeight: 1.8 }}>
               © {new Date().getFullYear()} {SHOP.company} · NIB {SHOP.nib} · {t('Handmade in Bali')}
+              <br />
+              {SHOP.address}
+              <br />
+              {SHOP.email} · WhatsApp +62 811-1973-7114
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe'), 'WhatsApp'].map((m) => (

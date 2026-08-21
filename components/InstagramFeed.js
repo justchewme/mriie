@@ -1,37 +1,27 @@
-// Official Instagram embeds for selected posts — real swipeable carousels
-// with live likes/comments, no API token needed. embed.js is only injected
-// once the section scrolls near the viewport, so it can't slow the shop.
+// Instagram posts as a click-to-load facade: we show a self-hosted thumbnail
+// (in /public/ig/<shortcode>.jpg) and only inject Instagram's embed — which
+// sets Instagram cookies — after the visitor clicks. That keeps the page
+// GDPR-clean with no consent banner (nothing else on the site sets tracking
+// cookies) and keeps Instagram's heavy script off the initial load.
 //
-// To feature different posts, replace the shortcodes below (the code in
-// instagram.com/p/<shortcode>/) with any public post from @mriie.padl.
-import { useEffect, useRef, useState } from 'react'
+// To feature different posts: swap the shortcodes below and drop a matching
+// thumbnail into /public/ig/ (first slide of the post, ~900px JPEG).
+import { useEffect, useState } from 'react'
+import { useT } from '@/lib/i18n'
 
-// Real customers and players, not product flat-lays: a buyer showing off her
-// new bag, the Bali Fun Padel event day, and ladies on court.
-export const FEATURED_POSTS = ['DcN0TgKIYFT', 'DavEJR3mKqF', 'DaEqpjOE_o8']
+export const FEATURED_POSTS = [
+  // Real customers and players, not product flat-lays.
+  { code: 'DcN0TgKIYFT', alt: 'Customer showing her new Mriie PADL towel' },
+  { code: 'DavEJR3mKqF', alt: 'Bali Fun Padel × Mriie PADL event — winners with their prize bags' },
+  { code: 'DaEqpjOE_o8', alt: 'Ladies on court with Mriie PADL bags' },
+]
 
 export default function InstagramFeed({ posts = FEATURED_POSTS }) {
-  const ref = useRef(null)
-  const [load, setLoad] = useState(false)
+  const { t } = useT()
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          setLoad(true)
-          io.disconnect()
-        }
-      },
-      { rootMargin: '600px' }
-    )
-    io.observe(el)
-    return () => io.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (!load) return
+    if (!loaded) return
     if (window.instgrm?.Embeds) {
       window.instgrm.Embeds.process()
       return
@@ -40,45 +30,66 @@ export default function InstagramFeed({ posts = FEATURED_POSTS }) {
     s.src = 'https://www.instagram.com/embed.js'
     s.async = true
     document.body.appendChild(s)
-  }, [load])
+  }, [loaded])
 
   return (
     <div
-      ref={ref}
       style={{
         display: 'grid', gap: 16, marginTop: 24,
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
         alignItems: 'start',
       }}
     >
-      {posts.map((code) => {
+      {posts.map(({ code, alt }) => {
         const url = `https://www.instagram.com/p/${code}/`
-        return (
-          <blockquote
-            key={code}
-            className="instagram-media"
-            data-instgrm-permalink={url}
-            data-instgrm-version="14"
-            style={{
-              background: '#fff', border: '1px solid rgba(20,17,15,0.1)', borderRadius: 3,
-              margin: 0, maxWidth: 540, minWidth: 280, width: '100%', padding: 0,
-            }}
-          >
-            {/* Shown until embed.js swaps it for the real carousel */}
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
+        if (loaded) {
+          return (
+            <blockquote
+              key={code}
+              className="instagram-media"
+              data-instgrm-permalink={url}
+              data-instgrm-version="14"
               style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                minHeight: 320, fontFamily: 'Inter, sans-serif', fontSize: 12,
-                letterSpacing: '0.14em', textTransform: 'uppercase',
-                color: 'rgba(20,17,15,0.55)', textDecoration: 'none',
+                background: '#fff', border: '1px solid rgba(20,17,15,0.1)', borderRadius: 3,
+                margin: 0, maxWidth: 540, minWidth: 280, width: '100%', padding: 0,
               }}
             >
-              View this post on Instagram
-            </a>
-          </blockquote>
+              <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', minHeight: 320 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/ig/${code}.jpg`} alt={alt} style={{ width: '100%', display: 'block' }} />
+              </a>
+            </blockquote>
+          )
+        }
+        return (
+          <button
+            key={code}
+            onClick={() => setLoaded(true)}
+            aria-label={`${alt} — load Instagram post`}
+            style={{
+              position: 'relative', display: 'block', width: '100%', padding: 0,
+              border: '1px solid rgba(20,17,15,0.1)', background: '#fff', cursor: 'pointer',
+              textAlign: 'left',
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`/ig/${code}.jpg`}
+              alt={alt}
+              loading="lazy"
+              style={{ width: '100%', aspectRatio: '4 / 5', objectFit: 'cover', display: 'block' }}
+            />
+            <span
+              style={{
+                position: 'absolute', left: 12, bottom: 12,
+                background: 'rgba(244,239,230,0.94)', padding: '8px 14px',
+                fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: '#14110F',
+              }}
+            >
+              {t('▶ View post — loads Instagram')}
+            </span>
+          </button>
         )
       })}
     </div>
