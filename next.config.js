@@ -1,17 +1,21 @@
 /** @type {import('next').NextConfig} */
 
-// Content-Security-Policy for a Pages Router site with no third-party scripts.
+// Content-Security-Policy for a Pages Router site whose only third-party
+// script is Instagram's official embed (homepage carousels).
 // 'unsafe-inline' is required in two places we cannot avoid on this stack:
 // Next's inline bootstrap script, and React's inline style attributes (the
 // whole site is styled with style={{…}}). Everything else is locked down.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' https://www.instagram.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https:",
   "connect-src 'self' https://vitals.vercel-insights.com",
-  // Stripe is reached by redirect, never framed, so no frame-src is needed.
+  // Stripe is reached by redirect, never framed. Instagram embeds render in
+  // an iframe from www.instagram.com — without frame-src they fall back to
+  // default-src 'self' and show blank cards.
+  "frame-src https://www.instagram.com https://instagram.com",
   "frame-ancestors 'none'",
   "form-action 'self'",
   "base-uri 'self'",

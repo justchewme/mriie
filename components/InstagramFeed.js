@@ -6,7 +6,9 @@
 // instagram.com/p/<shortcode>/) with any public post from @mriie.padl.
 import { useEffect, useRef, useState } from 'react'
 
-export const FEATURED_POSTS = ['DaoquEXTPdO', 'DbPvPd_xXie', 'DbztvPtRx7q']
+// Real customers and players, not product flat-lays: a buyer showing off her
+// new bag, the Bali Fun Padel event day, and ladies on court.
+export const FEATURED_POSTS = ['DcN0TgKIYFT', 'DavEJR3mKqF', 'DaEqpjOE_o8']
 
 export default function InstagramFeed({ posts = FEATURED_POSTS }) {
   const ref = useRef(null)
