@@ -64,6 +64,11 @@ const nextConfig = {
         source: '/buy/:path*',
         headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
       },
+      {
+        // Private trade pricing — never indexed.
+        source: '/trade/:path*',
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      },
     ]
   },
 }
