@@ -12,25 +12,30 @@ export default function Shipping() {
       <InfoSection heading="Made to order">
         {SHOP.leadNote}. Once your piece is ready, we send you a photo before it ships.
       </InfoSection>
-      <InfoSection heading="DHL Express — worldwide, by region">
-        Tracked door-to-door with DHL Express, priced per order by destination region. Business
-        days are counted after dispatch:
+      <InfoSection heading="International delivery — two speeds, by region">
+        Every international order is tracked to your door. Standard ships with EMS (the
+        international postal express network); Express ships with DHL. Business days are counted
+        after dispatch, per order:
         <div style={{ overflowX: 'auto', marginTop: 14 }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'Inter, sans-serif', fontSize: 13 }}>
             <thead>
               <tr style={{ textAlign: 'left', color: 'rgba(20,17,15,0.5)', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.12em' }}>
                 <th style={{ padding: '8px 0', fontWeight: 500 }}>Region</th>
-                <th style={{ padding: '8px 0', fontWeight: 500 }}>Delivery</th>
-                <th style={{ padding: '8px 0', fontWeight: 500, textAlign: 'right' }}>Per order</th>
+                <th style={{ padding: '8px 0', fontWeight: 500 }}>Standard — EMS</th>
+                <th style={{ padding: '8px 0', fontWeight: 500 }}>Express — DHL</th>
               </tr>
             </thead>
             <tbody>
               {SHIPPING_REGIONS.map((r) => (
                 <tr key={r.id} style={{ borderTop: '1px solid rgba(20,17,15,0.12)' }}>
                   <td style={{ padding: '10px 12px 10px 0' }}>{r.label}</td>
-                  <td style={{ padding: '10px 12px 10px 0', color: 'rgba(20,17,15,0.65)' }}>{r.days} business days</td>
-                  <td style={{ padding: '10px 0', textAlign: 'right', fontFamily: '"Fraunces", serif', fontSize: 15, color: C.terra }}>
-                    US${r.fee}
+                  <td style={{ padding: '10px 12px 10px 0' }}>
+                    <span style={{ fontFamily: '"Fraunces", serif', fontSize: 15, color: C.terra }}>US${r.standard.fee}</span>
+                    <span style={{ color: 'rgba(20,17,15,0.55)' }}> · {r.standard.days} days</span>
+                  </td>
+                  <td style={{ padding: '10px 0' }}>
+                    <span style={{ fontFamily: '"Fraunces", serif', fontSize: 15, color: C.terra }}>US${r.express.fee}</span>
+                    <span style={{ color: 'rgba(20,17,15,0.55)' }}> · {r.express.days} days</span>
                   </td>
                 </tr>
               ))}
@@ -38,8 +43,7 @@ export default function Shipping() {
           </table>
         </div>
         <span style={{ display: 'block', marginTop: 12 }}>
-          You receive the DHL tracking number by WhatsApp or email as soon as your order is on
-          its way.
+          You receive the tracking number by WhatsApp or email as soon as your order is on its way.
         </span>
       </InfoSection>
       <InfoSection heading="Duties & taxes">

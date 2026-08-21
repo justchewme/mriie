@@ -108,7 +108,7 @@ export default function Shop() {
           <div>
             <Label color={C.terra}>{t('Delivery')}</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              {t('DHL Express worldwide from {currency}25 by region — 2–4 days to Southeast Asia, 4–7 to Europe. In Indonesia? Local courier at cost, or free self-collection in Bali.', { currency: SHOP.currency })}
+              {t('Tracked worldwide delivery from {currency}20 — Standard (EMS) or Express (DHL), priced by region. In Indonesia? Local courier at cost, or free self-collection in Bali.', { currency: SHOP.currency })}
             </Body>
           </div>
           <div>

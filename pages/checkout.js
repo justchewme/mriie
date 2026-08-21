@@ -34,6 +34,7 @@ export default function Checkout() {
   const { t, locale } = useT()
   const [delivery, setDelivery] = useState(null) // 'pickup' | 'dhl' | 'local'
   const [regionId, setRegionId] = useState('')
+  const [method, setMethod] = useState('standard') // 'standard' (EMS) | 'express' (DHL)
   const region = regionById(regionId)
   const [form, setForm] = useState({ name: '', whatsapp: '', email: '', address: '', city: '', country: '', postal: '', notes: '' })
   const [error, setError] = useState('')
@@ -45,7 +46,7 @@ export default function Checkout() {
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
-  const deliveryFee = delivery === 'dhl' && region ? region.fee : 0
+  const deliveryFee = delivery === 'dhl' && region ? region[method].fee : 0
   const total = subtotal + deliveryFee
 
   // Card checkout skips the address check — Stripe collects the delivery address itself.
@@ -75,6 +76,7 @@ export default function Checkout() {
           items: items.map((i) => ({ productId: i.id, variantId: i.variant.id, qty: i.qty })),
           delivery,
           region: regionId || undefined,
+          method,
           locale,
           customer: { name: form.name, whatsapp: form.whatsapp, email: form.email, notes: form.notes },
         }),
@@ -102,7 +104,7 @@ export default function Checkout() {
       '',
       `Subtotal: ${SHOP.currency}${subtotal}`,
       delivery === 'dhl'
-        ? `Delivery: DHL Express ${region ? `(${region.label})` : ''} — ${SHOP.currency}${deliveryFee}`
+        ? `Delivery: ${method === 'express' ? 'Express DHL' : 'Standard EMS'} ${region ? `(${region.label})` : ''} — ${SHOP.currency}${deliveryFee}`
         : delivery === 'local'
           ? 'Delivery: Local courier (Indonesia) — rate to confirm on WhatsApp'
           : 'Delivery: Self-collection in Bali — free',
@@ -263,7 +265,7 @@ export default function Checkout() {
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
               <span style={{ opacity: 0.65 }}>{t('Delivery')}</span>
               <span>
-                {delivery === null ? t('Choose below') : delivery === 'dhl' ? (region ? `${SHOP.currency}${region.fee}` : t('Choose region')) : delivery === 'local' ? t('Confirmed on WhatsApp') : t('Free')}
+                {delivery === null ? t('Choose below') : delivery === 'dhl' ? (region ? `${SHOP.currency}${region[method].fee}` : t('Choose region')) : delivery === 'local' ? t('Confirmed on WhatsApp') : t('Free')}
               </span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 14, fontFamily: '"Fraunces", serif', fontSize: 22, color: C.ink }}>
@@ -279,27 +281,58 @@ export default function Checkout() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {radioCard('pickup', t('Self-collection — Bali'), t('We share the pickup point with you on WhatsApp'), t('Free'))}
             {radioCard('local', t('Local courier — Indonesia'), t('Cheapest within Indonesia — we confirm the exact rate on WhatsApp before you pay'), t('At cost'))}
-            {radioCard('dhl', t('DHL Express — worldwide'), t('Tracked door-to-door — price and delivery time depend on your region'), region ? `${SHOP.currency}${region.fee}` : t('From {currency}25', { currency: SHOP.currency }))}
+            {radioCard('dhl', t('International delivery — worldwide'), t('Tracked to your door — price and delivery time depend on your region'), region ? `${SHOP.currency}${region[method].fee}` : t('From {currency}20', { currency: SHOP.currency }))}
           </div>
 
           {delivery === 'dhl' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
-              <label style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)' }}>
-                {t('Deliver to')} <span style={{ color: C.terra }}>*</span>
-              </label>
-              <select
-                value={regionId}
-                onChange={(e) => setRegionId(e.target.value)}
-                style={{ ...inputStyle, appearance: 'auto', cursor: 'pointer' }}
-              >
-                <option value="">{t('Choose your region…')}</option>
-                {SHIPPING_REGIONS.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {t(r.label)} — {SHOP.currency}{r.fee} · {r.days} {t('days')}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 14 }}>
+                <label style={{ fontFamily: 'Inter, sans-serif', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(20,17,15,0.5)' }}>
+                  {t('Deliver to')} <span style={{ color: C.terra }}>*</span>
+                </label>
+                <select
+                  value={regionId}
+                  onChange={(e) => setRegionId(e.target.value)}
+                  style={{ ...inputStyle, appearance: 'auto', cursor: 'pointer' }}
+                >
+                  <option value="">{t('Choose your region…')}</option>
+                  {SHIPPING_REGIONS.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {t(r.label)} — {t('from')} {SHOP.currency}{r.standard.fee}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {region && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 12 }}>
+                  {['standard', 'express'].map((m) => (
+                    <button
+                      key={m}
+                      onClick={() => setMethod(m)}
+                      style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 14,
+                        width: '100%', textAlign: 'left', cursor: 'pointer',
+                        background: method === m ? '#fff' : 'transparent',
+                        border: `1px solid ${method === m ? C.ink : 'rgba(20,17,15,0.25)'}`,
+                        padding: '13px 16px',
+                      }}
+                    >
+                      <span>
+                        <span style={{ display: 'block', fontFamily: 'Inter, sans-serif', fontSize: 13, fontWeight: 500, color: C.ink }}>
+                          {m === 'standard' ? t('Standard — EMS, tracked') : t('Express — DHL')}
+                        </span>
+                        <span style={{ display: 'block', fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 12, color: 'rgba(20,17,15,0.55)', marginTop: 3 }}>
+                          {region[m].days} {t('business days')}
+                        </span>
+                      </span>
+                      <span style={{ fontFamily: '"Fraunces", serif', fontSize: 16, color: C.terra, whiteSpace: 'nowrap' }}>
+                        {SHOP.currency}{region[m].fee}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 28 }}>

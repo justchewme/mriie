@@ -11,9 +11,10 @@ export default function Faq() {
         and an overgrip. The bag&apos;s insulated compartment fits two rackets.
       </InfoSection>
       <InfoSection heading="How long until my order ships?">
-        {SHOP.leadNote}. DHL Express then takes 2–4 business days to Southeast Asia, 3–5 to
-        Australia and East Asia, and 4–7 to Europe, the Gulf and the Americas — full regional
-        prices on <Link href="/shipping" style={{ color: C.terra }}>Shipping &amp; Delivery</Link>.
+        {SHOP.leadNote}. Then choose your speed: Standard (EMS, tracked) takes 3–6 business days
+        to Southeast Asia and 6–12 to Europe and the Americas; Express (DHL) roughly halves
+        that — full regional prices on{' '}
+        <Link href="/shipping" style={{ color: C.terra }}>Shipping &amp; Delivery</Link>.
       </InfoSection>
       <InfoSection heading="Is there a warranty?">
         Yes — every piece carries a {SHOP.warrantyMonths}-month guarantee on stitching and
