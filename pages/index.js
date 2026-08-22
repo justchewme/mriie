@@ -100,20 +100,20 @@ export default function Shop() {
         <MotifDivider motif="frangipani" />
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 32, marginTop: 44 }}>
           <div>
-            <Label color={C.terra}>{t('Ordering')}</Label>
-            <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
+            <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('Ordering')}</Label>
+            <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
               {t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.')}
             </Body>
           </div>
           <div>
-            <Label color={C.terra}>{t('Delivery')}</Label>
-            <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
+            <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('Delivery')}</Label>
+            <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
               {t('Tracked worldwide delivery from {currency}20 — Standard (EMS) or Express (DHL), priced by region. In Indonesia? Local courier at cost, or free self-collection in Bali.', { currency: SHOP.currency })}
             </Body>
           </div>
           <div>
-            <Label color={C.terra}>{t('More prints')}</Label>
-            <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
+            <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('More prints')}</Label>
+            <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
               {t('Every piece is handmade in 20+ signature prints — the swatches are just the start.')}{' '}
               <a
                 href={waLink('Hello Mriie PADL! Can I see more prints?')}
