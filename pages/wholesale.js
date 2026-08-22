@@ -112,7 +112,7 @@ export default function Wholesale() {
           <Body size={13} color="rgba(20,17,15,0.6)" style={{ marginBottom: 18 }}>
             {t('Our pieces on shelves, court-side and at events across Bali — tap any photo to see the moment on Instagram.')}
           </Body>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 14 }}>
+          <div className="venue-grid" style={{ display: 'grid', gap: 14 }}>
             {[
               { code: 'DbR6lnvTm8N', venue: 'Little Brew, Canggu', note: t('Monday pop-up display') },
               { code: 'DaWxHyxzeJu', venue: 'Jungle Padel Lembongan', note: t('Stockist') },

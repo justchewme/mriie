@@ -116,3 +116,32 @@ html, body {
     display: none;
   }
 }
+
+/* Instagram embeds (components/InstagramFeed.js): one uniform card per post.
+   Instagram's embed.js injects an iframe with min-width 326px + its own
+   shadow/border, which overflows narrow grid cells and misaligns the row. */
+.ig-card {
+  background: #fff;
+  border: 1px solid rgba(20, 17, 15, 0.1);
+  overflow: hidden;
+  min-width: 0;
+}
+.ig-card .instagram-media,
+.ig-card iframe.instagram-media {
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Homepage 'Trusted by' tiles: 2×2 on desktop, single column on phones */
+.trust-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+@media (max-width: 560px) { .trust-grid { grid-template-columns: 1fr; } }
+
+/* Partners page venue photos: 4 across → 2×2 → 1, never a 3+1 orphan */
+.venue-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; }
+@media (max-width: 900px) { .venue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .venue-grid { grid-template-columns: 1fr; } }

@@ -37,28 +37,30 @@ export default function InstagramFeed({ posts = FEATURED_POSTS }) {
       style={{
         display: 'grid', gap: 16, marginTop: 24,
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        alignItems: 'start',
+        alignItems: 'stretch',
       }}
     >
       {posts.map(({ code, alt }) => {
         const url = `https://www.instagram.com/p/${code}/`
         if (loaded) {
+          // Instagram swaps the blockquote for an iframe of its own height
+          // (a reel and a carousel differ). The wrapper carries the box so
+          // all three cards share the same outline regardless; the iframe
+          // min-width/shadow overrides live in globals.css (.ig-card).
           return (
-            <blockquote
-              key={code}
-              className="instagram-media"
-              data-instgrm-permalink={url}
-              data-instgrm-version="14"
-              style={{
-                background: '#fff', border: '1px solid rgba(20,17,15,0.1)', borderRadius: 3,
-                margin: 0, maxWidth: 540, minWidth: 280, width: '100%', padding: 0,
-              }}
-            >
-              <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', minHeight: 320 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={`/ig/${code}.jpg`} alt={alt} style={{ width: '100%', display: 'block' }} />
-              </a>
-            </blockquote>
+            <div key={code} className="ig-card">
+              <blockquote
+                className="instagram-media"
+                data-instgrm-permalink={url}
+                data-instgrm-version="14"
+                style={{ background: '#fff', border: 0, margin: 0, minWidth: 0, maxWidth: '100%', width: '100%', padding: 0 }}
+              >
+                <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', minHeight: 320 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`/ig/${code}.jpg`} alt={alt} style={{ width: '100%', display: 'block' }} />
+                </a>
+              </blockquote>
+            </div>
           )
         }
         return (

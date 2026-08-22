@@ -51,7 +51,7 @@ export default function PadelBali() {
         {areas.map((area) => (
           <div key={area} style={{ marginTop: 44 }}>
             <Label color={C.sand} style={{ marginBottom: 14 }}>{area}</Label>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
               {courts.filter((c) => c.area === area).map((c) => (
                 <Link
                   key={c.slug}

@@ -78,7 +78,8 @@ export default function Shop() {
       <section style={{ maxWidth: 860, margin: '0 auto', padding: '72px 20px 0', textAlign: 'center' }}>
         <MotifDivider motif="frangipani" />
         <Label color={C.terra} style={{ marginTop: 44, marginBottom: 16 }}>{t('Trusted by clubs & partners')}</Label>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 20, marginTop: 24, textAlign: 'left' }}>
+        {/* 4 tiles → 2×2 (or 1 column on phones) so no tile is orphaned; equal heights. */}
+        <div className="trust-grid" style={{ display: 'grid', gap: 20, marginTop: 24, textAlign: 'left' }}>
           {[
             t('Wholesale partner to Padelbox.de, Germany — repeat production runs shipped to Europe.'),
             t('600 custom-branded covers produced for a single Pilates studio order.'),
