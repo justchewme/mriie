@@ -53,13 +53,13 @@ export default function Contact() {
         <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Message us')}</Label>
         <H size={34}>{t('Send us a message')}</H>
         <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 24px' }}>
-          {t('Prefer not to use WhatsApp, or it did not open? Leave your details here and we will reply personally.')}
+          {t('Leave your details here and we will reply personally.')}
         </Body>
 
         {fromWhatsApp && (
           <div style={{ background: 'rgba(196,106,74,0.09)', borderLeft: `3px solid ${C.terra}`, padding: '14px 16px', marginBottom: 26 }}>
             <Body size={13} color="rgba(20,17,15,0.8)">
-              {t('Our WhatsApp is being upgraded right now. Send your message here instead — it reaches us instantly and we reply just as fast.')}
+              {t('WhatsApp chat is not available at the moment. Send your message here instead — it reaches us directly.')}
             </Body>
           </div>
         )}
@@ -115,12 +115,14 @@ export default function Contact() {
           </form>
         )}
 
-        <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 26 }}>
-          {t('You can also reach us on')}{' '}
-          <a href={waLink('Hello Mriie PADL!')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-            WhatsApp
-          </a>.
-        </Body>
+        {SHOP.whatsappUp && (
+          <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 26 }}>
+            {t('You can also reach us on')}{' '}
+            <a href={waLink('Hello Mriie PADL!')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
+              WhatsApp
+            </a>.
+          </Body>
+        )}
       </div>
     </Layout>
   )

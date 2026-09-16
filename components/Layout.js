@@ -213,9 +213,6 @@ export default function Layout({ children, title, description, ogImage }) {
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
                 {t('Contact')}
               </span>
-              <a href={waLink()} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
-                {t('WhatsApp us')}
-              </a>
               <Link href="/contact" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 {t('Message us')}
               </Link>
@@ -234,11 +231,9 @@ export default function Layout({ children, title, description, ogImage }) {
               © {new Date().getFullYear()} {SHOP.company} · NIB {SHOP.nib} · {t('Handmade in Bali')}
               <br />
               {SHOP.address}
-              <br />
-              WhatsApp +62 811-1973-7114
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe'), 'WhatsApp'].map((m) => (
+              {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe')].map((m) => (
                 <span
                   key={m}
                   style={{
@@ -255,8 +250,8 @@ export default function Layout({ children, title, description, ogImage }) {
         </div>
       </footer>
 
-      {/* Floating WhatsApp help — lifted on the home page when the sticky cart bar is showing */}
-      <a
+      {/* Floating WhatsApp help — only when a WhatsApp line is configured; lifted on the home page when the sticky cart bar is showing */}
+      {SHOP.whatsappUp && <a
         href={waLink(isWholesale ? helpMsg : 'Hello Mriie PADL! I need some help 🙂')}
         target="_blank"
         rel="noopener noreferrer"
@@ -269,7 +264,7 @@ export default function Layout({ children, title, description, ogImage }) {
         }}
       >
         <WaIcon size={28} color="#fff" />
-      </a>
+      </a>}
     </div>
   )
 }

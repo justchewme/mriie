@@ -46,7 +46,7 @@ export default function Privacy() {
         <br />
         {SHOP.address}
         <br />
-        WhatsApp +62 811-1973-7114 · <Link href="/contact" style={{ color: C.terra }}>contact form</Link>
+        <Link href="/contact" style={{ color: C.terra }}>Contact form</Link>
         <br />
         <br />
         Our full terms of sale are on the{' '}

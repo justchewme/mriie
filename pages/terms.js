@@ -39,7 +39,7 @@ export default function Terms() {
         <br />
         {SHOP.address}
         <br />
-        WhatsApp +62 811-1973-7114 · <Link href="/contact" style={{ color: C.terra }}>contact form</Link>
+        <Link href="/contact" style={{ color: C.terra }}>Contact form</Link>
       </InfoSection>
     </InfoPage>
   )

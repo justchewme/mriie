@@ -45,15 +45,12 @@ export default function Success({ order }) {
           {order
             ? `Your payment of ${SHOP.currency}${order.total} is confirmed — a receipt is on its way to your email.`
             : 'If you completed payment, your order is confirmed.'}{' '}
-          We&apos;ll message you on WhatsApp shortly to confirm your colours and
+          We&apos;ll be in touch shortly to confirm your colours and
           {order ? ' arrange ' : ' '}delivery.
         </Body>
         <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginBottom: 36 }}>
           {t('Questions?')}{' '}
-          <a href={waLink('Hello Mriie PADL! I just paid for an order.')} target="_blank" rel="noopener noreferrer" style={{ color: C.terra }}>
-            {t('Chat with us on WhatsApp')}
-          </a>{' '}
-          {t('or use the')} <Link href="/contact" style={{ color: C.terra }}>{t('contact form')}</Link>.
+          <Link href="/contact" style={{ color: C.terra }}>{t('Use the contact form')}</Link>.
         </Body>
         <Link
           href="/"
