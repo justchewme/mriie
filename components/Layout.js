@@ -182,15 +182,23 @@ export default function Layout({ children, title, description, ogImage }) {
       </header>
 
       {!SHOP.ordersOpen && (
-        <div style={{ background: '#fbecdc', borderBottom: `1px solid ${C.terra}`, padding: '16px 20px' }}>
-          <div style={{ maxWidth: 900, margin: '0 auto', fontFamily: 'Inter, sans-serif', color: C.ink }}>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.terra, marginBottom: 6 }}>
-              {t(SHOP.notice.title)}
+        <div role="alert" style={{ background: '#8a1c1c', color: '#fff', padding: '26px 20px 28px', borderBottom: '6px solid #f4c542' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', fontFamily: 'Inter, sans-serif', textAlign: 'center' }}>
+            <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', lineHeight: 1.25, marginBottom: 12 }}>
+              ⚠️ {t(SHOP.notice.title)}
             </div>
-            <div style={{ fontSize: 13, lineHeight: 1.65, fontWeight: 300 }}>
-              {t(SHOP.notice.body)}{' '}
-              <Link href="/contact" style={{ color: C.terra, fontWeight: 500, whiteSpace: 'nowrap' }}>{t(SHOP.notice.cta)} →</Link>
+            <div style={{ fontSize: 15, lineHeight: 1.65, fontWeight: 400, marginBottom: 18 }}>
+              {t(SHOP.notice.body)}
             </div>
+            <Link
+              href="/contact"
+              style={{
+                display: 'inline-block', background: '#f4c542', color: '#3a0a0a', textDecoration: 'none',
+                padding: '14px 26px', fontSize: 13, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+              }}
+            >
+              {t(SHOP.notice.cta)} →
+            </Link>
           </div>
         </div>
       )}
