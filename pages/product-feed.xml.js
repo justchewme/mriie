@@ -2,11 +2,13 @@
 // Point Merchant Center at https://mriie.com/product-feed.xml — one item per product.
 import { products } from '@/lib/products'
 import { SITE, absUrl } from '@/lib/seo'
+import { SHOP } from '@/lib/config'
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 export async function getServerSideProps({ res }) {
-  const items = products
+  // Orders paused: publish an empty feed so Merchant Center lists nothing.
+  const items = (SHOP.ordersOpen ? products : [])
     .map(
       (p) => `    <item>
       <g:id>mriie-${p.id}</g:id>

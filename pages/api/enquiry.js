@@ -39,12 +39,13 @@ export default async function handler(req, res) {
   const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     console.error('Enquiry received but Telegram is not configured')
-    return res.status(503).json({ error: 'Our message service is down — please WhatsApp us instead.' })
+    return res.status(503).json({ error: 'Our message service is down — please try again later.' })
   }
 
   const headers = {
     wholesale: '🏬 <b>Wholesale inquiry — mriie.com</b>',
     order: '🛍 <b>New order — mriie.com</b>',
+    report: '🚨 <b>UNDELIVERED ORDER REPORT — mriie.com</b>',
   }
   const text = [
     test ? '🩺 <b>PIPE TEST</b> — automated check, no customer' : headers[source] || '📩 <b>New enquiry from mriie.com</b>',
@@ -69,11 +70,11 @@ export default async function handler(req, res) {
     })
     if (!r.ok) {
       console.error('Telegram send failed:', r.status, await r.text())
-      return res.status(502).json({ error: 'We could not deliver your message — please WhatsApp us instead.' })
+      return res.status(502).json({ error: 'We could not deliver your message — please try again later.' })
     }
     return res.status(200).json({ ok: true })
   } catch (err) {
     console.error('Enquiry failed:', err.message)
-    return res.status(502).json({ error: 'We could not deliver your message — please WhatsApp us instead.' })
+    return res.status(502).json({ error: 'We could not deliver your message — please try again later.' })
   }
 }

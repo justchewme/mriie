@@ -4,12 +4,14 @@ import Stripe from 'stripe'
 import { products, getVariant } from '@/lib/products'
 import { regionById } from '@/lib/shipping'
 import { limited } from '@/lib/rate-limit'
+import { SHOP } from '@/lib/config'
 import {
   ADAPTIVE_PRICING, PICKUP_OPTION, LOCAL_OPTION, shipOption, lineItem, originOf,
 } from '@/lib/stripe-checkout'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  if (!SHOP.ordersOpen) return res.status(410).json({ error: 'Orders are paused — this website is not taking payments.' })
   // Every call creates a live Stripe Checkout Session.
   if (limited(req, res, { name: 'checkout', limit: 20, windowMs: 10 * 60 * 1000 })) return
   if (!process.env.STRIPE_SECRET_KEY) {

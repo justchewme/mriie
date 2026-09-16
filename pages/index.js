@@ -103,7 +103,7 @@ export default function Shop() {
           <div>
             <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('Ordering')}</Label>
             <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
-              {t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.')}
+              {SHOP.ordersOpen ? t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.') : t('Orders are paused — this website is not taking payments.')}
             </Body>
           </div>
           <div>
@@ -150,7 +150,7 @@ export default function Shop() {
       </section>
 
       {/* Sticky cart bar */}
-      {count > 0 && (
+      {SHOP.ordersOpen && count > 0 && (
         <div
           style={{
             position: 'fixed', left: 0, right: 0, bottom: 0, zIndex: 55,

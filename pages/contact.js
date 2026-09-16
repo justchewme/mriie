@@ -17,7 +17,7 @@ const field = {
 export default function Contact() {
   const { t } = useT()
   const router = useRouter()
-  const [form, setForm] = useState({ name: '', contact: '', message: '', website: '' })
+  const [form, setForm] = useState({ name: '', contact: '', topic: 'report', message: '', website: '' })
   const [state, setState] = useState({ sending: false, sent: false, error: null })
 
   // Arrivals from a WhatsApp button carry their intended message across, so
@@ -37,7 +37,7 @@ export default function Contact() {
       const r = await fetch('/api/enquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, source: form.topic }),
       })
       const data = await r.json()
       if (!r.ok) throw new Error(data.error || 'Something went wrong.')
@@ -48,12 +48,15 @@ export default function Contact() {
   }
 
   return (
-    <Layout title="Message us">
+    <Layout title="Report an undelivered order">
       <div style={{ maxWidth: 560, margin: '0 auto', padding: '80px 20px' }}>
-        <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Message us')}</Label>
-        <H size={34}>{t('Send us a message')}</H>
-        <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 24px' }}>
-          {t('Leave your details here and we will reply personally.')}
+        <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Contact')}</Label>
+        <H size={34}>{t('Report an undelivered order')}</H>
+        <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 12px' }}>
+          {t('If you paid for a Mriie Padel order that has not arrived, tell us what happened below. Every message goes straight to the person compiling these reports and you will get a personal reply.')}
+        </Body>
+        <Body size={13} color="rgba(20,17,15,0.6)" style={{ margin: '0 0 24px', lineHeight: 1.7 }}>
+          {t('Please include: what you ordered, the date, the amount, how you paid (bank transfer, Instagram, WhatsApp) and who you paid. Leave your WhatsApp number so we can reach you.')}
         </Body>
 
         {fromWhatsApp && (
@@ -66,9 +69,9 @@ export default function Contact() {
 
         {state.sent ? (
           <div style={{ border: `1px solid ${C.terra}`, padding: '28px 24px', textAlign: 'center' }}>
-            <H size={24}>{t('Message sent')}</H>
+            <H size={24}>{t('Report received')}</H>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 10 }}>
-              {t('Thank you — we have received it and will get back to you shortly.')}
+              {t('Thank you — it has been delivered and you will hear back on WhatsApp shortly.')}
             </Body>
           </div>
         ) : (
@@ -76,14 +79,19 @@ export default function Contact() {
             <input style={field} placeholder={t('Your name')} value={form.name} onChange={set('name')} required />
             <input
               style={field}
-              placeholder={t('WhatsApp number or email')}
+              placeholder={t('Your WhatsApp number (with country code)')}
               value={form.contact}
               onChange={set('contact')}
               required
             />
+            <select style={{ ...field, appearance: 'auto' }} value={form.topic} onChange={set('topic')}>
+              <option value="report">{t('I paid for an order that has not arrived')}</option>
+              <option value="general">{t('General question')}</option>
+              <option value="wholesale">{t('Wholesale / partnership')}</option>
+            </select>
             <textarea
-              style={{ ...field, minHeight: 130, resize: 'vertical' }}
-              placeholder={t('What would you like to ask or order?')}
+              style={{ ...field, minHeight: 160, resize: 'vertical' }}
+              placeholder={t('What you ordered, when, how much you paid, how and to whom — and what happened since.')}
               value={form.message}
               onChange={set('message')}
               required
@@ -110,7 +118,7 @@ export default function Contact() {
                 opacity: state.sending ? 0.6 : 1,
               }}
             >
-              {state.sending ? t('Sending…') : t('Send message')}
+              {state.sending ? t('Sending…') : t('Send report')}
             </button>
           </form>
         )}

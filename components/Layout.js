@@ -164,7 +164,7 @@ export default function Layout({ children, title, description, ogImage }) {
             >
               {t('Help')}
             </a>
-            <Link
+            {SHOP.ordersOpen && <Link
               href="/checkout"
               className="nav-bag"
               style={{
@@ -176,10 +176,24 @@ export default function Layout({ children, title, description, ogImage }) {
               }}
             >
               {t('Bag')}{count > 0 ? ` · ${count}` : ''}
-            </Link>
+            </Link>}
           </div>
         </div>
       </header>
+
+      {!SHOP.ordersOpen && (
+        <div style={{ background: '#fbecdc', borderBottom: `1px solid ${C.terra}`, padding: '16px 20px' }}>
+          <div style={{ maxWidth: 900, margin: '0 auto', fontFamily: 'Inter, sans-serif', color: C.ink }}>
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.terra, marginBottom: 6 }}>
+              {t(SHOP.notice.title)}
+            </div>
+            <div style={{ fontSize: 13, lineHeight: 1.65, fontWeight: 300 }}>
+              {t(SHOP.notice.body)}{' '}
+              <Link href="/contact" style={{ color: C.terra, fontWeight: 500, whiteSpace: 'nowrap' }}>{t(SHOP.notice.cta)} →</Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main style={{ flex: 1 }}>{children}</main>
 
@@ -233,7 +247,7 @@ export default function Layout({ children, title, description, ogImage }) {
               {SHOP.address}
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {['Visa', 'Mastercard', 'Amex', t('Secured by Stripe')].map((m) => (
+              {(SHOP.ordersOpen ? ['Visa', 'Mastercard', 'Amex', t('Secured by Stripe')] : []).map((m) => (
                 <span
                   key={m}
                   style={{

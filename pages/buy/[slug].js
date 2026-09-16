@@ -25,6 +25,8 @@ const findBySlug = (slug) => {
 }
 
 export async function getServerSideProps({ params, req, res }) {
+  // Orders paused: never mint a Stripe session, send everyone to the contact form.
+  if (!SHOP.ordersOpen) return { redirect: { destination: '/contact', permanent: false } }
   const match = findBySlug(params.slug)
   if (!match) return { notFound: true }
   if (!process.env.STRIPE_SECRET_KEY) return { props: { failed: true } }

@@ -53,38 +53,60 @@ await check('WhatsApp number on every page', async () => {
     const html = await (await fetch(`${SITE}/${p}`)).text()
     const nums = [...new Set([...html.matchAll(/wa\.me\/(\d+)/g)].map((m) => m[1]))]
     // The wholesale form uses a second number, so only flag unexpected ones.
-    const bad = nums.filter((n) => n !== SHOP.whatsapp && n !== SHOP.wholesaleWhatsapp)
+    const bad = nums.filter((n) => n !== SHOP.whatsapp && n !== SHOP.wholesaleWhatsapp && n !== '')
     if (bad.length) wrong.push(`/${p}: ${bad.join(', ')}`)
   }
   if (wrong.length) throw new Error(`unexpected numbers — ${wrong.join(' | ')}`)
-  return `${SHOP.whatsapp} across ${PAGES.length} pages`
+  return `${SHOP.whatsapp || 'no number published'} across ${PAGES.length} pages`
 })
 
-await check('Direct buy link', async () => {
-  const p = products[0]
-  const slug = buySlug(p.id, p.variants[0].id)
-  const r = await fetch(`${SITE}/buy/${slug}`, { redirect: 'manual' })
-  const to = r.headers.get('location') || ''
-  if (!to.includes('checkout.stripe.com')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
-  return `/buy/${slug} → Stripe`
-})
-
-await check('Bag checkout', async () => {
-  const p = products[0]
-  const r = await fetch(`${SITE}/api/checkout`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      items: [{ productId: p.id, variantId: p.variants[0].id, qty: 1 }],
-      delivery: 'pickup',
-      customer: { name: 'pipe heartbeat' },
-      locale: 'en',
-    }),
+if (SHOP.ordersOpen) {
+  await check('Direct buy link', async () => {
+    const p = products[0]
+    const slug = buySlug(p.id, p.variants[0].id)
+    const r = await fetch(`${SITE}/buy/${slug}`, { redirect: 'manual' })
+    const to = r.headers.get('location') || ''
+    if (!to.includes('checkout.stripe.com')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
+    return `/buy/${slug} → Stripe`
   })
-  const data = await r.json()
-  if (!data.url) throw new Error(data.error || `HTTP ${r.status}`)
-  return 'Stripe session created'
-})
+
+  await check('Bag checkout', async () => {
+    const p = products[0]
+    const r = await fetch(`${SITE}/api/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: [{ productId: p.id, variantId: p.variants[0].id, qty: 1 }],
+        delivery: 'pickup',
+        customer: { name: 'pipe heartbeat' },
+        locale: 'en',
+      }),
+    })
+    const data = await r.json()
+    if (!data.url) throw new Error(data.error || `HTTP ${r.status}`)
+    return 'Stripe session created'
+  })
+} else {
+  // Orders paused (16 Sep 2026): prove that NO payment path is reachable.
+  await check('Buy links closed', async () => {
+    const p = products[0]
+    const slug = buySlug(p.id, p.variants[0].id)
+    const r = await fetch(`${SITE}/buy/${slug}`, { redirect: 'manual' })
+    const to = r.headers.get('location') || ''
+    if (to.includes('stripe.com') || !to.includes('/contact')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
+    return `/buy/${slug} → /contact`
+  })
+
+  await check('Checkout API closed', async () => {
+    const r = await fetch(`${SITE}/api/checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: [{ productId: products[0].id, variantId: products[0].variants[0].id, qty: 1 }], delivery: 'pickup' }),
+    })
+    if (r.status !== 410) throw new Error(`HTTP ${r.status}`)
+    return 'refuses with 410'
+  })
+}
 
 const failures = results.filter((r) => !r.ok)
 const stamp = new Date().toLocaleString('en-SG', { timeZone: 'Asia/Jakarta' })
@@ -94,8 +116,8 @@ const summary = [
   ...results.map((r) => `${r.ok ? '✅' : '❌'} ${r.name}: ${r.detail}`),
   '',
   failures.length
-    ? 'Customers may not be able to reach you or pay. Check mriie.com.'
-    : 'Customers can reach you and pay. This message proves the contact pipe works.',
+    ? 'Customers may not be able to reach you. Check mriie.com.'
+    : SHOP.ordersOpen ? 'Customers can reach you and pay. This message proves the contact pipe works.' : 'Reports reach you; no payment path is open. This message proves the contact pipe works.',
 ].join('\n')
 
 console.log(summary)

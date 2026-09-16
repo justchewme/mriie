@@ -161,6 +161,7 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
             <Body size={11} color="rgba(20,17,15,0.5)">{t('Colour:')} {variant.name}</Body>
           </div>
 
+          {SHOP.ordersOpen ? (<>
           <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
             <QtyStepper value={qty} onChange={setLocalQty} />
             <button
@@ -192,6 +193,14 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
           <Body size={11} color="rgba(20,17,15,0.5)" style={{ visibility: inCart > 0 ? 'visible' : 'hidden' }}>
             {inCart || 0} {t('in your bag')}
           </Body>
+          </>) : (
+            <div style={{ borderTop: '1px solid rgba(20,17,15,0.12)', paddingTop: 14 }}>
+              <Body size={12} color="rgba(20,17,15,0.6)" style={{ lineHeight: 1.7 }}>
+                {t('Orders are paused — this website is not taking payments.')}{' '}
+                <Link href="/contact" style={{ color: C.terra }}>{t('Report an undelivered order')}</Link>
+              </Body>
+            </div>
+          )}
         </div>
       </div>
     </div>
