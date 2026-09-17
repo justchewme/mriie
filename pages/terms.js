@@ -11,9 +11,7 @@ export default function Terms() {
     >
       <InfoSection heading="Orders & payment">
         All prices are in US dollars; other currencies shown on the site are approximate
-        conversions for convenience and the charge is always made in USD. Card payments are
-        processed by Stripe on their secure checkout — your card details go directly to Stripe
-        and never touch our servers. Orders placed via WhatsApp are confirmed and paid in the
+        conversions for convenience and the charge is always made in USD. Orders placed via WhatsApp are confirmed and paid in the
         chat. An order is accepted once we confirm it and payment is received.
       </InfoSection>
       <InfoSection heading="Delivery & returns">

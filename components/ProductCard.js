@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { C, H, Body } from '@/components/MriieShared'
 import { SHOP } from '@/lib/config'
-import { buySlug } from '@/lib/products'
 import { useT, localizeProduct } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 import { useCurrency } from '@/components/CurrencyContext'
@@ -43,10 +42,6 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
   // everything. Collapsed content stays in the DOM (display:none) so the
   // static HTML keeps the copy for search engines.
   const [expanded, setExpanded] = useState(!detailLink)
-
-  // Direct Stripe Payment Link for this exact colourway — a one-item express
-  // lane beside the bag. Quantity is adjustable on the Stripe page.
-  const buyNow = `/buy/${buySlug(product.id, variant.id)}`
 
   const add = () => {
     addItem(product.id, variant.id, qty)
@@ -175,19 +170,8 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
               {added ? t('Added ✓') : t('Add to bag')}
             </button>
           </div>
-          <a
-            href={buyNow}
-            style={{
-              display: 'block', textAlign: 'center', textDecoration: 'none',
-              border: `1px solid ${C.ink}`, color: C.ink, padding: '13px 16px',
-              fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em',
-              textTransform: 'uppercase',
-            }}
-          >
-            {t('Buy now')}
-          </a>
           <Body size={10} color="rgba(20,17,15,0.45)" style={{ letterSpacing: '0.06em' }}>
-            🔒 {t('Secure checkout by Stripe')} · {t('{n}-month workmanship guarantee', { n: SHOP.warrantyMonths })}
+            {t('{n}-month workmanship guarantee', { n: SHOP.warrantyMonths })}
           </Body>
           {/* Always reserve this line so cards keep equal footers */}
           <Body size={11} color="rgba(20,17,15,0.5)" style={{ visibility: inCart > 0 ? 'visible' : 'hidden' }}>

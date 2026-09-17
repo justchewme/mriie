@@ -24,8 +24,7 @@ export default function Privacy() {
         sent to Instagram.
       </InfoSection>
       <InfoSection heading="Who processes your data">
-        Card payments are processed by Stripe on their secure checkout — your card details go
-        directly to Stripe and never touch our servers (see Stripe&apos;s privacy policy). Orders
+        Orders
         and enquiries are delivered to our team as messages; delivery is handled by DHL Express or
         a local courier, who receive your name, address and phone number to deliver your parcel.
         We use no advertising platforms and share data with no one else.

@@ -1,9 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /checkout
-Disallow: /success
 Disallow: /api/
-Disallow: /buy/
 Disallow: /trade/
 
 Sitemap: https://mriie.com/sitemap.xml

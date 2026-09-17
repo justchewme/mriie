@@ -103,7 +103,7 @@ export default function Shop() {
           <div>
             <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('Ordering')}</Label>
             <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
-              {SHOP.ordersOpen ? t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.') : t('Orders are paused — this website is not taking payments.')}
+              {SHOP.ordersOpen ? t('Order via WhatsApp and pay by bank transfer. No account needed.') : t('Orders are paused — this website is not taking payments.')}
             </Body>
           </div>
           {SHOP.ordersOpen && <>

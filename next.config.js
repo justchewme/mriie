@@ -12,7 +12,7 @@ const csp = [
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: https:",
   "connect-src 'self' https://vitals.vercel-insights.com",
-  // Stripe is reached by redirect, never framed. Instagram embeds render in
+  // Nothing is framed. Instagram embeds render in
   // an iframe from www.instagram.com — without frame-src they fall back to
   // default-src 'self' and show blank cards.
   "frame-src https://www.instagram.com https://instagram.com",
@@ -50,20 +50,14 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      // The charcoal bag became its own men's product (21 Aug 2026); keep any
-      // shared direct-buy links alive.
-      { source: '/buy/bag-charcoal', destination: '/buy/bag-men-charcoal', permanent: true },
+      // Payments were removed (17 Sep 2026): old buy/success links land on the report form.
+      { source: '/buy/:path*', destination: '/contact', permanent: false },
+      { source: '/success', destination: '/contact', permanent: false },
     ]
   },
   async headers() {
     return [
       { source: '/:path*', headers: securityHeaders },
-      {
-        // Each /buy hit creates a real Stripe Checkout Session, so crawlers
-        // must never walk these.
-        source: '/buy/:path*',
-        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
-      },
       {
         // Private trade pricing — never indexed.
         source: '/trade/:path*',

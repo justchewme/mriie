@@ -255,7 +255,7 @@ export default function Layout({ children, title, description, ogImage }) {
               {SHOP.address}
             </div>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {(SHOP.ordersOpen ? ['Visa', 'Mastercard', 'Amex', t('Secured by Stripe')] : []).map((m) => (
+              {[].map((m) => (
                 <span
                   key={m}
                   style={{

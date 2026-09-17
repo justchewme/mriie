@@ -60,40 +60,14 @@ await check('WhatsApp number on every page', async () => {
   return `${SHOP.whatsapp || 'no number published'} across ${PAGES.length} pages`
 })
 
-if (SHOP.ordersOpen) {
-  await check('Direct buy link', async () => {
-    const p = products[0]
-    const slug = buySlug(p.id, p.variants[0].id)
-    const r = await fetch(`${SITE}/buy/${slug}`, { redirect: 'manual' })
-    const to = r.headers.get('location') || ''
-    if (!to.includes('checkout.stripe.com')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
-    return `/buy/${slug} → Stripe`
-  })
-
-  await check('Bag checkout', async () => {
-    const p = products[0]
-    const r = await fetch(`${SITE}/api/checkout`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        items: [{ productId: p.id, variantId: p.variants[0].id, qty: 1 }],
-        delivery: 'pickup',
-        customer: { name: 'pipe heartbeat' },
-        locale: 'en',
-      }),
-    })
-    const data = await r.json()
-    if (!data.url) throw new Error(data.error || `HTTP ${r.status}`)
-    return 'Stripe session created'
-  })
-} else {
-  // Orders paused (16 Sep 2026): prove that NO payment path is reachable.
+{
+  // Payments were removed entirely (17 Sep 2026): prove no payment path is reachable.
   await check('Buy links closed', async () => {
     const p = products[0]
     const slug = buySlug(p.id, p.variants[0].id)
     const r = await fetch(`${SITE}/buy/${slug}`, { redirect: 'manual' })
     const to = r.headers.get('location') || ''
-    if (to.includes('stripe.com') || !to.includes('/contact')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
+    if (to.includes('stripe') || !to.includes('/contact')) throw new Error(`/buy/${slug} → ${r.status} ${to.slice(0, 40)}`)
     return `/buy/${slug} → /contact`
   })
 
@@ -103,8 +77,8 @@ if (SHOP.ordersOpen) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items: [{ productId: products[0].id, variantId: products[0].variants[0].id, qty: 1 }], delivery: 'pickup' }),
     })
-    if (r.status !== 410) throw new Error(`HTTP ${r.status}`)
-    return 'refuses with 410'
+    if (r.status !== 404) throw new Error(`HTTP ${r.status}`)
+    return 'API route deleted (404)'
   })
 }
 

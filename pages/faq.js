@@ -34,10 +34,6 @@ export default function Faq() {
         No — choose <em>Local courier — Indonesia</em> at checkout: a flat US$5 per order,
         tracked, anywhere in the country. Self-collection in Bali is free.
       </InfoSection>
-      <InfoSection heading="How do I pay?">
-        Securely by card at checkout (processed by Stripe — we never see your card details), or
-        order via WhatsApp and pay by bank transfer.
-      </InfoSection>
       <InfoSection heading="How do I care for my piece?">
         Spot clean covers and bags, air dry away from direct sun. Towels can be machine washed
         cold and air dried.
