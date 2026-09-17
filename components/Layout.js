@@ -140,7 +140,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 </Link>
               ))}
             </span>
-            <Link
+            {SHOP.ordersOpen && <Link
               href="/wholesale"
               className="nav-wholesale"
               style={{
@@ -150,7 +150,7 @@ export default function Layout({ children, title, description, ogImage }) {
               }}
             >
               {t('Partners')}
-            </Link>
+            </Link>}
             <a
               href={waLink(helpMsg)}
               target="_blank"
@@ -162,7 +162,7 @@ export default function Layout({ children, title, description, ogImage }) {
                 color: C.ink, textDecoration: 'none', opacity: 0.75,
               }}
             >
-              {t('Help')}
+              {SHOP.ordersOpen ? t('Help') : t('Report')}
             </a>
             {SHOP.ordersOpen && <Link
               href="/checkout"
@@ -212,18 +212,18 @@ export default function Layout({ children, title, description, ogImage }) {
             <div style={{ maxWidth: 320 }}>
               <Wordmark color={C.bone} size={14} />
               <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 16 }}>
-                {t('Thermal padel covers, bags and linen towels — handmade in Bali, shipped worldwide.')}
+                {SHOP.ordersOpen ? t('Thermal padel covers, bags and linen towels — handmade in Bali, shipped worldwide.') : t('Thermal padel covers, bags and linen towels — handmade in Bali. Orders are paused.')}
               </p>
-              <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 12 }}>
+              {SHOP.ordersOpen && <p style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 1.7, opacity: 0.75, marginTop: 12 }}>
                 {t('Our {area} shop on {street} is opening soon.', { area: SHOP.store.area, street: SHOP.store.street })}
-              </p>
+              </p>}
             </div>
             <div style={{ fontFamily: 'Inter, sans-serif', fontWeight: 300, fontSize: 13, lineHeight: 2.1 }}>
               <span style={{ display: 'block', fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.5, marginBottom: 8 }}>
                 {t('Shop')}
               </span>
               <Link href="/about" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Our Story')}</Link>
-              <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Partners & Wholesale')}</Link>
+              {SHOP.ordersOpen && <Link href="/wholesale" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Partners & Wholesale')}</Link>}
               <Link href="/faq" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('FAQ')}</Link>
               <Link href="/padel-bali" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Padel in Bali guide')}</Link>
               <Link href="/shipping" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>{t('Shipping & Delivery')}</Link>
@@ -236,11 +236,11 @@ export default function Layout({ children, title, description, ogImage }) {
                 {t('Contact')}
               </span>
               <Link href="/contact" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
-                {t('Message us')}
+                {SHOP.ordersOpen ? t('Message us') : t('Report an undelivered order')}
               </Link>
-              <a href={SHOP.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
+              {SHOP.ordersOpen && <a href={SHOP.instagramUrl} target="_blank" rel="noopener noreferrer" style={{ color: C.bone, textDecoration: 'none', display: 'block' }}>
                 @{SHOP.instagram}
-              </a>
+              </a>}
             </div>
           </div>
           <div

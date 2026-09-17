@@ -12,7 +12,8 @@
 import Head from 'next/head'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body } from '@/components/MriieShared'
-import { waLink } from '@/lib/config'
+import { SHOP, waLink } from '@/lib/config'
+import { PausedPage } from '@/components/InfoPage'
 
 // The private ladder (USD/pc, EXW Bali). Retail RRP must match lib/products.js.
 const LADDER = [
@@ -28,6 +29,7 @@ const ADDONS = [
 ]
 
 export default function TradePriceList() {
+  if (!SHOP.ordersOpen) return <PausedPage title="Trade Price List" text="This price list is withdrawn. We are not accepting wholesale orders or deposits. Do not pay a deposit to anyone offering Mriie Padel wholesale." />
   return (
     <Layout title="Trade Price List" description="Private trade pricing for Mriie PADL partners.">
       <Head>

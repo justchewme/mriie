@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import InfoPage, { InfoSection } from '@/components/InfoPage'
+import InfoPage, { InfoSection, PausedPage } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
 import { C } from '@/components/MriieShared'
 
 export default function Returns() {
+  if (!SHOP.ordersOpen) return <PausedPage title="Returns & Guarantee" text="Orders are paused. Because this website has never sold or shipped anything, there are no returns, refunds or guarantee claims to process here." />
   return (
     <InfoPage
       title="Returns & Guarantee"

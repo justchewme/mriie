@@ -27,9 +27,9 @@ export default function About() {
         </Body>
         <Body size={15} color="rgba(20,17,15,0.75)" style={{ marginTop: 18, lineHeight: 1.9 }}>
           Behind each piece is a workshop of skilled makers, a tradition of Balinese
-          craftsmanship, and a promise: if it carries our name, it&apos;s built to last. Soon
-          you&apos;ll be able to visit us in person at our {SHOP.store.area} shop on{' '}
-          {SHOP.store.street}.
+          craftsmanship, and a promise: if it carries our name, it&apos;s built to last.{SHOP.ordersOpen && (
+            <> Soon you&apos;ll be able to visit us in person at our {SHOP.store.area} shop on {SHOP.store.street}.</>
+          )}
         </Body>
 
         <div
@@ -63,24 +63,23 @@ export default function About() {
               on the <Link href="/returns" style={{ color: C.terra }}>Returns</Link> page.
             </Body>
           </div>
-          <div>
+          {SHOP.ordersOpen && <div>
             <Label color={C.terra}>Made to order</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
               We don&apos;t hold warehouse stock — your piece is cut and sewn for you. {SHOP.leadNote},
               and we send you a photo of your piece before it ships.
             </Body>
-          </div>
+          </div>}
           <div>
             <Label color={C.terra}>On the island</Label>
             <Body size={13} color="rgba(20,17,15,0.7)" style={{ marginTop: 12 }}>
-              Stocked at City Padel Bali, Jungle Padel Lembongan and Zabbo Padel Batam, with a
-              pop-up every Monday at Little Brew, Bali. Find courts to play on in our{' '}
+              Stocked at City Padel Bali, Jungle Padel Lembongan and Zabbo Padel Batam. Find courts to play on in our{' '}
               <Link href="/padel-bali" style={{ color: C.terra }}>Padel in Bali guide</Link>.
             </Body>
           </div>
         </div>
 
-        <div style={{ textAlign: 'center', margin: '64px 0 30px' }}>
+        {SHOP.ordersOpen && <div style={{ textAlign: 'center', margin: '64px 0 30px' }}>
           <Link
             href="/"
             style={{
@@ -91,7 +90,7 @@ export default function About() {
           >
             Shop the collection
           </Link>
-        </div>
+        </div>}
       </div>
     </Layout>
   )

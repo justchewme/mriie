@@ -8,6 +8,7 @@ import { products } from '@/lib/products'
 import { productLd, breadcrumbLd, ld } from '@/lib/seo'
 import { useT, localizeProduct } from '@/lib/i18n'
 import ProductCard from '@/components/ProductCard'
+import { SHOP } from '@/lib/config'
 
 // Keyword-targeted titles and metas per product (Layout appends "— Mriie PADL").
 const SEO = {
@@ -96,7 +97,7 @@ export default function ProductPage({ id }) {
             })}
           </div>
           <Body size={12} color="rgba(20,17,15,0.55)" style={{ margin: '26px 0 40px' }}>
-            {t('Every piece comes in 20+ signature prints — ask on WhatsApp to see them all.')}
+            {SHOP.ordersOpen ? t('Every piece comes in 20+ signature prints — ask on WhatsApp to see them all.') : t('Every piece comes in 20+ signature prints.')}
           </Body>
         </div>
       </div>

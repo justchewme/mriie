@@ -7,7 +7,7 @@ export default function Terms() {
   return (
     <InfoPage
       title="Terms of Sale"
-      intro={`This shop is operated by ${SHOP.company}, a company registered in Indonesia (NIB ${SHOP.nib}), ${SHOP.address}.`}
+      intro={`${SHOP.ordersOpen ? '' : 'ORDERS SUSPENDED — since 16 September 2026 this website accepts no orders and no payments, and no contract of sale can be formed through it. The terms below are retained for reference only. '}This shop is operated by ${SHOP.company}, a company registered in Indonesia (NIB ${SHOP.nib}), ${SHOP.address}.`}
     >
       <InfoSection heading="Orders & payment">
         All prices are in US dollars; other currencies shown on the site are approximate

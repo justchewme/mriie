@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
-import { waLink } from '@/lib/config'
+import { SHOP, waLink } from '@/lib/config'
+import { PausedPage } from '@/components/InfoPage'
 import { useT } from '@/lib/i18n'
 
 // Wholesale pricing is shared privately via the catalogue — never publish it here.
@@ -69,6 +70,8 @@ export default function Wholesale() {
       setSending(false)
     }
   }
+
+  if (!SHOP.ordersOpen) return <PausedPage title="Partnerships suspended" text="We are not accepting wholesale orders, deposits or partnership enquiries. Do not pay a deposit to anyone offering Mriie Padel wholesale or club orders." />
 
   return (
     <Layout

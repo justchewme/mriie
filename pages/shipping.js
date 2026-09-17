@@ -1,10 +1,11 @@
 import Link from 'next/link'
-import InfoPage, { InfoSection } from '@/components/InfoPage'
+import InfoPage, { InfoSection, PausedPage } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
 import { SHIPPING_REGIONS, LOCAL_DELIVERY } from '@/lib/shipping'
 import { C } from '@/components/MriieShared'
 
 export default function Shipping() {
+  if (!SHOP.ordersOpen) return <PausedPage title="Shipping & Delivery" text="Orders are paused, so there is nothing to ship. No delivery, pickup or courier service is offered through this website." />
   return (
     <InfoPage
       title="Shipping & Delivery"

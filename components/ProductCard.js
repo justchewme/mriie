@@ -126,12 +126,12 @@ export default function ProductCard({ product: baseProduct, detailLink = true })
               ))}
             </ul>
           )}
-          <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
+          {SHOP.ordersOpen && <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
             {t(SHOP.leadNote)}
-          </Body>
-          <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
+          </Body>}
+          {SHOP.ordersOpen && <Body size={11} color="rgba(20,17,15,0.5)" style={{ letterSpacing: '0.04em' }}>
             🎁 {t('Arrives in signature Mriie gift packaging')}
-          </Body>
+          </Body>}
         </div>
         {detailLink && (
           <button

@@ -24,10 +24,10 @@ export default function Shop() {
       </Head>
       {/* Intro strip */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '52px 20px 36px', textAlign: 'center' }}>
-        <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Handmade in Bali · Ships Worldwide')}</Label>
+        <Label color={C.terra} style={{ marginBottom: 18 }}>{SHOP.ordersOpen ? t('Handmade in Bali · Ships Worldwide') : t('Handmade in Bali')}</Label>
         <H size={44}>Keep it cool. Play it hot.</H>
         <Body size={14} color="rgba(20,17,15,0.6)" style={{ maxWidth: 520, margin: '18px auto 0' }}>
-          {t('Thermal covers, court bags and linen towels in signature prints — each piece handmade by our artisans in Bali. Tap a swatch to see the colours.')}
+          {SHOP.ordersOpen ? t('Thermal covers, court bags and linen towels in signature prints — each piece handmade by our artisans in Bali. Tap a swatch to see the colours.') : t('Thermal covers, court bags and linen towels in signature prints — each piece handmade by our artisans in Bali.')}
         </Body>
       </section>
 
@@ -49,14 +49,14 @@ export default function Shop() {
         <Label color={C.terra} style={{ marginTop: 44, marginBottom: 16 }}>{t('From a Bali workshop')}</Label>
         <H size={30}>{t('Stitched in the village')}</H>
         <Body size={14} color="rgba(20,17,15,0.7)" style={{ maxWidth: 540, margin: '18px auto 0' }}>
-          {t('Every cover, bag and towel is cut and sewn by hand by our artisans in Bali — over 10,000 pieces so far, shipped to players in six countries. Soon you can visit us too: our {area} shop on {street} is opening soon.', { area: SHOP.store.area, street: SHOP.store.street })}
+          {SHOP.ordersOpen ? t('Every cover, bag and towel is cut and sewn by hand by our artisans in Bali — over 10,000 pieces so far, shipped to players in six countries. Soon you can visit us too: our {area} shop on {street} is opening soon.', { area: SHOP.store.area, street: SHOP.store.street }) : t('Every cover, bag and towel is cut and sewn by hand by our artisans in Bali — over 10,000 pieces so far, shipped to players in six countries.')}
         </Body>
         <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 22, letterSpacing: '0.06em' }}>
           {t('Stocked at City Padel Bali · Jungle Padel Lembongan · Zabbo Padel Batam')}
         </Body>
-        <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 8, letterSpacing: '0.06em' }}>
+        {SHOP.ordersOpen && <Body size={12} color="rgba(20,17,15,0.55)" style={{ marginTop: 8, letterSpacing: '0.06em' }}>
           {t('Pop-up every Monday at Little Brew, Bali · 08.00–17.00')}
-        </Body>
+        </Body>}
         <Body size={12} style={{ marginTop: 12 }}>
           <Link href="/padel-bali" style={{ color: C.terra }}>
             {t('New to the island? Our guide to padel in Bali →')}
@@ -106,6 +106,7 @@ export default function Shop() {
               {SHOP.ordersOpen ? t('Add your pieces and pay securely by card — checkout is handled by Stripe. Prefer to chat? Order via WhatsApp and pay by bank transfer instead. No account needed either way.') : t('Orders are paused — this website is not taking payments.')}
             </Body>
           </div>
+          {SHOP.ordersOpen && <>
           <div>
             <Label color={C.terra} style={{ fontSize: 11, fontWeight: 600 }}>{t('Delivery')}</Label>
             <Body size={12} weight={400} color="rgba(20,17,15,0.62)" style={{ marginTop: 12, lineHeight: 1.75, letterSpacing: "0.005em" }}>
@@ -127,9 +128,11 @@ export default function Shop() {
               {t('to see them all.')}
             </Body>
           </div>
+          </>}
         </div>
       </section>
 
+      {SHOP.ordersOpen && (<>
       {/* Live Instagram carousels — real posts, swipeable, lazy-loaded */}
       <section style={{ maxWidth: 1200, margin: '0 auto', padding: '72px 20px 0', textAlign: 'center' }}>
         <MotifDivider motif="frangipani" />
@@ -148,6 +151,8 @@ export default function Shop() {
         </a>
         <InstagramFeed />
       </section>
+
+      </>)}
 
       {/* Sticky cart bar */}
       {SHOP.ordersOpen && count > 0 && (

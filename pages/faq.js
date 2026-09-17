@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import InfoPage, { InfoSection } from '@/components/InfoPage'
+import InfoPage, { InfoSection, PausedPage } from '@/components/InfoPage'
 import { SHOP, waLink } from '@/lib/config'
 import { C } from '@/components/MriieShared'
 
 export default function Faq() {
+  if (!SHOP.ordersOpen) return <PausedPage title="FAQ" text="Orders are paused. Nothing can be bought, ordered, shipped or returned through this website, and no warranty or return claims exist against it." />
   return (
     <InfoPage title="FAQ" intro="Quick answers — for anything else, the WhatsApp button is always there.">
       <InfoSection heading="Will the cover fit my racket?">

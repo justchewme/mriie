@@ -8,7 +8,7 @@ import { useCart } from '@/components/CartContext'
 
 export async function getServerSideProps({ query }) {
   let order = null
-  if (query.session_id && process.env.STRIPE_SECRET_KEY) {
+  if (SHOP.ordersOpen && query.session_id && process.env.STRIPE_SECRET_KEY) {
     try {
       const Stripe = (await import('stripe')).default
       const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
@@ -34,6 +34,22 @@ export default function Success({ order }) {
     if (loaded && order) clear()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loaded, order])
+
+  if (!SHOP.ordersOpen) {
+    return (
+      <Layout title="Orders paused">
+        <div style={{ maxWidth: 560, margin: '0 auto', padding: '90px 20px', textAlign: 'center' }}>
+          <H size={34}>{t('Orders are paused')}</H>
+          <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '20px 0 32px' }}>
+            {t('This website is not taking orders or payments at the moment. If you paid for an order that has not arrived, please report it and we will get back to you.')}
+          </Body>
+          <Link href="/contact" style={{ display: 'inline-block', background: C.ink, color: C.bone, textDecoration: 'none', padding: '14px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            {t('Report an undelivered order')}
+          </Link>
+        </div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout title="Payment received">
