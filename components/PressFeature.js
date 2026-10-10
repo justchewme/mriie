@@ -75,6 +75,11 @@ export default function PressFeature() {
                 <Body size={18} color={C.ink} style={{ marginTop: 10, lineHeight: 1.45 }}>
                   {pick(p.headline, locale)}
                 </Body>
+                {p.original && (
+                  <Body size={13} color="rgba(20,17,15,0.55)" style={{ marginTop: 6, lineHeight: 1.5 }}>
+                    {p.original}
+                  </Body>
+                )}
                 <Body size={13} color={DANGER} weight={700} style={{ marginTop: 14, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
                   {c.pressRead} ↗
                 </Body>

@@ -188,9 +188,25 @@ export default function Layout({ children, title, description, ogImage }) {
       {!SHOP.ordersOpen && (
         <div role="alert" style={{ background: '#8a1c1c', color: '#fff', padding: '26px 20px 28px', borderBottom: '6px solid #f4c542' }}>
           <div style={{ maxWidth: 860, margin: '0 auto', fontFamily: 'Inter, sans-serif', textAlign: 'center' }}>
-            <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', lineHeight: 1.25, marginBottom: 12 }}>
+            {/* Language switch up top: most people who need this warning read Bahasa. */}
+            <Link
+              href={router.asPath}
+              locale={locale === 'id' ? 'en' : 'id'}
+              style={{
+                display: 'inline-block', marginBottom: 18, background: '#fff', color: '#8a1c1c', textDecoration: 'none',
+                padding: '12px 22px', fontSize: 15, fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase',
+              }}
+            >
+              {locale === 'id' ? '🇬🇧 Read in English →' : '🇮🇩 Baca dalam Bahasa Indonesia →'}
+            </Link>
+            <div style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', lineHeight: 1.25, marginBottom: locale === 'id' ? 12 : 4 }}>
               ⚠️ {notice.bannerTitle}
             </div>
+            {locale !== 'id' && (
+              <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 12 }}>
+                {noticeCopy('id').bannerTitle}
+              </div>
+            )}
             <div style={{ fontSize: 15, lineHeight: 1.65, fontWeight: 400, marginBottom: 18 }}>
               {notice.bannerBody}
             </div>
