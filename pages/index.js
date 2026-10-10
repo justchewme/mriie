@@ -8,12 +8,90 @@ import { SHOP, waLink } from '@/lib/config'
 import { useT } from '@/lib/i18n'
 import { useCart } from '@/components/CartContext'
 import ProductCard from '@/components/ProductCard'
+import { NOTICE, noticeCopy } from '@/lib/notice'
 import InstagramFeed from '@/components/InstagramFeed'
+import PressFeature, { PatternBlock } from '@/components/PressFeature'
 
+
+// While orders are paused the home page IS the warning. Showing a product
+// grid above a fraud notice would undercut the notice and keep advertising
+// goods that cannot be delivered, so the shopfront does not render at all.
+function WarningHome() {
+  const { locale } = useT()
+  const c = noticeCopy(locale)
+  const DANGER = '#8a1c1c'
+
+  return (
+    <Layout title={c.kicker} description={c.title}>
+      <section style={{ maxWidth: 720, margin: '0 auto', padding: '56px 20px 0' }}>
+        <H size={34}>{c.title}</H>
+        <PressFeature />
+        <PatternBlock />
+        <Body size={15} color="rgba(20,17,15,0.78)" style={{ marginTop: 20, lineHeight: 1.9 }}>
+          {c.lede}
+        </Body>
+
+        <div style={{ marginTop: 26, border: `2px solid ${DANGER}`, padding: '20px 22px' }}>
+          <Body size={11} color={DANGER} weight={600} style={{ letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 10 }}>
+            {c.payHeading}
+          </Body>
+          <Body size={14} color={DANGER} weight={600} style={{ lineHeight: 1.8 }}>
+            {NOTICE.payChannels.join(' · ')}
+          </Body>
+        </div>
+
+        <Label color={DANGER} style={{ margin: '40px 0 14px' }}>{c.doHeading}</Label>
+        <ul style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {c.do.map((x) => (
+            <li key={x} style={{ lineHeight: 1.8 }}>
+              <Body size={14} color="rgba(20,17,15,0.82)">{x}</Body>
+            </li>
+          ))}
+        </ul>
+
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 34 }}>
+          <Link
+            href="/contact"
+            style={{
+              display: 'inline-block', background: DANGER, color: '#fff', textDecoration: 'none',
+              padding: '15px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12,
+              fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase',
+            }}
+          >
+            {c.reportCta} →
+          </Link>
+          <Link
+            href="/notice"
+            style={{
+              display: 'inline-block', border: `1px solid ${C.ink}`, color: C.ink, textDecoration: 'none',
+              padding: '15px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12,
+              fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase',
+            }}
+          >
+            {c.fullNoticeCta} →
+          </Link>
+        </div>
+
+        <Label color={C.terra} style={{ margin: '52px 0 14px' }}>{c.whoHeading}</Label>
+        <ul style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {c.who.map((x) => (
+            <li key={x} style={{ lineHeight: 1.8 }}>
+              <Body size={14} color="rgba(20,17,15,0.7)">{x}</Body>
+            </li>
+          ))}
+        </ul>
+
+        <MotifDivider motif="frangipani" />
+      </section>
+    </Layout>
+  )
+}
 
 export default function Shop() {
   const { count, subtotal } = useCart()
   const { t } = useT()
+
+  if (!SHOP.ordersOpen) return <WarningHome />
 
   return (
     <Layout>

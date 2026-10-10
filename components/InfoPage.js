@@ -18,9 +18,14 @@ export function PausedPage({ title, text }) {
         <Body size={14} color="rgba(20,17,15,0.75)" style={{ marginTop: 14, lineHeight: 1.85 }}>
           {t('This website has never taken an order or a payment. If you paid someone for a Mriie Padel order that has not arrived, report it and you will get a personal reply.')}
         </Body>
-        <Link href="/contact" style={{ display: 'inline-block', marginTop: 28, background: C.ink, color: C.bone, textDecoration: 'none', padding: '14px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
-          {t('Report an undelivered order')}
-        </Link>
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 28 }}>
+          <Link href="/contact" style={{ display: 'inline-block', background: C.ink, color: C.bone, textDecoration: 'none', padding: '14px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            {t('Report an undelivered order')}
+          </Link>
+          <Link href="/notice" style={{ display: 'inline-block', border: `1px solid ${C.ink}`, color: C.ink, textDecoration: 'none', padding: '14px 26px', fontFamily: 'Inter, sans-serif', fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            {t('Read the full notice')}
+          </Link>
+        </div>
       </div>
     </Layout>
   )

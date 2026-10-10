@@ -28,6 +28,13 @@ export default function Contact() {
     if (msg) setForm((f) => (f.message ? f : { ...f, message: msg }))
   }, [router.query.msg])
 
+  // The public notice links here for its right of reply, so arrive on the
+  // right topic rather than making someone find it in the dropdown.
+  const isReply = router.query.topic === 'reply'
+  useEffect(() => {
+    if (isReply) setForm((f) => ({ ...f, topic: 'reply' }))
+  }, [isReply])
+
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const submit = async (e) => {
@@ -48,12 +55,14 @@ export default function Contact() {
   }
 
   return (
-    <Layout title="Report an undelivered order">
+    <Layout title={isReply ? 'Correction or right of reply' : 'Report an undelivered order'}>
       <div style={{ maxWidth: 560, margin: '0 auto', padding: '80px 20px' }}>
         <Label color={C.terra} style={{ marginBottom: 18 }}>{t('Contact')}</Label>
-        <H size={34}>{t('Report an undelivered order')}</H>
+        <H size={34}>{isReply ? t('Correction or right of reply') : t('Report an undelivered order')}</H>
         <Body size={14} color="rgba(20,17,15,0.7)" style={{ margin: '18px 0 12px' }}>
-          {t('If you paid for a Mriie Padel order that has not arrived, tell us what happened below. Every message goes straight to the person compiling these reports and you will get a personal reply.')}
+          {isReply
+            ? t('If you believe anything in the public notice is inaccurate, tell us what is wrong and what the evidence for it is. We check every correction, fix any error promptly and log the change on the notice.')
+            : t('If you paid for a Mriie Padel order that has not arrived, tell us what happened below. Every message goes straight to the person compiling these reports and you will get a personal reply.')}
         </Body>
         <Body size={13} color="rgba(20,17,15,0.6)" style={{ margin: '0 0 24px', lineHeight: 1.7 }}>
           {t('Please include: what you ordered, the date, the amount, how you paid (bank transfer, Instagram, WhatsApp) and who you paid. Leave your WhatsApp number so we can reach you.')}
@@ -86,6 +95,7 @@ export default function Contact() {
             />
             <select style={{ ...field, appearance: 'auto' }} value={form.topic} onChange={set('topic')}>
               <option value="report">{t('I paid for an order that has not arrived')}</option>
+              <option value="reply">{t('Correction or right of reply to the public notice')}</option>
               <option value="general">{t('General question')}</option>
               <option value="wholesale">{t('Wholesale / partnership')}</option>
             </select>

@@ -114,7 +114,7 @@ export default function CourtPage({ court }) {
           )}
         </div>
 
-        <div style={{ marginTop: 48 }}>
+        {SHOP.ordersOpen && <div style={{ marginTop: 48 }}>
           <Label color={C.sand} style={{ marginBottom: 16 }}>What to bring on court</Label>
           <Body size={14} color="rgba(20,17,15,0.7)" style={{ lineHeight: 1.8 }}>
             Racket, grippy court shoes, plenty of water — and something to keep your racket out
@@ -133,7 +133,7 @@ export default function CourtPage({ court }) {
               </Link>
             ))}
           </div>
-        </div>
+        </div>}
 
         <div style={{ marginTop: 56, textAlign: 'center' }}>
           <MotifDivider motif="frangipani" />

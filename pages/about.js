@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Layout from '@/components/Layout'
 import { C, Label, H, Body, MotifDivider } from '@/components/MriieShared'
 import { SHOP } from '@/lib/config'
+import { PausedPage } from '@/components/InfoPage'
 
 const PHOTOS = [
   { src: '/shop/collection.jpg', alt: 'Mriie PADL collection of handmade covers and bags' },
@@ -11,6 +12,15 @@ const PHOTOS = [
 ]
 
 export default function About() {
+  if (!SHOP.ordersOpen) {
+    return (
+      <PausedPage
+        title="Our Story"
+        text="Mriie Padel is not trading. Buyers, resellers, factories and an investor have paid for orders and production and received neither goods nor refunds, and the matter is with lawyers in Indonesia."
+      />
+    )
+  }
+
   return (
     <Layout
       title="Our Story"

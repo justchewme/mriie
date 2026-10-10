@@ -9,6 +9,7 @@ import { productLd, breadcrumbLd, ld } from '@/lib/seo'
 import { useT, localizeProduct } from '@/lib/i18n'
 import ProductCard from '@/components/ProductCard'
 import { SHOP } from '@/lib/config'
+import { PausedPage } from '@/components/InfoPage'
 
 // Keyword-targeted titles and metas per product (Layout appends "— Mriie PADL").
 const SEO = {
@@ -49,12 +50,22 @@ export default function ProductPage({ id }) {
   const { t, locale } = useT()
   const product = products.find((p) => p.id === id)
   if (!product) return null
+  // Never advertise goods that cannot be delivered — the product pages stand
+  // down to the warning while orders are paused.
+  if (!SHOP.ordersOpen) {
+    return (
+      <PausedPage
+        title="This product is not for sale"
+        text="Mriie Padel is not selling, producing or shipping anything. Do not pay anyone offering these products."
+      />
+    )
+  }
   const localized = localizeProduct(product, locale)
   const seo = SEO[id] || { title: product.name, description: product.description }
   const others = products.filter((p) => p.id !== id)
 
   return (
-    <Layout title={seo.title} description={seo.description} ogImage={product.variants[0].image}>
+    <Layout title={seo.title} description={seo.description} >
       <Head>
         <script type="application/ld+json" dangerouslySetInnerHTML={ld(productLd(product))} />
         <script
